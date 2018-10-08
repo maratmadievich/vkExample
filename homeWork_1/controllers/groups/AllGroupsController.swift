@@ -14,10 +14,6 @@ class AllGroupsController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     
-    struct Group {
-        var name = String()
-        var value = Int()
-    }
     
     var realAllGroups = [Group]()
     var filteredGroups = [Group]()

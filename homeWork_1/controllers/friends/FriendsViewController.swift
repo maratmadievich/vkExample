@@ -18,11 +18,16 @@ class FriendsViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var customControll: CustomControl!
     
+    @IBOutlet weak var searchBar: UISearchBar!
+    
+    var searchActive = false
+    
     private var selectedSection = -1
     private var selectedRow = -1
     
     private var friends = [Friend]()
     private var groupedFriends = [FriendList]()
+    private var filteredGroupedFriends = [FriendList]()
     
     private var lastNames = ["Иванов",
                              "Петров",
@@ -53,6 +58,7 @@ class FriendsViewController: UIViewController {
         setTableViewSettings()
         setFriends()
         setCustomView()
+        setSearchBarSettings()
         tableView.reloadData()
     }
     
@@ -104,9 +110,15 @@ class FriendsViewController: UIViewController {
         groupedFriends.append(groupedFriend)
     }
     
+    
     private func setCustomView() {
         customControll.delegate = self
         customControll.setupView()
+    }
+    
+    
+    private func setSearchBarSettings() {
+        searchBar.delegate = self
     }
     
     
@@ -156,7 +168,7 @@ extension FriendsViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "showFriend") {
             let upcoming:FriendInfoViewController = segue.destination as! FriendInfoViewController
-            upcoming.friend = groupedFriends[selectedSection].friends[selectedRow]
+            upcoming.friend = searchActive ? filteredGroupedFriends[selectedSection].friends[selectedRow] : groupedFriends[selectedSection].friends[selectedRow]
         }
         let backItem = UIBarButtonItem()
         backItem.title = ""
@@ -165,25 +177,65 @@ extension FriendsViewController {
     
 }
 
+extension FriendsViewController: UISearchBarDelegate {
+
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchActive = false
+        tableView.reloadData()
+        self.view.endEditing(true)
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchActive = (searchBar.text?.count)! > 0 ? true:false
+        tableView.reloadData()
+        self.view.endEditing(true)
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText == "" {
+            searchActive = false
+        } else {
+            searchActive = true
+            filteredGroupedFriends.removeAll()
+            for group in groupedFriends {
+                let filteredFriends = group.friends.filter{$0.firstName.lowercased().contains(searchText.lowercased()) || $0.lastName.lowercased().contains(searchText.lowercased())}
+                if filteredFriends.count > 0 {
+                    let filterGroup = FriendList()
+                    filterGroup.title = group.title
+                    filterGroup.friends = filteredFriends
+                    filteredGroupedFriends.append(filterGroup)
+                }
+            }
+        }
+        
+        self.tableView.reloadData()
+    }
+}
+
 extension FriendsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return groupedFriends.count
+        customControll.isHidden = searchActive
+//        return groupedFriends.count
+        return searchActive ? filteredGroupedFriends.count : groupedFriends.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return groupedFriends[section].friends.count
+//        return groupedFriends[section].friends.count
+        return searchActive ? filteredGroupedFriends[section].friends.count : groupedFriends[section].friends.count
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FriendHeaderTableViewCell") as! FriendHeaderTableViewCell
-        cell.labelTitle.text = groupedFriends[section].title
+        let friendGroup = searchActive ? filteredGroupedFriends[section] : groupedFriends[section]
+        cell.labelTitle.text = friendGroup.title
         return cell
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FriendTableViewCell", for: indexPath) as! FriendTableViewCell
-        cell.loadData(friend: groupedFriends[indexPath.section].friends[indexPath.row])
+        let friend = searchActive ? filteredGroupedFriends[indexPath.section].friends[indexPath.row] : groupedFriends[indexPath.section].friends[indexPath.row]
+        cell.loadData(friend: friend)
         return cell
     }
     

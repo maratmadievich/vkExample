@@ -16,7 +16,12 @@ protocol GroupsProtocol {
 class MyGroupsViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var searchBar: UISearchBar!
     
+    private var myGroups = [Group]()
+    private var filteredGroups = [Group]()
+    
+    var searchActive = false
     
     var selectedRow = -1
     
@@ -24,13 +29,28 @@ class MyGroupsViewController: UIViewController {
         super.viewDidLoad()
         self.navigationItem.title = "Группы"
         setTableViewSettings()
+        setSearchBarSettings()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.tabBarController?.tabBar.isHidden = false
+        setMyGroups()
         self.tableView.reloadData()
     }
     
+    
+    private func setMyGroups() {
+        myGroups.removeAll()
+        filteredGroups.removeAll()
+        for value in GlobalConstants.groupList {
+            let group = Group()
+            group.value = value
+            group.name = GlobalConstants.getGroupName(value: value)
+            group.type = GlobalConstants.getGroupType(value: value)
+            myGroups.append(group)
+        }
+        tableView.reloadData()
+    }
     
     private func setTableViewSettings() {
         tableView.delegate = self
@@ -39,11 +59,14 @@ class MyGroupsViewController: UIViewController {
     }
     
     
-    @IBAction func btnAddGroupClicked(_ sender: Any) {
-        performSegue(withIdentifier: "showUnjoinedGroups", sender: nil)
+    private func setSearchBarSettings() {
+        searchBar.delegate = self
     }
     
     
+    @IBAction func btnAddGroupClicked(_ sender: Any) {
+        performSegue(withIdentifier: "showUnjoinedGroups", sender: nil)
+    }
     
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -52,22 +75,48 @@ class MyGroupsViewController: UIViewController {
         navigationItem.backBarButtonItem = backItem
     }
     
-    
 }
 
-extension MyGroupsViewController: UITableViewDelegate {}
+extension MyGroupsViewController: UISearchBarDelegate {
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchActive = false
+        tableView.reloadData()
+        self.view.endEditing(true)
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchActive = (searchBar.text?.count)! > 0 ? true:false
+        tableView.reloadData()
+        self.view.endEditing(true)
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText == "" {
+            searchActive = false
+        } else {
+            searchActive = true
+            filteredGroups.removeAll()
+            filteredGroups = myGroups.filter{$0.name.lowercased().contains(searchText.lowercased())}
+        }
+        
+        self.tableView.reloadData()
+    }
+}
 
-extension MyGroupsViewController: UITableViewDataSource {
+extension MyGroupsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return GlobalConstants.groupList.count
+        return searchActive ? filteredGroups.count: myGroups.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MyGroupCell", for: indexPath) as! MyGroupCell
-        cell.labelName.text = GlobalConstants.getGroupName(value: GlobalConstants.groupList[indexPath.row])
-        cell.labelType.text = GlobalConstants.getGroupType(value: GlobalConstants.groupList[indexPath.row])
-        cell.btnGroup.tag = indexPath.row
+        let group = searchActive ? filteredGroups[indexPath.row]: myGroups[indexPath.row] 
+        
+        cell.labelName.text = group.name
+        cell.labelType.text = group.type
+        cell.btnGroup.tag = group.value
         cell.delegate = self
         return cell
     }
@@ -80,12 +129,34 @@ extension MyGroupsViewController: GroupsProtocol {
         let alert = UIAlertController(title: GlobalConstants.getGroupName(value: GlobalConstants.groupList[row]), message: "Вы действительно хотите покинуть группу?", preferredStyle: .alert)
         
         alert.addAction(UIAlertAction(title: "Покинуть", style: .destructive, handler: { action in
-            GlobalConstants.groupList.remove(at: row)
-            GlobalConstants.saveGroups()
+            self.removeRowBy(value: row)
             self.tableView.reloadData()
         }))
         alert.addAction(UIAlertAction(title: "Отмена", style: .cancel, handler: nil))
         self.present(alert, animated: true)
+    }
+    
+    
+    func removeRowBy(value: Int) {
+        for (index, group) in filteredGroups.enumerated() {
+            if value == group.value {
+                filteredGroups.remove(at: index)
+                break
+            }
+        }
+        for (index, group) in myGroups.enumerated() {
+            if value == group.value {
+                myGroups.remove(at: index)
+                break
+            }
+        }
+        for (index, group) in GlobalConstants.groupList.enumerated() {
+            if value == group {
+                GlobalConstants.groupList.remove(at: index)
+                break
+            }
+        }
+        GlobalConstants.saveGroups()
     }
     
 }

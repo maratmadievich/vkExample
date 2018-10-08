@@ -51,6 +51,13 @@ struct GlobalConstants {
 }
 
 
+class Group {
+    var name = String()
+    var type = String()
+    var value = Int()
+}
+
+
 @IBDesignable extension UIView {
     
     @IBInspectable var shadowColor: UIColor? {
