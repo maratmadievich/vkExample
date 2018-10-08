@@ -58,7 +58,7 @@ extension NewsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "NewsTableViewCell", for: indexPath) as! NewsTableViewCell
-        cell.loadData(new: news[indexPath.row])
+        cell.loadData(new: news[indexPath.row], needPhoto: indexPath.row % 2 > 0)
         cell.buttonLike.tag = indexPath.row
         cell.delegate = self
         return cell
