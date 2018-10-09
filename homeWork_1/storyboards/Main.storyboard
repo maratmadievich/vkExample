@@ -451,11 +451,11 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="800"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="cI6-ks-8RL" id="XWL-pA-QDa">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="799.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="800"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qmk-ch-2zJ" userLabel="Top Separator">
-                                                    <rect key="frame" x="177" y="399" width="20" height="0.5"/>
+                                                    <rect key="frame" x="15" y="616" width="345" height="0.5"/>
                                                     <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="0.5" id="SFj-9Y-4Ei"/>
@@ -470,7 +470,7 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="newImage" translatesAutoresizingMaskIntoConstraints="NO" id="5Vc-xt-5NA">
+                                                <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="newImage" translatesAutoresizingMaskIntoConstraints="NO" id="5Vc-xt-5NA">
                                                     <rect key="frame" x="0.0" y="45" width="240" height="10"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" priority="1" id="YIz-JI-5ZR"/>
@@ -500,14 +500,14 @@
                                                             <rect key="frame" x="285" y="5" width="110" height="30"/>
                                                             <subviews>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lPN-kk-i0e">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="80" height="30"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="110" height="30"/>
                                                                     <subviews>
                                                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="eye" translatesAutoresizingMaskIntoConstraints="NO" id="tfa-Q2-ctb">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="60" height="30"/>
                                                                             <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                         </imageView>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5d5-FT-nYU">
-                                                                            <rect key="frame" x="30" y="0.0" width="50" height="30"/>
+                                                                            <rect key="frame" x="60" y="0.0" width="50" height="30"/>
                                                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                                                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                             <nil key="highlightedColor"/>
@@ -539,7 +539,7 @@
                                                     </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jcP-G5-3Y6" userLabel="ViewSeparator">
-                                                    <rect key="frame" x="0.0" y="105" width="375" height="10"/>
+                                                    <rect key="frame" x="0.0" y="606" width="375" height="10"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OZY-Sb-H9v" userLabel="Bottom Separator">
                                                             <rect key="frame" x="0.0" y="0.0" width="20" height="0.5"/>

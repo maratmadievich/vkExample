@@ -41,8 +41,7 @@ class NewsTableViewCell: UITableViewCell {
         
         imageAspectConstraint.priority = UILayoutPriority(rawValue: 1)
         imageHeightConstraint.priority = UILayoutPriority(rawValue: 1)
-        
-        
+        setTaps()
     }
     
     
@@ -99,7 +98,7 @@ class NewsTableViewCell: UITableViewCell {
         let scale = imageWidth * 0.6
         let originY = imageNew.frame.origin.y
         
-        UIView.animate(withDuration: 0.5, animations: {
+        UIView.animate(withDuration: 0.2, animations: {
             self.imageNew.bounds = CGRect(x: scale / 2 , y: originY + scale / 2, width: scale, height: scale)
         }, completion: { _ in
             UIView.animate(withDuration: 0.5,
