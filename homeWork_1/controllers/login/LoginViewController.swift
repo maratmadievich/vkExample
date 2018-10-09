@@ -10,6 +10,7 @@ import UIKit
 
 class LoginViewController: UIViewController {
     
+    @IBOutlet weak var customIndicator: CustomIndicator!
     
     
     @IBOutlet weak var labelLogin: UITextField!
@@ -50,8 +51,19 @@ class LoginViewController: UIViewController {
         }
         if (isAuth) {
             getMyGroups()
-            performSegue(withIdentifier: "showMain", sender: nil)
+            prepareShowMain()
         }
+    }
+    
+    private func prepareShowMain() {
+        customIndicator.isHidden = false
+        customIndicator.startAnimating()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
+            self.customIndicator.isHidden = true
+            self.customIndicator.stopAnimating()
+            self.performSegue(withIdentifier: "showMain", sender: nil)
+        }
+       
     }
     
     

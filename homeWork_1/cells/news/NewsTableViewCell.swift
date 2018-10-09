@@ -41,15 +41,15 @@ class NewsTableViewCell: UITableViewCell {
         
         imageAspectConstraint.priority = UILayoutPriority(rawValue: 1)
         imageHeightConstraint.priority = UILayoutPriority(rawValue: 1)
-
+        
+        
     }
     
     
     func loadData(new: New, needPhoto: Bool) {
         labelNews.text = new.text
         buttonLike.setupView(isLiked: new.isLiked, countLikes: new.likeCount)
-        let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
-        buttonLike.addGestureRecognizer(tap)
+       
         if (needPhoto) {
             imageAspectConstraint.priority = UILayoutPriority(rawValue: 999)
             imageHeightConstraint.priority = UILayoutPriority(rawValue: 1)
@@ -59,6 +59,7 @@ class NewsTableViewCell: UITableViewCell {
         }
         imageComment.tintColor = UIColor.lightGray
         setViews()
+        setTaps()
     }
     
     
@@ -76,12 +77,40 @@ class NewsTableViewCell: UITableViewCell {
         labelCountViews.text = text
     }
     
+    private func setTaps() {
+        let imageTap = UITapGestureRecognizer(target: self, action: #selector(self.imageTapped(_:)))
+        imageNew.addGestureRecognizer(imageTap)
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.likeTapped(_:)))
+        buttonLike.addGestureRecognizer(tap)
+    }
     
-    @objc func handleTap(_ sender: UITapGestureRecognizer) {
+    
+    @objc func likeTapped(_ sender: UITapGestureRecognizer) {
         buttonLike.changeLike()
         if let delegate = delegate {
             delegate.changeLike(row: buttonLike.tag)
         }
+    }
+    
+    
+    @objc func imageTapped(_ sender: UITapGestureRecognizer) {
+        let imageWidth = imageNew.frame.width
+        let scale = imageWidth * 0.6
+        let originY = imageNew.frame.origin.y
+        
+        UIView.animate(withDuration: 0.5, animations: {
+            self.imageNew.bounds = CGRect(x: scale / 2 , y: originY + scale / 2, width: scale, height: scale)
+        }, completion: { _ in
+            UIView.animate(withDuration: 0.5,
+                           delay: 0,
+                           usingSpringWithDamping: 0.5,
+                           initialSpringVelocity: 0.7,
+                           options: [],
+                           animations: {
+                            self.imageNew.bounds = CGRect(x: 0, y: originY, width: imageWidth, height: imageWidth)
+            })
+        })
         
         
     }
