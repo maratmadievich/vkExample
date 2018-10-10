@@ -31,13 +31,14 @@ class CustomIndicator: UIActivityIndicatorView {
             mainView.frame = CGRect(x: 0, y: (self.frame.height - self.frame.width) / 2, width: self.frame.width, height: self.frame.width)
         }
         mainView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1)
-        mainView.cornerRadius = 5
+        mainView.cornerRadius = 5//mainView.frame.width/2
         
         // Длина и высота круга
-        let circleSize = mainView.frame.width / 6
+        let circleSize = mainView.frame.width / 5
+        
         
         // сторона треугольника
-        let triangleSize = (mainView.frame.width * 3) / 6
+        let triangleSize = mainView.frame.width / 2
         
         // формула высоты равностороннего треугольника
         // h = sqrt(3) * size / 2
@@ -46,12 +47,18 @@ class CustomIndicator: UIActivityIndicatorView {
         // формула радиуса описанного круга
         // r = sqrt(3) * size / 3
         let radius = (triangleHeight * 2) / 3
+        // - (circleSize / 2)
+//        circle1.frame = CGRect(x: triangleSize - (circleSize / 2), y: triangleSize - radius - (circleSize / 2), width: circleSize, height: circleSize)
+//
+//        circle2.frame = CGRect(x: (triangleSize / 2) - (circleSize / 2), y: triangleSize + (triangleHeight / 3) - (circleSize / 2), width: circleSize, height: circleSize)
+//
+//        circle3.frame = CGRect(x: (triangleSize * 3 / 2) - (circleSize / 2), y: triangleSize + (triangleHeight / 3) - (circleSize / 2), width: circleSize, height: circleSize)
         
-        circle1.frame = CGRect(x: (mainView.frame.width / 2) - (circleSize / 2), y: (mainView.frame.width / 2) - radius - (circleSize / 2), width: circleSize, height: circleSize)
+        circle1.frame = CGRect(x: triangleSize - (circleSize / 2), y: triangleSize - (triangleHeight / 2) - (circleSize / 2), width: circleSize, height: circleSize)
         
-        circle2.frame = CGRect(x: (mainView.frame.width / 2) - (triangleSize / 2) - (circleSize / 2), y: (mainView.frame.width / 2) + (triangleHeight / 3) - (circleSize / 2), width: circleSize, height: circleSize)
+        circle2.frame = CGRect(x: (triangleSize / 2) - (circleSize / 2), y: triangleSize + (triangleHeight / 2) - (circleSize / 2), width: circleSize, height: circleSize)
         
-        circle3.frame = CGRect(x: (mainView.frame.width / 2) + (triangleSize / 2) - (circleSize / 2), y: (mainView.frame.width / 2) + (triangleHeight / 3) - (circleSize / 2), width: circleSize, height: circleSize)
+        circle3.frame = CGRect(x: (triangleSize * 3 / 2) - (circleSize / 2), y: triangleSize + (triangleHeight / 2) - (circleSize / 2), width: circleSize, height: circleSize)
         
         circle1.layer.cornerRadius = circleSize / 2
         circle2.layer.cornerRadius = circleSize / 2

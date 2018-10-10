@@ -31,6 +31,8 @@ class LoginViewController: UIViewController {
         let navigationBarAppearance = UINavigationBar.appearance()
         navigationBarAppearance.tintColor = UIColor.white
         navigationBarAppearance.barTintColor = UIColor.vkColor.main
+        
+        
     }
     
     
@@ -58,7 +60,7 @@ class LoginViewController: UIViewController {
     private func prepareShowMain() {
         customIndicator.isHidden = false
         customIndicator.startAnimating()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             self.customIndicator.isHidden = true
             self.customIndicator.stopAnimating()
             self.performSegue(withIdentifier: "showMain", sender: nil)

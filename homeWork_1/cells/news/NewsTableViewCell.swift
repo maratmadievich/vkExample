@@ -82,16 +82,33 @@ class NewsTableViewCell: UITableViewCell {
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.likeTapped(_:)))
         buttonLike.addGestureRecognizer(tap)
+        
+        let commentTap = UITapGestureRecognizer(target: self, action: #selector(self.commentTapped(_:)))
+        imageComment.addGestureRecognizer(commentTap)
     }
     
     
     @objc func likeTapped(_ sender: UITapGestureRecognizer) {
-        buttonLike.changeLike()
+        UIView.transition(with: buttonLike,
+                          duration: 0.25,
+                          options: buttonLike.isLiked ? .transitionFlipFromRight : .transitionFlipFromLeft,
+                          animations: {
+                            self.buttonLike.changeLike()
+        })
         if let delegate = delegate {
             delegate.changeLike(row: buttonLike.tag)
         }
     }
     
+    @objc func commentTapped(_ sender: UITapGestureRecognizer) {
+        
+        UIView.transition(with: imageComment,
+                          duration: 0.25,
+                          options: .transitionFlipFromLeft,
+                          animations: {
+                            self.imageComment.image = UIImage(named:"comment")
+        })
+    }
     
     @objc func imageTapped(_ sender: UITapGestureRecognizer) {
         let imageWidth = imageNew.frame.width

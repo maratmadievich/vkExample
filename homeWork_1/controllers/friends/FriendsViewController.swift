@@ -18,7 +18,8 @@ class FriendsViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var customControll: CustomControl!
     
-    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var searchBar: CustomSearchBar!
+    
     
     var searchActive = false
     
@@ -119,6 +120,7 @@ class FriendsViewController: UIViewController {
     
     private func setSearchBarSettings() {
         searchBar.delegate = self
+        searchBar.setSubViews()
     }
     
     
@@ -177,28 +179,16 @@ extension FriendsViewController {
     
 }
 
-extension FriendsViewController: UISearchBarDelegate {
-
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searchActive = false
-        tableView.reloadData()
-        self.view.endEditing(true)
-    }
+extension FriendsViewController: CustomSearchBarDelegate {
     
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        searchActive = (searchBar.text?.count)! > 0 ? true:false
-        tableView.reloadData()
-        self.view.endEditing(true)
-    }
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchText == "" {
+    func textChanged(text: String) {
+        if text == "" {
             searchActive = false
         } else {
             searchActive = true
             filteredGroupedFriends.removeAll()
             for group in groupedFriends {
-                let filteredFriends = group.friends.filter{$0.firstName.lowercased().contains(searchText.lowercased()) || $0.lastName.lowercased().contains(searchText.lowercased())}
+                let filteredFriends = group.friends.filter{$0.firstName.lowercased().contains(text.lowercased()) || $0.lastName.lowercased().contains(text.lowercased())}
                 if filteredFriends.count > 0 {
                     let filterGroup = FriendList()
                     filterGroup.title = group.title
@@ -210,9 +200,57 @@ extension FriendsViewController: UISearchBarDelegate {
         
         self.tableView.reloadData()
     }
+    
+    func cancelSearch() {
+        searchActive = false
+        tableView.reloadData()
+        self.view.endEditing(true)
+    }
+    
+    
 }
 
+//extension FriendsViewController: UISearchBarDelegate {
+//
+//    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+//        searchActive = false
+//        tableView.reloadData()
+//        self.view.endEditing(true)
+//    }
+//
+//    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+//        searchActive = (searchBar.text?.count)! > 0 ? true:false
+//        tableView.reloadData()
+//        self.view.endEditing(true)
+//    }
+//
+//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+//        if searchText == "" {
+//            searchActive = false
+//        } else {
+//            searchActive = true
+//            filteredGroupedFriends.removeAll()
+//            for group in groupedFriends {
+//                let filteredFriends = group.friends.filter{$0.firstName.lowercased().contains(searchText.lowercased()) || $0.lastName.lowercased().contains(searchText.lowercased())}
+//                if filteredFriends.count > 0 {
+//                    let filterGroup = FriendList()
+//                    filterGroup.title = group.title
+//                    filterGroup.friends = filteredFriends
+//                    filteredGroupedFriends.append(filterGroup)
+//                }
+//            }
+//        }
+//
+//        self.tableView.reloadData()
+//    }
+//}
+
 extension FriendsViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 40
+    }
+    
     
     func numberOfSections(in tableView: UITableView) -> Int {
         customControll.isHidden = searchActive
