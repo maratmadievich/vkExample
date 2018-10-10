@@ -26,12 +26,12 @@ class CustomSearchBar: UIView {
     private var isSearching = false
 
  
-    func setSubViews() {
+    func setSubViews(width: CGFloat) {
         self.backgroundColor = UIColor.vkColor.main
         textField.delegate = self
-        textField.frame = CGRect(x: 10, y: (self.frame.height - 40) / 2, width: self.frame.width - 20, height: 40)
-        buttonCancel.frame = CGRect(x: self.frame.width, y: (self.frame.height - 56) / 2, width: 0, height: 56)
-        imageView.frame = CGRect(x: (self.frame.width / 2) - 15, y: (self.frame.height / 2) - 15, width: 30, height: 30)
+        textField.frame = CGRect(x: 10, y: (self.frame.height - 40) / 2, width: width - 20, height: 40)
+        buttonCancel.frame = CGRect(x: width, y: (self.frame.height - 56) / 2, width: 0, height: 56)
+        imageView.frame = CGRect(x: (width / 2) - 15, y: (self.frame.height / 2) - 15, width: 30, height: 30)
         
         buttonCancel.setTitle("Отмена", for: .normal)
         buttonCancel.setTitleColor(UIColor.red, for: .normal)
@@ -101,6 +101,7 @@ extension CustomSearchBar: UITextFieldDelegate {
     }
     
     private func animateHide() {
+        print("self.frame.width = \(self.frame.width)")
         UIView.animate(withDuration: 0.5,
                        delay: 0,
                        usingSpringWithDamping: 0.5,

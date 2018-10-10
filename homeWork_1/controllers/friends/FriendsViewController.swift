@@ -120,7 +120,7 @@ class FriendsViewController: UIViewController {
     
     private func setSearchBarSettings() {
         searchBar.delegate = self
-        searchBar.setSubViews()
+        searchBar.setSubViews(width: self.view.frame.width)
     }
     
     
