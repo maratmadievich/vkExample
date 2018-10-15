@@ -83,22 +83,22 @@ class ImagesViewController: UIViewController {
                 break
             }
         }
-        UIView.animateKeyframes(withDuration: 0.4,
+        UIView.animateKeyframes(withDuration: 0.5,
                                 delay: 0,
                                 options: [],
                                 animations: {
                                     UIView.addKeyframe(withRelativeStartTime: 0,
-                                                       relativeDuration: 0.2,
+                                                       relativeDuration: 0.1,
                                                        animations: {
                                                         previousView.frame = CGRect(x: previousFrame.origin.x + self.offsetValue, y: previousFrame.origin.y + self.offsetValue, width: previousFrame.width - self.offsetValue * 2, height: previousFrame.height - self.offsetValue * 2)
                                                         
                                     })
-                                    UIView.addKeyframe(withRelativeStartTime: 0.2,
-                                                       relativeDuration: 0.2,
+                                    UIView.addKeyframe(withRelativeStartTime: 0,
+                                                       relativeDuration: 0.5,
                                                        animations: {
                                                         self.viewContaiter.frame.origin.x = -(self.width * CGFloat(self.selectedImage))
                                     })
-                                    UIView.addKeyframe(withRelativeStartTime: 0.4,
+                                    UIView.addKeyframe(withRelativeStartTime: 0.5,
                                                        relativeDuration: 0,
                                                        animations: {
                                                         previousView.frame = previousFrame
@@ -204,16 +204,16 @@ class ImagesViewController: UIViewController {
     
     private func setSimpleAnimation(_ duration: TimeInterval) {
         self.title = "Фото \(selectedImage + 1)/\(images.count)"
-        UIView.animateKeyframes(withDuration: 0.2,
+        UIView.animateKeyframes(withDuration: 0.35,
                                 delay: 0,
                                 options: [],
                                 animations: {
                                     UIView.addKeyframe(withRelativeStartTime: 0,
-                                                       relativeDuration: 0.1,
+                                                       relativeDuration: 0.25,
                                                        animations: {
                                                         self.viewContaiter.frame.origin.x = -(self.width * CGFloat(self.selectedImage))
                                     })
-                                    UIView.addKeyframe(withRelativeStartTime: 0.1,
+                                    UIView.addKeyframe(withRelativeStartTime: 0.25,
                                                        relativeDuration: 0.1,
                                                        animations: {
                                                         self.curImageView.frame = self.curImageFrame
