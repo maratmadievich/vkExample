@@ -139,26 +139,43 @@ class FriendsViewController: UIViewController {
     private func returnAllImages(row: Int) -> [UIImage] {
         var images = [UIImage]()
         var i = 0
-        
-        let value = row % 3
-        switch value {
-        case 0:
-            repeat {
+        while (i < row) {
+            let value = i % 3
+            switch value {
+            case 0:
                 images.append(UIImage.init(named: "woman")!)
-                i += 1
-            } while i < row
-            break
-            
-        case 1:
-            repeat {
+                break
+                
+            case 1:
                 images.append(UIImage.init(named: "man")!)
-                i += 1
-            } while i < row
-            break
-            
-        default:
-            images.append(UIImage.init(named: "noPhoto")!)
+                break
+                
+            default:
+                images.append(UIImage.init(named: "noPhoto")!)
+                break
+                
+            }
+            i += 1
         }
+//        let value = row % 3
+//        switch value {
+//        case 0:
+//            repeat {
+//                images.append(UIImage.init(named: "woman")!)
+//                i += 1
+//            } while i < row
+//            break
+//
+//        case 1:
+//            repeat {
+//                images.append(UIImage.init(named: "man")!)
+//                i += 1
+//            } while i < row
+//            break
+//
+//        default:
+//            images.append(UIImage.init(named: "noPhoto")!)
+//        }
         return images
     }
     
