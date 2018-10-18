@@ -28,9 +28,13 @@ class ImagesViewController: UIViewController {
     var height: CGFloat = 0
     
     var xStart: CGFloat = 0
+    var yStart: CGFloat = 0
     var xA: CGFloat = 0
     var xB: CGFloat = 0
 
+    var isZoomed = false
+    var needAnimate = false
+    
     private var offsetValue: CGFloat = 60
     
     
@@ -38,8 +42,9 @@ class ImagesViewController: UIViewController {
         super.viewDidLoad()
         setImageViews()
         setStartImage()
-        setSwipeGesture()
+        setGesture()
     }
+    
     
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.navigationBar.barTintColor = UIColor.black
@@ -71,7 +76,7 @@ class ImagesViewController: UIViewController {
     }
     
     
-    private func setCurrentImage(_ duration: TimeInterval) {
+    private func setCurrentImage() {
         self.title = "Фото \(selectedImage + 1)/\(images.count)"
 
         var previousView = UIView()
@@ -83,32 +88,26 @@ class ImagesViewController: UIViewController {
                 break
             }
         }
-        UIView.animateKeyframes(withDuration: 0.5,
-                                delay: 0,
-                                options: [],
-                                animations: {
-                                    UIView.addKeyframe(withRelativeStartTime: 0,
-                                                       relativeDuration: 0.1,
-                                                       animations: {
-                                                        previousView.frame = CGRect(x: previousFrame.origin.x + self.offsetValue, y: previousFrame.origin.y + self.offsetValue, width: previousFrame.width - self.offsetValue * 2, height: previousFrame.height - self.offsetValue * 2)
-                                                        
-                                    })
-                                    UIView.addKeyframe(withRelativeStartTime: 0,
-                                                       relativeDuration: 0.5,
-                                                       animations: {
-                                                        self.viewContaiter.frame.origin.x = -(self.width * CGFloat(self.selectedImage))
-                                    })
-                                    UIView.addKeyframe(withRelativeStartTime: 0.5,
-                                                       relativeDuration: 0,
-                                                       animations: {
-                                                        previousView.frame = previousFrame
-                                    })
-        },
-                                completion: nil)
+        UIView.animateKeyframes(withDuration: 0.5, delay: 0, options: [], animations: {
+            
+            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.1, animations: {
+                                previousView.frame = CGRect(x: previousFrame.origin.x + self.offsetValue, y: previousFrame.origin.y + self.offsetValue, width: previousFrame.width - self.offsetValue * 2, height: previousFrame.height - self.offsetValue * 2)
+                                
+            })
+            
+            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.5, animations: {
+                                self.viewContaiter.frame.origin.x = -(self.width * CGFloat(self.selectedImage))
+            })
+            
+            UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 0, animations: {
+                                previousView.frame = previousFrame
+            })
+        
+        }, completion: nil)
     }
     
     
-    private func setSwipeGesture() {
+    private func setGesture() {
         self.title = "Фото \(selectedImage + 1)/\(images.count)"
         if (bySwipe) {
             let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(handleGesture))
@@ -122,104 +121,151 @@ class ImagesViewController: UIViewController {
             let recognizer = UIPanGestureRecognizer(target: self, action: #selector(onPan(_:)))
             self.view.addGestureRecognizer(recognizer)
         }
+        
+        let recognizer = UITapGestureRecognizer(target: self, action: #selector(onTap(_:)))
+        recognizer.numberOfTapsRequired = 2
+        self.view.addGestureRecognizer(recognizer)
+        
+        let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(handleGesture))
+        swipeDown.direction = .down
+        self.view.addGestureRecognizer(swipeDown)
     }
 
     
+    private func setSimpleAnimation() {
+        self.title = "Фото \(selectedImage + 1)/\(images.count)"
+        UIView.animateKeyframes(withDuration: 0.35, delay: 0, options: [], animations: {
+            
+            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.25, animations: {
+                self.viewContaiter.frame.origin.x = -(self.width * CGFloat(self.selectedImage))
+            })
+            
+            UIView.addKeyframe(withRelativeStartTime: 0.25, relativeDuration: 0.1, animations: {
+                self.curImageView.frame = self.curImageFrame
+            })
+        })
+    }
+    
+    
+    private func changeScaleForView() {
+        for view in viewContaiter.subviews {
+            if view.tag == selectedImage {
+                let imageView = view as! UIImageView
+                imageView.setNeedsLayout()
+                
+                UIView.transition(with: imageView, duration: 0.5, options: .transitionCrossDissolve, animations: {
+                    imageView.contentMode = self.isZoomed ? .scaleAspectFill:.scaleAspectFit
+                }, completion: nil)
+            }
+        }
+    }
+    
+
+}
+
+extension ImagesViewController {
+    
     // Свайпами
     @objc func handleGesture(gesture: UISwipeGestureRecognizer) -> Void {
-        var needAnimate = false
-        if gesture.direction == UISwipeGestureRecognizerDirection.right {
-            if (selectedImage - 1 >= 0) {
-                previousImage = selectedImage
-                selectedImage -= 1
-                needAnimate = true
+        if gesture.direction == UISwipeGestureRecognizerDirection.down {
+            self.navigationController?.popViewController(animated: true)
+        } else if (!isZoomed) {
+            var needAnimate = false
+            
+            if gesture.direction == UISwipeGestureRecognizerDirection.right {
+                if (selectedImage - 1 >= 0) {
+                    previousImage = selectedImage
+                    selectedImage -= 1
+                    needAnimate = true
+                }
             }
-        }
-        else if gesture.direction == UISwipeGestureRecognizerDirection.left {
-            if (selectedImage + 1 < images.count) {
-                previousImage = selectedImage
-                selectedImage += 1
-                needAnimate = true
+                
+            else if gesture.direction == UISwipeGestureRecognizerDirection.left {
+                if (selectedImage + 1 < images.count) {
+                    previousImage = selectedImage
+                    selectedImage += 1
+                    needAnimate = true
+                }
             }
-        }
-        if needAnimate {
-            self.setCurrentImage(0.1)
+            
+            if needAnimate {
+                self.setCurrentImage()
+            }
         }
     }
     
     
     // Интерактивно
     @objc func onPan(_ recognizer: UIPanGestureRecognizer) {
-        switch recognizer.state {
-        case .began:
-            for view in viewContaiter.subviews {
-                if view.tag == selectedImage {
-                    curImageView = view
-                    curImageFrame = view.frame
-                }
-            }
-            xStart = recognizer.location(in: self.view).x
-            print ("xStart = \(xStart)")
-            xA = xStart
-            break
-            
-        case .changed:
-            print ("xA = \(xA)")
-            xB = recognizer.location(in: self.view).x
-            print ("xB = \(xB)")
-            let xDifference = abs(xB - xStart) * 3 / width
-            UIView.animate(withDuration: 0.05, delay: 0, options: [.curveEaseOut], animations: {
-                self.viewContaiter.frame = self.viewContaiter.frame.offsetBy(dx: (self.xB - self.xA), dy: 0)
-                self.curImageView.frame = CGRect(x: self.curImageFrame.origin.x + (self.offsetValue * xDifference), y: self.curImageFrame.origin.y + (self.offsetValue * xDifference), width: self.curImageFrame.width - (self.offsetValue * 2 * xDifference), height: self.curImageFrame.height - (self.offsetValue * 2 * xDifference))
-            },  completion: { _ in
-                self.xA = self.xB
-            })
-            break
-            
-        case .ended:
-            xB = recognizer.location(in: self.view).x
-            print ("Move difference: \(xB - xStart)")
-            let isLeft = (xB - xStart > 0)
-            let needMove = abs(xB - xStart) > (width / 4)
-            if (needMove) {
-                if isLeft {
-                    if (selectedImage - 1 >= 0) {
-                        previousImage = selectedImage
-                        selectedImage -= 1
-                    }
-                } else {
-                    if (selectedImage + 1 < images.count) {
-                        previousImage = selectedImage
-                        selectedImage += 1
+        if (!isZoomed) {
+            switch recognizer.state {
+            case .began:
+                needAnimate = true
+                for view in viewContaiter.subviews {
+                    if view.tag == selectedImage {
+                        curImageView = view
+                        curImageFrame = view.frame
                     }
                 }
+                xStart = recognizer.location(in: self.view).x
+                yStart = recognizer.location(in: self.view).y
+                print ("xStart = \(xStart)")
+                xA = xStart
+                break
+                
+            case .changed:
+                if ((recognizer.location(in: self.view).y - yStart) > (self.view.frame.height / 3)) {
+                    needAnimate = false
+                    self.navigationController?.popViewController(animated: true)
+                    recognizer.state = .ended
+                    
+                } else if (needAnimate) {
+                    xB = recognizer.location(in: self.view).x
+                    let xDifference = abs(xB - xStart) * 3 / width
+                    
+                    UIView.animate(withDuration: 0.05, delay: 0, options: [.curveEaseOut], animations: {
+                        self.viewContaiter.frame = self.viewContaiter.frame.offsetBy(dx: (self.xB - self.xA), dy: 0)
+                        self.curImageView.frame = CGRect(x: self.curImageFrame.origin.x + (self.offsetValue * xDifference), y: self.curImageFrame.origin.y + (self.offsetValue * xDifference), width: self.curImageFrame.width - (self.offsetValue * 2 * xDifference), height: self.curImageFrame.height - (self.offsetValue * 2 * xDifference))
+                    },  completion: { _ in
+                        self.xA = self.xB
+                    })
+                }
+                break
+                
+            case .ended:
+                if (needAnimate) {
+                    xB = recognizer.location(in: self.view).x
+                    print ("Move difference: \(xB - xStart)")
+                    let isLeft = (xB - xStart > 0)
+                    let needMove = abs(xB - xStart) > (width / 4)
+                    if (needMove) {
+                        if isLeft {
+                            if (selectedImage - 1 >= 0) {
+                                previousImage = selectedImage
+                                selectedImage -= 1
+                            }
+                        } else {
+                            if (selectedImage + 1 < images.count) {
+                                previousImage = selectedImage
+                                selectedImage += 1
+                            }
+                        }
+                    }
+                    setSimpleAnimation()
+                }
+                break
+                
+            default: return
             }
-            setSimpleAnimation(0.1)
-            break
-            
-        default: return
         }
     }
     
-    
-    private func setSimpleAnimation(_ duration: TimeInterval) {
-        self.title = "Фото \(selectedImage + 1)/\(images.count)"
-        UIView.animateKeyframes(withDuration: 0.35,
-                                delay: 0,
-                                options: [],
-                                animations: {
-                                    UIView.addKeyframe(withRelativeStartTime: 0,
-                                                       relativeDuration: 0.25,
-                                                       animations: {
-                                                        self.viewContaiter.frame.origin.x = -(self.width * CGFloat(self.selectedImage))
-                                    })
-                                    UIView.addKeyframe(withRelativeStartTime: 0.25,
-                                                       relativeDuration: 0.1,
-                                                       animations: {
-                                                        self.curImageView.frame = self.curImageFrame
-                                    })
-        })
+    //Дабл тап
+    @objc func onTap(_ recognizer: UIPanGestureRecognizer) {
+        isZoomed = !isZoomed
+        changeScaleForView()
     }
     
-
+    
+    
 }

@@ -49,7 +49,6 @@ class NewsViewController: UIViewController {
 
 }
 
-
 extension NewsViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

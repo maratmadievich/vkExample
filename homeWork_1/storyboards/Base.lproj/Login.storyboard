@@ -76,13 +76,18 @@
                                     <constraint firstItem="J4z-cW-Lf5" firstAttribute="leading" secondItem="qpM-IH-Wv0" secondAttribute="leading" constant="16" id="kRA-Fq-OKe"/>
                                 </constraints>
                             </view>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="laq-GP-trg" customClass="CustomIndicator" customModule="homeWork_1" customModuleProvider="target">
-                                <rect key="frame" x="157.5" y="313.5" width="60" height="60"/>
+                            <view hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="laq-GP-trg" customClass="CustomSquareIndicator" customModule="homeWork_1" customModuleProvider="target">
+                                <rect key="frame" x="137.5" y="303.5" width="100" height="80"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="60" id="8iT-77-Ol4"/>
-                                    <constraint firstAttribute="width" constant="60" id="NtP-4g-CB6"/>
+                                    <constraint firstAttribute="height" constant="80" id="8iT-77-Ol4"/>
+                                    <constraint firstAttribute="width" constant="100" id="NtP-4g-CB6"/>
                                 </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -99,7 +104,7 @@
                         <outlet property="customIndicator" destination="laq-GP-trg" id="Gql-vV-WqN"/>
                         <outlet property="labelLogin" destination="EDm-3x-L4o" id="0Wa-Tn-DHp"/>
                         <outlet property="labelPass" destination="f35-la-QG1" id="o3o-1b-Ydh"/>
-                        <segue destination="eSe-AE-oPW" kind="show" identifier="showMain" id="a0E-Ry-D3L"/>
+                        <segue destination="eSe-AE-oPW" kind="custom" identifier="showMain" customClass="CustomSegue" customModule="homeWork_1" customModuleProvider="target" id="a0E-Ry-D3L"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

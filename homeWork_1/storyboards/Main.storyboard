@@ -431,7 +431,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="mxS-8g-lQQ">
             <objects>
-                <tabBarController restorationIdentifier="main" storyboardIdentifier="main" id="5RF-ty-pYh" sceneMemberID="viewController">
+                <tabBarController restorationIdentifier="main" storyboardIdentifier="main" hidesBottomBarWhenPushed="YES" id="5RF-ty-pYh" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="ozY-c6-kg0">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -615,19 +615,26 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="WbC-fZ-njG"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Новости" id="ecM-nf-Akg"/>
+                    <navigationItem key="navigationItem" title="Новости" id="ecM-nf-Akg">
+                        <barButtonItem key="rightBarButtonItem" title="Выход" id="9Ol-SX-W9P">
+                            <connections>
+                                <segue destination="mPP-hT-wqF" kind="unwind" unwindAction="unwindToLoginWithSegue:" id="9DM-AC-phQ"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="PUX-bU-5k2" id="Omo-dG-UUR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AYt-5l-kZ4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="mPP-hT-wqF" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="1085.5999999999999" y="-1250.824587706147"/>
         </scene>
         <!--Друзья-->
         <scene sceneID="beG-Sw-cqD">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="vUC-D5-5qo" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="vUC-D5-5qo" customClass="CustomNavigationController" customModule="homeWork_1" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Друзья" image="friends" id="zKx-Kl-k31"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" translucent="NO" id="Jd0-UL-fnp">
@@ -649,7 +656,7 @@
         <!--Группы-->
         <scene sceneID="3kL-wA-x36">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="dof-y4-R9V" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="dof-y4-R9V" customClass="CustomNavigationController" customModule="homeWork_1" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Группы" image="groups" id="h54-8m-mNX"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" translucent="NO" id="WvF-Xb-sQq">
@@ -671,7 +678,7 @@
         <!--Новости-->
         <scene sceneID="k7t-so-F54">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="TLj-FA-ibR" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="TLj-FA-ibR" customClass="CustomNavigationController" customModule="homeWork_1" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Новости" image="news" id="vZz-Dw-0i9"/>
                     <toolbarItems/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>

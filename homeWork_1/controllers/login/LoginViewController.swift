@@ -41,6 +41,29 @@ class LoginViewController: UIViewController {
     }
     
     
+//    private func startAnimate() {
+//        let rect = viewAnimate.frame
+//        UIView.animateKeyframes(withDuration: 0.8, delay: 0, options: [], animations: {
+//            UIView.addKeyframe(withRelativeStartTime: 0,
+//                               relativeDuration: 0,
+//                               animations: {
+//                                self.viewAnimate.layer.anchorPoint = CGPoint(x: 1, y: 0)
+//                                self.viewAnimate.frame = rect
+//                                self.viewAnimate.transform = CGAffineTransform(rotationAngle: CGFloat(-90.0).toRadians())
+//
+//            })
+//            UIView.addKeyframe(withRelativeStartTime: 0.1, relativeDuration: 0.7, animations: {
+//                self.viewAnimate.transform = CGAffineTransform(rotationAngle: CGFloat(0.0).toRadians())
+//            })
+//        }, completion: { completition in
+////            UIView.animate(withDuration: 0.2, animations: {
+////                self.viewAnimate.transform = CGAffineTransform(rotationAngle: CGFloat(0).toRadians())
+////            })
+//            })
+//
+//    }
+    
+    
     private func tryLogin() {
         var isAuth = true
         if (labelLogin.text?.count == 0 || labelPass.text?.count == 0) {
@@ -60,12 +83,11 @@ class LoginViewController: UIViewController {
     private func prepareShowMain() {
         customIndicator.isHidden = false
         customIndicator.startAnimating()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.customIndicator.isHidden = true
             self.customIndicator.stopAnimating()
             self.performSegue(withIdentifier: "showMain", sender: nil)
         }
-       
     }
     
     
