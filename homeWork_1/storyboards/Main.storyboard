@@ -496,7 +496,7 @@
                                                             <rect key="frame" x="10" y="5" width="80" height="30"/>
                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <accessibility key="accessibilityConfiguration">
-                                                                <accessibilityTraits key="traits" none="YES"/>
+                                                                <accessibilityTraits key="traits" staticText="YES"/>
                                                                 <bool key="isElement" value="YES"/>
                                                             </accessibility>
                                                             <constraints>

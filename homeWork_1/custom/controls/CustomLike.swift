@@ -9,7 +9,7 @@
 import UIKit
 
 @IBDesignable class CustomLike: UIControl {
-//    private var buttons: [UIButton] = []
+    
     private var imageView = UIImageView()
     private var labelCount = UILabel()
     
@@ -73,4 +73,8 @@ import UIKit
         countLikes = countLikes + (isLiked ? 1:-1)
         setColor()
     }
+    
+    
+    
+    
 }

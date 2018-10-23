@@ -9,6 +9,25 @@
 import UIKit
 
 
+
+/*
+ 2.1
+ Добавить в проект синглтон для хранения данных о текущей сессии – Session
+ Добавить в него свойства:
+ token: String – для хранения токена в VK,
+ userId: Int – для хранения идентификатора пользователя ВК.
+ */
+class Session {
+    
+    static let instance = Session()
+    
+    private init(){}
+    
+    var token = ""
+    var userId = 0
+}
+
+
 struct GlobalConstants {
     
     static var titles = [String]()
