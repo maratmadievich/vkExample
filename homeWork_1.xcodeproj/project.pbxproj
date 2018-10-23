@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5DC3809695F037A6B111CF13 /* Pods_homeWork_1.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB03EE607AE3B19FD932EA7A /* Pods_homeWork_1.framework */; };
+		84105FB3217F173D00EEF673 /* VKApiViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84105FB2217F173D00EEF673 /* VKApiViewController.swift */; };
 		8424E54921743AA200188E61 /* ImagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8424E54821743AA200188E61 /* ImagesViewController.swift */; };
 		8424E54B21743AAE00188E61 /* Images.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8424E54A21743AAE00188E61 /* Images.storyboard */; };
 		8424E54D217485B400188E61 /* CustomSquareIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8424E54C217485B300188E61 /* CustomSquareIndicator.swift */; };
@@ -17,6 +18,7 @@
 		8424E55C2177401700188E61 /* CustomNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8424E55B2177401700188E61 /* CustomNavigationController.swift */; };
 		8424E55E21774C8F00188E61 /* CustomUnwindSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8424E55D21774C8F00188E61 /* CustomUnwindSegue.swift */; };
 		8424E560217845B700188E61 /* CustomInteractiveTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8424E55F217845B700188E61 /* CustomInteractiveTransition.swift */; };
+		8424E564217EFD2200188E61 /* LoginVkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8424E563217EFD2200188E61 /* LoginVkViewController.swift */; };
 		842A03E0216C860000FAFF92 /* CustomIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842A03DF216C860000FAFF92 /* CustomIndicator.swift */; };
 		842A0408216DB83F00FAFF92 /* CustomSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842A0407216DB83F00FAFF92 /* CustomSearchBar.swift */; };
 		84C120962161C5AD0044CBEB /* MyGroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C120952161C5AD0044CBEB /* MyGroupsViewController.swift */; };
@@ -44,6 +46,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		84105FB2217F173D00EEF673 /* VKApiViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKApiViewController.swift; sourceTree = "<group>"; };
 		8424E54821743AA200188E61 /* ImagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesViewController.swift; sourceTree = "<group>"; };
 		8424E54A21743AAE00188E61 /* Images.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Images.storyboard; sourceTree = "<group>"; };
 		8424E54C217485B300188E61 /* CustomSquareIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSquareIndicator.swift; sourceTree = "<group>"; };
@@ -53,6 +56,7 @@
 		8424E55B2177401700188E61 /* CustomNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationController.swift; sourceTree = "<group>"; };
 		8424E55D21774C8F00188E61 /* CustomUnwindSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomUnwindSegue.swift; sourceTree = "<group>"; };
 		8424E55F217845B700188E61 /* CustomInteractiveTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomInteractiveTransition.swift; sourceTree = "<group>"; };
+		8424E563217EFD2200188E61 /* LoginVkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVkViewController.swift; sourceTree = "<group>"; };
 		842A03DF216C860000FAFF92 /* CustomIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomIndicator.swift; sourceTree = "<group>"; };
 		842A0407216DB83F00FAFF92 /* CustomSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSearchBar.swift; sourceTree = "<group>"; };
 		84C120952161C5AD0044CBEB /* MyGroupsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyGroupsViewController.swift; sourceTree = "<group>"; };
@@ -236,6 +240,8 @@
 			isa = PBXGroup;
 			children = (
 				AA5766D82160A72F0029F786 /* LoginViewController.swift */,
+				8424E563217EFD2200188E61 /* LoginVkViewController.swift */,
+				84105FB2217F173D00EEF673 /* VKApiViewController.swift */,
 			);
 			path = login;
 			sourceTree = "<group>";
@@ -336,7 +342,6 @@
 				AA5766BD2160A5AD0029F786 /* Frameworks */,
 				AA5766BE2160A5AD0029F786 /* Resources */,
 				6705E6B2D2BF5BCA6F839DDD /* [CP] Embed Pods Frameworks */,
-				3BC81F463A91F8092FA3152C /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -396,21 +401,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		3BC81F463A91F8092FA3152C /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-homeWork_1/Pods-homeWork_1-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		6705E6B2D2BF5BCA6F839DDD /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -418,10 +408,12 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-homeWork_1/Pods-homeWork_1-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -463,6 +455,7 @@
 				AA5766D92160A72F0029F786 /* LoginViewController.swift in Sources */,
 				8424E54D217485B400188E61 /* CustomSquareIndicator.swift in Sources */,
 				AA5766FF2160F2CD0029F786 /* New.swift in Sources */,
+				8424E564217EFD2200188E61 /* LoginVkViewController.swift in Sources */,
 				8424E55321773AC200188E61 /* CustomPushAnimator.swift in Sources */,
 				8424E55E21774C8F00188E61 /* CustomUnwindSegue.swift in Sources */,
 				8424E5512176E7D900188E61 /* CustomSegue.swift in Sources */,
@@ -473,6 +466,7 @@
 				8424E560217845B700188E61 /* CustomInteractiveTransition.swift in Sources */,
 				AA5766E12160AC5B0029F786 /* FriendsViewController.swift in Sources */,
 				AA5766E62160AD8C0029F786 /* Friend.swift in Sources */,
+				84105FB3217F173D00EEF673 /* VKApiViewController.swift in Sources */,
 				AA5766F72160E9080029F786 /* CustomLike.swift in Sources */,
 				AA5766EA2160AE950029F786 /* FriendTableViewCell.swift in Sources */,
 				8424E54921743AA200188E61 /* ImagesViewController.swift in Sources */,
