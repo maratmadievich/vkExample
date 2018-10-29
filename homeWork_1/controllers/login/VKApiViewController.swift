@@ -8,6 +8,7 @@
 
 import UIKit
 import Alamofire
+import Foundation
 
 class VKApiViewController: UIViewController {
 
@@ -18,6 +19,12 @@ class VKApiViewController: UIViewController {
     
     private var type = 0
     private var isLoad = false
+    
+    private var showText = true
+    
+    var friendResponse = VkFriendResponse(friends: [VkFriend]())
+    var groupResponse = VkGroupResponse(groups: [VkGroup]())
+    var photoResponse = VkPhotoResponse(photos: [VkPhoto]())
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,6 +67,11 @@ class VKApiViewController: UIViewController {
     }
     
     
+    @IBAction func segmentChanged(_ sender: UISegmentedControl) {
+        showText = sender.selectedSegmentIndex == 0
+    }
+    
+    
     private func getNewInfo() {
         let url = "https://api.vk.com/method/"
         var method = ""
@@ -69,27 +81,12 @@ class VKApiViewController: UIViewController {
             //Друзья
             method = "friends.get"
             fullRow = "\(url)\(method)?access_token=\(session.token)&v=3.0&fields=id,nickname"//&v5.87
-            
-            Alamofire.request(fullRow, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: nil)
-                .responseJSON { response in
-                    
-                    self.parseResponse(result: response.result, method: method)
-                    self.isLoad = false
-            }
-            
             break
             
         case 1:
             //Группы
             method = "groups.get"
             fullRow = "\(url)\(method)?access_token=\(session.token)&v=3.0&extended=1&fields=id,name"//&v5.87
-            
-            Alamofire.request(fullRow, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: nil)
-                .responseJSON { response in
-                    
-                    self.parseResponse(result: response.result, method: method)
-                    self.isLoad = false
-            }
             break
             
         case 2:
@@ -97,50 +94,128 @@ class VKApiViewController: UIViewController {
             method = "groups.search"
             let searchString = "GeekBrains"
             fullRow = "\(url)\(method)?access_token=\(session.token)&v=3.0&extended=1&q=\(searchString)"//&v5.87
-            
-            Alamofire.request(fullRow, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: nil)
-                .responseJSON { response in
-                    
-                    self.parseResponse(result: response.result, method: method)
-                    self.isLoad = false
-            }
             break
             
         case 3:
             //Фото
-            method = "photos.get"
-            let searchString = "GeekBrains"
-            fullRow = "\(url)\(method)?access_token=\(session.token)&v=3.0&extended=1&album_id=saved&count=100"//&v5.87
-            
-            Alamofire.request(fullRow, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: nil)
-                .responseJSON { response in
-                    
-                    self.parseResponse(result: response.result, method: method)
-                    self.isLoad = false
-            }
+//            method = "photos.get"
+//            fullRow = "\(url)\(method)?access_token=\(session.token)&v=3.0&extended=1&album_id=saved&count=100"//&v5.87
+            method = "photos.getAll"
+            fullRow = "\(url)\(method)?access_token=\(session.token)&v=3.0&extended=1&count=100"//&v5.87
             break
             
             
         default:
             break
         }
+        
+        if (showText) {
+            Alamofire.request(fullRow, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: nil)
+                .responseJSON { response in
+                    
+                    self.showResponse(result: response.result, method: method)
+                    self.isLoad = false
+            }
+        } else {
+            Alamofire.request(fullRow, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: nil)
+                .responseData { response in
+                    guard let data = response.result.value else { return }
+                    self.parseResponse(data: data)
+                    self.isLoad = false
+            }
+        }
         type = (type + 1) % 4
         setButtonText()
-        
     }
+        
+        
     
     
     
-    private func parseResponse(result: Result<Any>, method: String) {
+    private func showResponse(result: Result<Any>, method: String) {
 //        self.view.isUserInteractionEnabled = true
         switch result {
         case .success(let value):
             self.textView.text = "\(method):\n\(value)"
+            print("\(method):\n\(value)")
             break
             
         case .failure(let error):
             self.textView.text = "\(error.localizedDescription)"
             break
-        }    }
+        }
+    }
+    
+    
+    private func parseResponse(data: Data) {
+        do {
+            switch (type + 3) % 4 {
+            case 0:
+                self.friendResponse = try JSONDecoder().decode(VkFriendResponse.self, from: data)
+//                print(friendResponse)
+                var text = ""
+                for (index, friend) in self.friendResponse.friends.enumerated() {
+                    text += "friend №\(index + 1)\n"
+                    text += "id: \(friend.uid)\n"
+                    text += "Фамилия: \(friend.last_name)\n"
+                    text += "Имя: \(friend.first_name)\n\n"
+                }
+                self.textView.text = "\(text)"
+                break
+                
+            case 1:
+                self.groupResponse = try JSONDecoder().decode(VkGroupResponse.self, from: data)
+                self.groupResponse.clean()
+                //                print(friendResponse)
+                var text = ""
+                for (index, group) in self.groupResponse.groups.enumerated() {
+                    text += "groups №\(index + 1)\n"
+                    text += "id: \(group.gid)\n"
+                    text += "Название: \(group.name)\n"
+                    text += "Фото: \(group.photo)\n\n"
+                }
+                self.textView.text = "\(text)"
+                break
+                
+            case 2:
+                self.groupResponse = try JSONDecoder().decode(VkGroupResponse.self, from: data)
+                self.groupResponse.clean()
+                //                print(friendResponse)
+                var text = ""
+                for (index, group) in self.groupResponse.groups.enumerated() {
+                    text += "groups №\(index + 1)\n"
+                    text += "id: \(group.gid)\n"
+                    text += "Название: \(group.name)\n"
+                    text += "Фото: \(group.photo)\n\n"
+                }
+                self.textView.text = "\(text)"
+                break
+                
+            case 3:
+                self.photoResponse = try JSONDecoder().decode(VkPhotoResponse.self, from: data)
+                self.photoResponse.clean()
+                var text = ""
+                for (index, photo) in self.photoResponse.photos.enumerated() {
+                    text += "photo №\(index + 1)\n"
+                    text += "id: \(photo.pid)\n"
+                    text += "Название: \(photo.text)\n"
+                    text += "Фото: \(photo.photo)\n"
+                    text += "Лайков: \(photo.likeCount())\n"
+                    text += "Репостов: \(photo.repostCount())\n\n"
+                }
+                self.textView.text = "\(text)"
+                break
+                
+            default:
+                break
+            }
+            
+        } catch {
+            print(error)
+        }
+    }
+    
     
 }
+
+

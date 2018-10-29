@@ -21,6 +21,9 @@
 		8424E564217EFD2200188E61 /* LoginVkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8424E563217EFD2200188E61 /* LoginVkViewController.swift */; };
 		842A03E0216C860000FAFF92 /* CustomIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842A03DF216C860000FAFF92 /* CustomIndicator.swift */; };
 		842A0408216DB83F00FAFF92 /* CustomSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842A0407216DB83F00FAFF92 /* CustomSearchBar.swift */; };
+		8442AB9721870B13003DDA6A /* VkPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8442AB9621870B13003DDA6A /* VkPhoto.swift */; };
+		844ACE352186BFC500565895 /* VkFriend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844ACE342186BFC500565895 /* VkFriend.swift */; };
+		844ACE372186D98900565895 /* VkGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844ACE362186D98900565895 /* VkGroup.swift */; };
 		84C120962161C5AD0044CBEB /* MyGroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C120952161C5AD0044CBEB /* MyGroupsViewController.swift */; };
 		84C120982161C5BE0044CBEB /* AllGroupsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C120972161C5BE0044CBEB /* AllGroupsController.swift */; };
 		84C1209B2161C6ED0044CBEB /* MyGroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C1209A2161C6ED0044CBEB /* MyGroupCell.swift */; };
@@ -59,6 +62,9 @@
 		8424E563217EFD2200188E61 /* LoginVkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVkViewController.swift; sourceTree = "<group>"; };
 		842A03DF216C860000FAFF92 /* CustomIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomIndicator.swift; sourceTree = "<group>"; };
 		842A0407216DB83F00FAFF92 /* CustomSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSearchBar.swift; sourceTree = "<group>"; };
+		8442AB9621870B13003DDA6A /* VkPhoto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VkPhoto.swift; sourceTree = "<group>"; };
+		844ACE342186BFC500565895 /* VkFriend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VkFriend.swift; sourceTree = "<group>"; };
+		844ACE362186D98900565895 /* VkGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VkGroup.swift; sourceTree = "<group>"; };
 		84C120952161C5AD0044CBEB /* MyGroupsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyGroupsViewController.swift; sourceTree = "<group>"; };
 		84C120972161C5BE0044CBEB /* AllGroupsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllGroupsController.swift; sourceTree = "<group>"; };
 		84C1209A2161C6ED0044CBEB /* MyGroupCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyGroupCell.swift; sourceTree = "<group>"; };
@@ -106,6 +112,16 @@
 				FB03EE607AE3B19FD932EA7A /* Pods_homeWork_1.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		841C867D2186B8100016CEC8 /* vk */ = {
+			isa = PBXGroup;
+			children = (
+				844ACE342186BFC500565895 /* VkFriend.swift */,
+				844ACE362186D98900565895 /* VkGroup.swift */,
+				8442AB9621870B13003DDA6A /* VkPhoto.swift */,
+			);
+			path = vk;
 			sourceTree = "<group>";
 		};
 		8424E54721743A8800188E61 /* images */ = {
@@ -267,6 +283,7 @@
 		AA5766E42160AD630029F786 /* classes */ = {
 			isa = PBXGroup;
 			children = (
+				841C867D2186B8100016CEC8 /* vk */,
 				AA5766E52160AD8C0029F786 /* Friend.swift */,
 				AA5766EF2160D82B0029F786 /* FriendList.swift */,
 				AA5766FE2160F2CD0029F786 /* New.swift */,
@@ -450,6 +467,8 @@
 				AA5766EE2160CB9C0029F786 /* FriendCollectionViewCell.swift in Sources */,
 				842A0408216DB83F00FAFF92 /* CustomSearchBar.swift in Sources */,
 				842A03E0216C860000FAFF92 /* CustomIndicator.swift in Sources */,
+				844ACE352186BFC500565895 /* VkFriend.swift in Sources */,
+				8442AB9721870B13003DDA6A /* VkPhoto.swift in Sources */,
 				84C120982161C5BE0044CBEB /* AllGroupsController.swift in Sources */,
 				84C1209B2161C6ED0044CBEB /* MyGroupCell.swift in Sources */,
 				AA5766D92160A72F0029F786 /* LoginViewController.swift in Sources */,
@@ -467,6 +486,7 @@
 				AA5766E12160AC5B0029F786 /* FriendsViewController.swift in Sources */,
 				AA5766E62160AD8C0029F786 /* Friend.swift in Sources */,
 				84105FB3217F173D00EEF673 /* VKApiViewController.swift in Sources */,
+				844ACE372186D98900565895 /* VkGroup.swift in Sources */,
 				AA5766F72160E9080029F786 /* CustomLike.swift in Sources */,
 				AA5766EA2160AE950029F786 /* FriendTableViewCell.swift in Sources */,
 				8424E54921743AA200188E61 /* ImagesViewController.swift in Sources */,
