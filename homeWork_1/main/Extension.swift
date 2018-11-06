@@ -36,6 +36,8 @@ struct GlobalConstants {
     
     static var groupList = [Int]()
     
+    static let vkApi = "https://api.vk.com/method/"
+    
     static func saveGroups() {
         defaults.setValue(GlobalConstants.groupList, forKey: "groups")
         defaults.synchronize()
