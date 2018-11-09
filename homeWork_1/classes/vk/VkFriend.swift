@@ -9,52 +9,25 @@
 import UIKit
 import RealmSwift
 
-//struct VkFriend: Codable {
-//
-//    let first_name: String
-//    let last_name: String
-//    let nickname: String?
-//    let online: Int
-//    let uid: Int
-//    let user_id: Int
-//}
-
-//class VkFriend: Object, Codable {
-//
-//    @objc dynamic var first_name: String
-//    @objc dynamic var last_name: String
-//    @objc dynamic var nickname: String?
-//    @objc dynamic var online: Int
-//    @objc dynamic var uid: Int
-//    @objc dynamic var user_id: Int
-//}
-
-
 class VkFriend: Object {//, Codable : Object
     
-    @objc dynamic var uid: Int = 0
-    @objc dynamic var online: Int = 0
-    @objc dynamic var user_id: Int = 0
-    @objc dynamic var nickname: String = ""
-    @objc dynamic var last_name: String = ""
-    @objc dynamic var first_name: String = ""
+    @objc dynamic var uid = 0
+    @objc dynamic var online = 0
+    @objc dynamic var user_id = 0
+    @objc dynamic var nickname = ""
+    @objc dynamic var last_name = ""
+    @objc dynamic var first_name = ""
     
-//    convenience required init() {
-//        first_name = ""
-//        last_name = ""
-//        nickname = ""
-//        online = -1
-//        uid = -1
-//        user_id = -1
-//    }
+    override static func primaryKey() -> String? {
+        return "uid"
+    }
+    
+    override static func indexedProperties() -> [String] {
+        return ["first_name", "last_name"]
+    }
+
+
+
+
+    
 }
-
-
-//struct VkFriendResponse: Codable {
-//
-//    let friends:[VkFriend]
-//
-//    enum CodingKeys: String, CodingKey {
-//        case friends = "response"
-//    }
-//}
