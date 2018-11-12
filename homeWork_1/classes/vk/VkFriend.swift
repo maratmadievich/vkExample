@@ -17,6 +17,7 @@ class VkFriend: Object {//, Codable : Object
     @objc dynamic var nickname = ""
     @objc dynamic var last_name = ""
     @objc dynamic var first_name = ""
+    @objc dynamic var photo = ""
     
     override static func primaryKey() -> String? {
         return "uid"
@@ -25,6 +26,8 @@ class VkFriend: Object {//, Codable : Object
     override static func indexedProperties() -> [String] {
         return ["first_name", "last_name"]
     }
+    
+    
 
 
 

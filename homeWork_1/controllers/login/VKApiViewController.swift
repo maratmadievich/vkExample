@@ -105,7 +105,7 @@ class VKApiViewController: UIViewController {
             isLoad = !isLoad
             showFriends()
         } else {
-            getFriends(needString: false, delegate: self)
+            AlamofireService.instance.getFriends(delegate: self)
         }
     }
     
@@ -116,7 +116,7 @@ class VKApiViewController: UIViewController {
             isLoad = !isLoad
             showGroups()
         } else {
-            getFriends(needString: false, delegate: self)
+            AlamofireService.instance.getGroups(delegate: self)
         }
     }
     
@@ -127,7 +127,7 @@ class VKApiViewController: UIViewController {
             isLoad = !isLoad
             showGroups()
         } else {
-            searchGroups(needString: false, delegate: self)
+            AlamofireService.instance.searchGroups(delegate: self)
         }
     }
     
@@ -138,7 +138,7 @@ class VKApiViewController: UIViewController {
             isLoad = !isLoad
             showPhotos()
         } else {
-            getPhotos(needString: false, delegate: self)
+            AlamofireService.instance.getPhotos(delegate: self)
         }
     }
     

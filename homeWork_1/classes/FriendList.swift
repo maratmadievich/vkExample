@@ -11,5 +11,5 @@ import Foundation
 class FriendList {
     
     var title = ""
-    var friends = [Friend]()
+    var friends = [VkFriend]()
 }

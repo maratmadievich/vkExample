@@ -12,4 +12,9 @@ class FriendCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var imageView: UIImageView!
     
+    
+    func setImage(_ byUrl: String) {
+        imageView.sd_setImage(with: URL(string: byUrl), placeholderImage: UIImage(named: "noPhoto"))
+    }
+    
 }

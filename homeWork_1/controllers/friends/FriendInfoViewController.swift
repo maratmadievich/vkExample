@@ -12,8 +12,8 @@ class FriendInfoViewController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
     
-    
-    var friend = Friend()
+    var friend = VkFriend()
+    var photos = [VkPhoto]()
     
     private var selectedImage = 0
     var bySwipe = false
@@ -37,8 +37,8 @@ class FriendInfoViewController: UIViewController {
     
     
     private func parseFriend() {
-        self.navigationItem.title = friend.lastName + " " + friend.firstName
-        self.collectionView.reloadData()
+        self.navigationItem.title = friend.last_name + " " + friend.first_name
+        AlamofireService.instance.getPhotosBy(friend.uid, delegate: self)
     }
     
 
@@ -50,8 +50,8 @@ extension FriendInfoViewController {
         if (segue.identifier == "showImages") {
             let upcoming: ImagesViewController = segue.destination as! ImagesViewController
             upcoming.selectedImage = selectedImage
-            upcoming.images = friend.images
             upcoming.bySwipe = bySwipe
+            upcoming.photos = photos
         }
         let backItem = UIBarButtonItem()
         backItem.title = ""
@@ -78,12 +78,12 @@ extension FriendInfoViewController {
 
 extension FriendInfoViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return friend.images.count
+        return photos.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FriendCollectionViewCell", for: indexPath) as! FriendCollectionViewCell
-        cell.imageView.image = friend.images[indexPath.row]
+        cell.setImage(photos[indexPath.row].photoBig)
         return cell
     }
     
@@ -92,5 +92,21 @@ extension FriendInfoViewController: UICollectionViewDelegate, UICollectionViewDa
         collectionView.deselectItem(at: indexPath, animated: true)
         showSwipeAlert()
     }
+    
+}
+
+extension FriendInfoViewController: VkApiViewControllerDelegate {
+    
+    func returnString(text: String) {}
+    
+    func returnFriends(_ friends: [VkFriend]) {}
+    
+    func returnGroups(_ groups: [VkGroup]) {}
+    
+    func returnPhotos(_ photos: [VkPhoto]) {
+        self.photos = photos
+        collectionView.reloadData()
+    }
+    
     
 }

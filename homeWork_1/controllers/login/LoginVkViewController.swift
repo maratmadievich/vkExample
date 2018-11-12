@@ -12,7 +12,8 @@ import WebKit
 class LoginVkViewController: UIViewController {
 
     @IBOutlet weak var webView: WKWebView!
-    let session = Session.instance
+    
+    var selectedHomework = -1
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,16 +67,17 @@ extension LoginVkViewController: WKNavigationDelegate {
         }
         
         if let token = params["access_token"] {
-            session.token = token
+            Session.instance.token = token
             print("access_token = \(token)")
         }
         if let userId = params["user_id"] {
-            session.userId = Int(userId) ?? -1
+            Session.instance.userId = Int(userId) ?? -1
             print("user_id = \(userId)")
         }
         
         decisionHandler(.cancel)
-        performSegue(withIdentifier: "showApi", sender: nil)
+        
+        performSegue(withIdentifier: selectedHomework == 1 ? "showHomeWork1":"showHomeWork2", sender: nil)
     }
 
 }

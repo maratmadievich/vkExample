@@ -18,7 +18,8 @@ class ImagesViewController: UIViewController {
     
     var curImageView = UIView()
     var curImageFrame = CGRect()
-    var images = [UIImage]()
+//    var images = [UIImage]()
+    var photos = [VkPhoto]()
     
     
     var selectedImage = 0
@@ -55,12 +56,12 @@ class ImagesViewController: UIViewController {
         width = self.view.frame.width
         height = self.view.frame.height
         
-        viewContaiter.frame = CGRect(x: 0, y: 0, width: width * CGFloat(images.count), height: height)
+        viewContaiter.frame = CGRect(x: 0, y: 0, width: width * CGFloat(photos.count), height: height)
         
-        for (i, image) in images.enumerated() {
+        for (i, photo) in photos.enumerated() {
             let imageView = UIImageView()
             imageView.frame = CGRect(x: width * CGFloat(i), y: 0, width: width, height: height)
-            imageView.image = image
+            imageView.sd_setImage(with: URL(string: photo.photoBig), placeholderImage: UIImage(named: "noPhoto"))
             imageView.contentMode = .scaleAspectFit
             imageView.tag = i
             viewContaiter.addSubview(imageView)
@@ -77,7 +78,7 @@ class ImagesViewController: UIViewController {
     
     
     private func setCurrentImage() {
-        self.title = "Фото \(selectedImage + 1)/\(images.count)"
+        self.title = "Фото \(selectedImage + 1)/\(photos.count)"
 
         var previousView = UIView()
         var previousFrame = CGRect()
@@ -108,7 +109,7 @@ class ImagesViewController: UIViewController {
     
     
     private func setGesture() {
-        self.title = "Фото \(selectedImage + 1)/\(images.count)"
+        self.title = "Фото \(selectedImage + 1)/\(photos.count)"
         if (bySwipe) {
             let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(handleGesture))
             swipeLeft.direction = .left
@@ -133,7 +134,7 @@ class ImagesViewController: UIViewController {
 
     
     private func setSimpleAnimation() {
-        self.title = "Фото \(selectedImage + 1)/\(images.count)"
+        self.title = "Фото \(selectedImage + 1)/\(photos.count)"
         UIView.animateKeyframes(withDuration: 0.35, delay: 0, options: [], animations: {
             
             UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.25, animations: {
@@ -181,7 +182,7 @@ extension ImagesViewController {
             }
                 
             else if gesture.direction == UISwipeGestureRecognizerDirection.left {
-                if (selectedImage + 1 < images.count) {
+                if (selectedImage + 1 < photos.count) {
                     previousImage = selectedImage
                     selectedImage += 1
                     needAnimate = true
@@ -245,7 +246,7 @@ extension ImagesViewController {
                                 selectedImage -= 1
                             }
                         } else {
-                            if (selectedImage + 1 < images.count) {
+                            if (selectedImage + 1 < photos.count) {
                                 previousImage = selectedImage
                                 selectedImage += 1
                             }

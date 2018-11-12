@@ -36,16 +36,11 @@ class CustomSearchBar: UIView {
         buttonCancel.setTitle("Отмена", for: .normal)
         buttonCancel.setTitleColor(UIColor.red, for: .normal)
         buttonCancel.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
-//        buttonCancel.backgroundColor = UIColor.white
-//        buttonCancel.cornerRadius = 5
-//        buttonCancel.borderWidth = 1
-//        buttonCancel.borderColor = UIColor.lightGray
         
         imageView.image = UIImage(named: "search")
         imageView.contentMode = .scaleAspectFit
         imageView.tintColor = UIColor.white
         
-//        textField.placeholder = "Поиск..."
         textField.textColor = UIColor.white
         textField.attributedPlaceholder = NSAttributedString(string: "Поиск...", attributes: [NSAttributedStringKey.foregroundColor: UIColor.groupTableViewBackground])
         
@@ -88,11 +83,6 @@ extension CustomSearchBar: UITextFieldDelegate {
         isSearching = true
         return true
     }
-    
-//    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-//        animateHide()
-//        return true
-//    }
     
     private func animateShow() {
         UIView.animate(withDuration: 0.5,

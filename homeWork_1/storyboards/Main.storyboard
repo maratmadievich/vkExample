@@ -394,6 +394,7 @@
                                             <constraint firstItem="oCX-cF-bAR" firstAttribute="leading" secondItem="XHI-e1-LBT" secondAttribute="leading" constant="1" id="t3W-HQ-dlU"/>
                                             <constraint firstAttribute="trailing" secondItem="oCX-cF-bAR" secondAttribute="trailing" constant="1" id="vA6-7P-MxJ"/>
                                         </constraints>
+                                        <size key="customSize" width="170" height="170"/>
                                         <connections>
                                             <outlet property="imageView" destination="cYj-TG-i41" id="eWA-Jx-Pdg"/>
                                         </connections>

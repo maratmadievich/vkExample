@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class FriendTableViewCell: UITableViewCell {
     
@@ -19,13 +20,17 @@ class FriendTableViewCell: UITableViewCell {
         // Initialization code
     }
     
-    func loadData(friend: Friend) {
-        labelName.text = friend.lastName + " " + friend.firstName
-        if let ava = friend.imageAva {
-            imageAva.image = ava
-        } else {
-            imageAva.image = UIImage.init(named: "noPhoto")
+    func loadData(friend: VkFriend) {
+        labelName.text = friend.last_name + " " + friend.first_name
+        if friend.photo.count > 0 {
+            imageAva.sd_setImage(with: URL(string: friend.photo), placeholderImage: UIImage(named: "noPhoto"))
         }
+//        if friend.
+//        if let ava = friend.imageAva {
+//            imageAva.image = ava
+//        } else {
+//            imageAva.image = UIImage.init(named: "noPhoto")
+//        }
         
     }
 

@@ -19,6 +19,7 @@ class RealmWorker {
     func saveFriends(_ friends: [VkFriend]) {
         if friends.count > 0 {
             do {
+                Realm.Configuration.defaultConfiguration = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
                 let realm = try Realm()
                 realm.beginWrite()
                 realm.add(friends, update: true)
