@@ -13,7 +13,6 @@ class New {
     var likeCount = 0
     var text = ""
     
-    
     func changeLike() {
         isLiked = !isLiked
         likeCount = likeCount + (isLiked ? 1:-1)

@@ -13,12 +13,35 @@ class LoginVkViewController: UIViewController {
 
     @IBOutlet weak var webView: WKWebView!
     
-    var selectedHomework = -1
+    @IBOutlet weak var customIndicatorView: CustomIndicator!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         loadVK()
+        setCustoms()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        showIndicator()
+    }
+    
+    
+    private func setCustoms() {
+        let navigationBarAppearance = UINavigationBar.appearance()
+        navigationBarAppearance.tintColor = UIColor.white
+        navigationBarAppearance.barTintColor = UIColor.vkColor.main
+    }
+    
+    
+    private func showIndicator() {
+        customIndicatorView.isHidden = false
+        customIndicatorView.startAnimating()
+    }
+    
+    
+    private func stopIndicator() {
+        customIndicatorView.isHidden = true
+        customIndicatorView.stopAnimating()
     }
     
     
@@ -31,7 +54,7 @@ class LoginVkViewController: UIViewController {
             URLQueryItem(name: "client_id", value: "6729130"),
             URLQueryItem(name: "display", value: "mobile"),
             URLQueryItem(name: "redirect_uri", value: "https://oauth.vk.com/blank.html"),
-            URLQueryItem(name: "scope", value: "262150"),
+            URLQueryItem(name: "scope", value: "\(262150+8192)"),
             URLQueryItem(name: "response_type", value: "token"),
             URLQueryItem(name: "v", value: "5.87")
         ]
@@ -50,6 +73,8 @@ extension LoginVkViewController: WKNavigationDelegate {
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
         
+        stopIndicator()
+        
         guard let url = navigationResponse.response.url, url.path == "/blank.html", let fragment = url.fragment  else {
             decisionHandler(.allow)
             return
@@ -65,6 +90,7 @@ extension LoginVkViewController: WKNavigationDelegate {
                 dict[key] = value
                 return dict
         }
+        print ("my_params: \(params)")
         
         if let token = params["access_token"] {
             Session.instance.token = token
@@ -77,7 +103,7 @@ extension LoginVkViewController: WKNavigationDelegate {
         
         decisionHandler(.cancel)
         
-        performSegue(withIdentifier: selectedHomework == 1 ? "showHomeWork1":"showHomeWork2", sender: nil)
+        performSegue(withIdentifier: "showMain", sender: nil)
     }
 
 }

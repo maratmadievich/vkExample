@@ -31,8 +31,6 @@ class LoginViewController: UIViewController {
         let navigationBarAppearance = UINavigationBar.appearance()
         navigationBarAppearance.tintColor = UIColor.white
         navigationBarAppearance.barTintColor = UIColor.vkColor.main
-        
-        
     }
     
     
@@ -75,7 +73,6 @@ class LoginViewController: UIViewController {
             showAlert(text: "Неверно введены Логин или Пароль")
         }
         if (isAuth) {
-            getMyGroups()
             prepareShowMain()
         }
     }
@@ -87,19 +84,6 @@ class LoginViewController: UIViewController {
             self.customIndicator.isHidden = true
             self.customIndicator.stopAnimating()
             self.performSegue(withIdentifier: "showMain", sender: nil)
-        }
-    }
-    
-    
-    private func getMyGroups() {
-        let defaults = UserDefaults.standard
-        if let groupArray = defaults.array(forKey: "groups") {
-            GlobalConstants.groupList = groupArray as! [Int]
-        } else {
-            GlobalConstants.groupList = [0, 1, 2, 3]
-            GlobalConstants.saveGroups()
-            //            defaults.setValue(GlobalConstants.groupList, forKey: "groups")
-            //            defaults.synchronize()
         }
     }
     

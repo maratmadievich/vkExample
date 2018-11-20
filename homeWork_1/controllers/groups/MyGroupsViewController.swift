@@ -10,7 +10,7 @@ import UIKit
 
 protocol GroupsProtocol {
     
-    func groupSelected(row: Int)
+    func groupSelected(gid: Int, name: String)
 }
 
 class MyGroupsViewController: UIViewController {
@@ -18,8 +18,8 @@ class MyGroupsViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
     
-    private var myGroups = [Group]()
-    private var filteredGroups = [Group]()
+    private var myGroups = [VkGroup]()
+    private var filteredGroups = [VkGroup]()
     
     var searchActive = false
     
@@ -34,23 +34,23 @@ class MyGroupsViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         self.tabBarController?.tabBar.isHidden = false
-        setMyGroups()
-        self.tableView.reloadData()
+//        setMyGroups()
+        AlamofireService.instance.getGroups(delegate: self)
     }
     
     
-    private func setMyGroups() {
-        myGroups.removeAll()
-        filteredGroups.removeAll()
-        for value in GlobalConstants.groupList {
-            let group = Group()
-            group.value = value
-            group.name = GlobalConstants.getGroupName(value: value)
-            group.type = GlobalConstants.getGroupType(value: value)
-            myGroups.append(group)
-        }
-        tableView.reloadData()
-    }
+//    private func setMyGroups() {
+//        myGroups.removeAll()
+//        filteredGroups.removeAll()
+//        for value in GlobalConstants.groupList {
+//            let group = Group()
+//            group.value = value
+//            group.name = GlobalConstants.getGroupName(value: value)
+//            group.type = GlobalConstants.getGroupType(value: value)
+//            myGroups.append(group)
+//        }
+//        tableView.reloadData()
+//    }
     
     private func setTableViewSettings() {
         tableView.delegate = self
@@ -112,12 +112,9 @@ extension MyGroupsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MyGroupCell", for: indexPath) as! MyGroupCell
-        let group = searchActive ? filteredGroups[indexPath.row]: myGroups[indexPath.row] 
-        
-        cell.labelName.text = group.name
-        cell.labelType.text = group.type
-        cell.btnGroup.tag = group.value
+        let group = searchActive ? filteredGroups[indexPath.row]: myGroups[indexPath.row]
         cell.delegate = self
+        cell.load(group)
         return cell
     }
     
@@ -125,11 +122,11 @@ extension MyGroupsViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension MyGroupsViewController: GroupsProtocol {
     
-    func groupSelected(row: Int) {
-        let alert = UIAlertController(title: GlobalConstants.getGroupName(value: GlobalConstants.groupList[row]), message: "Вы действительно хотите покинуть группу?", preferredStyle: .alert)
+    func groupSelected(gid: Int, name: String) {
+        let alert = UIAlertController(title: name, message: "Вы действительно хотите покинуть группу?", preferredStyle: .alert)
         
         alert.addAction(UIAlertAction(title: "Покинуть", style: .destructive, handler: { action in
-            self.removeRowBy(value: row)
+            AlamofireService.instance.leaveGroup(gid: gid, delegate: self)
             self.tableView.reloadData()
         }))
         alert.addAction(UIAlertAction(title: "Отмена", style: .cancel, handler: nil))
@@ -137,26 +134,53 @@ extension MyGroupsViewController: GroupsProtocol {
     }
     
     
-    func removeRowBy(value: Int) {
+    func removeRowBy(gid: Int) {
         for (index, group) in filteredGroups.enumerated() {
-            if value == group.value {
+            if gid == group.gid {
                 filteredGroups.remove(at: index)
+                if searchActive {
+                    let indexPath = IndexPath(item: index, section: 0)
+                    tableView.deleteRows(at: [indexPath], with: .middle)
+                }
                 break
             }
+            
         }
         for (index, group) in myGroups.enumerated() {
-            if value == group.value {
+            if gid == group.gid {
                 myGroups.remove(at: index)
+                if !searchActive {
+                    let indexPath = IndexPath(item: index, section: 0)
+                    tableView.deleteRows(at: [indexPath], with: .middle)
+                }
                 break
             }
         }
-        for (index, group) in GlobalConstants.groupList.enumerated() {
-            if value == group {
-                GlobalConstants.groupList.remove(at: index)
-                break
-            }
-        }
-        GlobalConstants.saveGroups()
+        
+        tableView.reloadData()
+    }
+    
+}
+
+extension MyGroupsViewController: VkApiGroupsDelegate {
+    
+    func returnJoin(_ gid: Int) {}
+    
+    func returnJoin(_ error: String) {}
+    
+    func returnLeave(_ gid: Int) {
+        removeRowBy(gid: gid)
+    }
+    
+    func returnLeave(_ error: String) {
+        print("При попытке выйти из группы произошла ошибка: \(error)")
+    }
+    
+    func returnGroups(_ groups: [VkGroup]) {
+        self.myGroups.removeAll()
+        self.myGroups = groups
+        self.myGroups.sort { $0.name < $1.name}
+        tableView.reloadData()
     }
     
 }

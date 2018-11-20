@@ -34,14 +34,7 @@ struct GlobalConstants {
 
     static let defaults = UserDefaults.standard
     
-    static var groupList = [Int]()
-    
     static let vkApi = "https://api.vk.com/method/"
-    
-    static func saveGroups() {
-        defaults.setValue(GlobalConstants.groupList, forKey: "groups")
-        defaults.synchronize()
-    }
     
     static func getGroupType(value: Int) -> String {
         let number = value % 4

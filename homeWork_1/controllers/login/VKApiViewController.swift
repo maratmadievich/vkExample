@@ -103,9 +103,9 @@ class VKApiViewController: UIViewController {
         friends = RealmWorker.instance.getMyFriends()
         if friends.count > 0 {
             isLoad = !isLoad
-            showFriends()
+//            showFriends()
         } else {
-            AlamofireService.instance.getFriends(delegate: self)
+//            AlamofireService.instance.getFriends(delegate: self)
         }
     }
     
@@ -114,9 +114,9 @@ class VKApiViewController: UIViewController {
         groups = RealmWorker.instance.getMyGroups()
         if groups.count > 0 {
             isLoad = !isLoad
-            showGroups()
+//            showGroups()
         } else {
-            AlamofireService.instance.getGroups(delegate: self)
+//            AlamofireService.instance.getGroups(delegate: self)
         }
     }
     
@@ -125,9 +125,9 @@ class VKApiViewController: UIViewController {
         groups = RealmWorker.instance.getSearchedGroups()
         if groups.count > 0 {
             isLoad = !isLoad
-            showGroups()
+//            showGroups()
         } else {
-            AlamofireService.instance.searchGroups(delegate: self)
+//            AlamofireService.instance.searchGroups(delegate: self)
         }
     }
     
@@ -136,80 +136,80 @@ class VKApiViewController: UIViewController {
         photos = RealmWorker.instance.getMyPhotos()
         if photos.count > 0 {
             isLoad = !isLoad
-            showPhotos()
+//            showPhotos()
         } else {
-            AlamofireService.instance.getPhotos(delegate: self)
+//            AlamofireService.instance.getPhotos(delegate: self)
         }
     }
     
     
 }
 
-extension VKApiViewController: VkApiViewControllerDelegate {
-    
-    func returnString(text: String) {
-        isLoad = !isLoad
-        self.textView.text = "Ответ от сервера:\n\(text)"
-    }
-    
-    func returnFriends(_ friends: [VkFriend]) {
-        isLoad = !isLoad
-        self.friends.removeAll()
-        self.friends = friends
-        showFriends()
-    }
-    
-    func returnGroups(_ groups: [VkGroup]) {
-        isLoad = !isLoad
-        self.groups.removeAll()
-        self.groups = groups
-        showGroups()
-    }
-    
-    func returnPhotos(_ photos: [VkPhoto]) {
-        isLoad = !isLoad
-        self.photos.removeAll()
-        self.photos = photos
-        showPhotos()
-    }
-    
-    
-    private func showFriends() {
-        var text = ""
-        for (index, friend) in self.friends.enumerated() {
-            text += "friend №\(index + 1)\n"
-            text += "id: \(friend.uid)\n"
-            text += "Фамилия: \(friend.last_name)\n"
-            text += "Имя: \(friend.first_name)\n\n"
-        }
-        self.textView.text = "\(text)"
-    }
-    
-    private func showGroups() {
-        var text = ""
-        for (index, group) in self.groups.enumerated() {
-            text += "groups №\(index + 1)\n"
-            text += "id: \(group.gid)\n"
-            text += "Название: \(group.name)\n"
-            text += "Фото: \(group.photo)\n\n"
-        }
-        self.textView.text = "\(text)"
-    }
-    
-    private func showPhotos() {
-        var text = ""
-        for (index, photo) in self.photos.enumerated() {
-            text += "photo №\(index + 1)\n"
-            text += "id: \(photo.pid)\n"
-            text += "Название: \(photo.text)\n"
-            text += "Фото: \(photo.photo)\n"
-            text += "Лайков: \(photo.likeCount())\n"
-            text += "Репостов: \(photo.repostCount())\n\n"
-        }
-        self.textView.text = "\(text)"
-    }
-    
-}
+//extension VKApiViewController: VkApiViewControllerDelegate {
+//
+//    func returnString(text: String) {
+//        isLoad = !isLoad
+//        self.textView.text = "Ответ от сервера:\n\(text)"
+//    }
+//
+//    func returnFriends(_ friends: [VkFriend]) {
+//        isLoad = !isLoad
+//        self.friends.removeAll()
+//        self.friends = friends
+//        showFriends()
+//    }
+//
+//    func returnGroups(_ groups: [VkGroup]) {
+//        isLoad = !isLoad
+//        self.groups.removeAll()
+//        self.groups = groups
+//        showGroups()
+//    }
+//
+//    func returnPhotos(_ photos: [VkPhoto]) {
+//        isLoad = !isLoad
+//        self.photos.removeAll()
+//        self.photos = photos
+//        showPhotos()
+//    }
+//
+//
+//    private func showFriends() {
+//        var text = ""
+//        for (index, friend) in self.friends.enumerated() {
+//            text += "friend №\(index + 1)\n"
+//            text += "id: \(friend.uid)\n"
+//            text += "Фамилия: \(friend.last_name)\n"
+//            text += "Имя: \(friend.first_name)\n\n"
+//        }
+//        self.textView.text = "\(text)"
+//    }
+//
+//    private func showGroups() {
+//        var text = ""
+//        for (index, group) in self.groups.enumerated() {
+//            text += "groups №\(index + 1)\n"
+//            text += "id: \(group.gid)\n"
+//            text += "Название: \(group.name)\n"
+//            text += "Фото: \(group.photo)\n\n"
+//        }
+//        self.textView.text = "\(text)"
+//    }
+//
+//    private func showPhotos() {
+//        var text = ""
+//        for (index, photo) in self.photos.enumerated() {
+//            text += "photo №\(index + 1)\n"
+//            text += "id: \(photo.pid)\n"
+//            text += "Название: \(photo.text)\n"
+//            text += "Фото: \(photo.photo)\n"
+//            text += "Лайков: \(photo.likeCount())\n"
+//            text += "Репостов: \(photo.repostCount())\n\n"
+//        }
+//        self.textView.text = "\(text)"
+//    }
+//
+//}
 
 
 

@@ -11,20 +11,45 @@ import UIKit
 class NewsViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
+    private let refreshControl = UIRefreshControl()
     
-    var news = [New]()
     
+    private var feeds = [VkFeed]()
+    
+    var startFrom = ""
+    private var needClearNews = true
+    private var isLoad = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        setObserver()
         setTableViewSettings()
-        generateNews()
-        tableView.reloadData()
+        prepareGetFeeds(needClearNews: true)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.tabBarController?.tabBar.isHidden = false
+        
+    }
+    
+    
+    private func setObserver() {
+        let nextFromNotification = Notification.Name("nextFromNotification")
+        NotificationCenter.default.addObserver(self, selector: #selector(updateNextFrom(notification:)), name: nextFromNotification, object: nil)
+    }
+    
+    
+    @objc func updateNextFrom(notification: Notification) {
+        if let nextFrom = notification.userInfo?["nextFrom"] as? String {
+            self.startFrom = nextFrom
+        }
+    }
+    
+    
+    private func prepareGetFeeds(needClearNews: Bool) {
+        isLoad = true
+        self.needClearNews = needClearNews
+        AlamofireService.instance.getNews(startFrom: needClearNews ? "":startFrom, delegate: self)
     }
     
     
@@ -32,19 +57,18 @@ class NewsViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView(frame: CGRect.zero)
+        
+        if #available(iOS 10.0, *) {
+            tableView.refreshControl = refreshControl
+        } else {
+            tableView.addSubview(refreshControl)
+        }
+        refreshControl.addTarget(self, action: #selector(refreshNews(_:)), for: .valueChanged)
     }
     
     
-    private func generateNews() {
-        var i = 0
-        while i < 20 {
-            let new = New()
-            new.isLiked = false
-            new.likeCount = i
-            new.text = "Новость №\(i)"
-            news.append(new)
-            i += 1
-        }
+    @objc private func refreshNews(_ sender: Any) {
+        prepareGetFeeds(needClearNews: true)
     }
 
 }
@@ -52,22 +76,63 @@ class NewsViewController: UIViewController {
 extension NewsViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return news.count
+        return feeds.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "NewsTableViewCell", for: indexPath) as! NewsTableViewCell
-        cell.loadData(new: news[indexPath.row], needPhoto: indexPath.row % 2 > 0)
-        cell.buttonLike.tag = indexPath.row
+//        cell.loadData(new: news[indexPath.row], needPhoto: indexPath.row % 2 > 0)
+//        cell.buttonLike.tag = indexPath.row
+//        cell.delegate = self
+        cell.load(feed: feeds[indexPath.row])
         cell.delegate = self
         return cell
+    }
+    
+    
+    open func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row == feeds.count - 2 && !isLoad {
+            
+            prepareGetFeeds(needClearNews: false)
+        }
     }
 
 }
 
 extension NewsViewController: NewsTableViewCellDelegate {
     func changeLike(row: Int) {
-        news[row].changeLike()
+//        news[row].changeLike()
+    }
+    
+}
+
+extension NewsViewController: VkApiFeedsDelegate {
+    
+    func returnFeeds(_ feeds: [VkFeed]) {
+        self.refreshControl.endRefreshing()
+        isLoad = false
+        if needClearNews {
+            self.feeds.removeAll()
+            tableView.reloadData()
+        }
+        self.feeds.append(contentsOf: feeds)
+        tableView.reloadData()
+//        self.addNewCells(array: feeds)
+    }
+    
+    
+    private func addNewCells(array: [VkFeed]) {
+        if (array.count > 0) {
+            tableView.beginUpdates()
+            var indexPaths = [NSIndexPath]()
+            for row in (feeds.count..<(feeds.count + array.count)) {
+                indexPaths.append(NSIndexPath(row: row, section: 0))
+            }
+            feeds.append(contentsOf: array)
+            
+            tableView.insertRows(at: indexPaths as [IndexPath], with: .automatic)
+            tableView.endUpdates()
+        }
     }
     
 }

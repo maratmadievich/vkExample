@@ -95,18 +95,11 @@ extension FriendInfoViewController: UICollectionViewDelegate, UICollectionViewDa
     
 }
 
-extension FriendInfoViewController: VkApiViewControllerDelegate {
-    
-    func returnString(text: String) {}
-    
-    func returnFriends(_ friends: [VkFriend]) {}
-    
-    func returnGroups(_ groups: [VkGroup]) {}
+extension FriendInfoViewController: VkApiPhotosDelegate {
     
     func returnPhotos(_ photos: [VkPhoto]) {
         self.photos = photos
         collectionView.reloadData()
     }
-    
     
 }

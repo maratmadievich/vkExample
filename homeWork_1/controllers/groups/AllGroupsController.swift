@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 class AllGroupsController: UIViewController {
 
@@ -15,8 +16,7 @@ class AllGroupsController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     
-    var realAllGroups = [Group]()
-    var filteredGroups = [Group]()
+    var searchedGroups = [VkGroup]()
     
     var searchActive = false
     
@@ -25,31 +25,9 @@ class AllGroupsController: UIViewController {
         super.viewDidLoad()
         
         self.tabBarController?.tabBar.isHidden = true
-        self.navigationItem.title = "Все группы"
-        setUnjoinedGroups()
+        self.navigationItem.title = "Поиск группы"
         setTableViewSettings()
         setSearchBarSettings()
-    }
-    
-    
-    private func setUnjoinedGroups() {
-        var i = 0
-        while i < 30 {
-            var needAdd = true
-            for number in GlobalConstants.groupList {
-                if i == number {
-                    needAdd = false
-                    break
-                }
-            }
-            if needAdd {
-                var group = Group()
-                group.value = i
-                group.name = GlobalConstants.getGroupName(value: i)
-                realAllGroups.append(group)
-            }
-            i += 1
-        }
     }
     
     
@@ -80,6 +58,7 @@ extension AllGroupsController: UISearchBarDelegate {
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchActive = false
+        searchedGroups.removeAll()
         tableView.reloadData()
         self.view.endEditing(true)
     }
@@ -93,9 +72,11 @@ extension AllGroupsController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText == "" {
             searchActive = false
+            searchedGroups.removeAll()
+            tableView.reloadData()
         } else {
             searchActive = true
-            filteredGroups = realAllGroups.filter{$0.name.lowercased().contains(searchText.lowercased())}
+            AlamofireService.instance.searchGroups(search: searchText, delegate: self)
         }
         
         self.tableView.reloadData()
@@ -107,17 +88,13 @@ extension AllGroupsController: UITableViewDelegate {}
 extension AllGroupsController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return searchActive ? filteredGroups.count : realAllGroups.count
+        return searchedGroups.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MyGroupCell", for: indexPath) as! MyGroupCell
+        cell.load(searchedGroups[indexPath.row])
         
-        let group = searchActive ? filteredGroups[indexPath.row] : realAllGroups[indexPath.row]
-        cell.labelName.text = group.name
-        cell.labelType.text =  GlobalConstants.getGroupType(value: group.value)
-        cell.btnGroup.tag = indexPath.row
-        cell.btnGroup.setTitle("Вступить", for: .normal)
         cell.delegate = self
         return cell
     }
@@ -125,42 +102,80 @@ extension AllGroupsController: UITableViewDataSource {
 
 extension AllGroupsController: GroupsProtocol {
     
-    func groupSelected(row: Int) {
-        let group = searchActive ? filteredGroups[row]:realAllGroups[row]
-        let alert = UIAlertController(title: group.name, message: "Вы действительно хотите вступить в эту группу?", preferredStyle: .alert)
+    func groupSelected(gid: Int, name: String) {
+        let groupIsMember = isMember(gid)
+        let alert = UIAlertController(title: name, message: groupIsMember ? "Вы действительно хотите покинуть группу?":"Вы действительно хотите вступить в эту группу?", preferredStyle: .alert)
         
-        alert.addAction(UIAlertAction(title: "Вступить", style: .default, handler: { action in
-            GlobalConstants.groupList.append(group.value)
-            GlobalConstants.saveGroups()
-            self.remove(group: group)
-            self.tableView.reloadData()
+        alert.addAction(UIAlertAction(title: groupIsMember ? "Покинуть":"Вступить", style: .default, handler: { action in
+            groupIsMember ? AlamofireService.instance.leaveGroup(gid: gid, delegate: self) :
+            AlamofireService.instance.joinGroup(gid: gid, delegate: self)
         }))
         alert.addAction(UIAlertAction(title: "Отмена", style: .cancel, handler: nil))
         self.present(alert, animated: true)
     }
     
     
-    private func remove(group: Group) {
-        var i = 0
-        while i < (realAllGroups.count) {
-            if realAllGroups[i].value == group.value {
-                realAllGroups.remove(at: i)
-                break
+    private func isMember(_ gid: Int) -> Bool {
+        for group in searchedGroups {
+            if group.gid == gid {
+                return group.is_member > 0
             }
-            i += 1
         }
-        
-        if searchActive {
-            i = 0
-            while i < (filteredGroups.count) {
-                if filteredGroups[i].value == group.value {
-                    filteredGroups.remove(at: i)
-                    break
-                }
-                i += 1
+        return false
+    }
+    
+    
+}
+
+extension AllGroupsController: VkApiGroupsDelegate {
+    
+    func returnJoin(_ gid: Int) {
+        for (index, group) in searchedGroups.enumerated() {
+            if group.gid == gid {
+                updateGroup(group: group, is_member: 1, index: index)
             }
         }
     }
+    
+    func returnJoin(_ error: String) {
+        
+        print("При попытке вступить в группу произошла ошибка: \(error)")
+    }
+    
+    
+    func returnGroups(_ groups: [VkGroup]) {
+        self.searchedGroups.removeAll()
+        self.searchedGroups = groups
+        self.searchedGroups.sort { $0.name < $1.name}
+        tableView.reloadData()
+    }
+    
+    func returnLeave(_ gid: Int) {
+        for (index, group) in searchedGroups.enumerated() {
+            if group.gid == gid {
+                updateGroup(group: group, is_member: 0, index: index)
+            }
+        }
+    }
+    
+    
+    private func updateGroup(group: VkGroup, is_member: Int, index: Int) {
+        do {
+            let realm = try Realm()
+            realm.beginWrite()
+            group.is_member = is_member
+            realm.add(group, update: true)
+            try realm.commitWrite()
+            searchedGroups.remove(at: index)
+            searchedGroups.insert(group, at: index)
+            let indexPath = IndexPath(item: index, section: 0)
+            tableView.reloadRows(at: [indexPath], with: is_member > 0 ?.right : .left)
+        } catch {
+            print("Realm saveFriends error: \(error)")
+        }
+    }
+    
+    func returnLeave(_ error: String) {}
     
 }
 

@@ -48,11 +48,17 @@ class VkResponseParser {
             print ("parseFriends - error: \(error.localizedDescription)")
             break
         }
-        RealmWorker.instance.saveFriends(friends)
+        
+        if friends.count > 0 {
+            RealmWorker.instance.saveFriends(friends)
+        } else {
+            friends = RealmWorker.instance.getMyFriends()
+        }
+        
         return friends
     }
     
-    func parseGroups(result: Result<Any>) -> [VkGroup] {
+    func parseGroups(result: Result<Any>, isSearched: Bool) -> [VkGroup] {
         var groups = [VkGroup]()
         
         switch result {
@@ -85,8 +91,31 @@ class VkResponseParser {
             print ("parseGroups - error: \(error.localizedDescription)")
             break
         }
-        RealmWorker.instance.saveGroups(groups)
+        if !isSearched {
+            if groups.count > 0 {
+                RealmWorker.instance.saveGroups(groups)
+            } else {
+                groups = RealmWorker.instance.getMyGroups()
+            }
+        }
         return groups
+    }
+    
+    func parseJoinLeaveGroup(result: Result<Any>) -> Bool {
+        
+        switch result {
+        case .success(let value):
+            let json = JSON(value)
+            if let response = json["response"].int {
+                return response == 1
+            }
+            return false
+            
+        case .failure(let error):
+            print ("parseJoinLeaveGroup - error: \(error.localizedDescription)")
+            break
+        }
+        return false
     }
     
     func parsePhotos(result: Result<Any>) -> [VkPhoto] {
@@ -131,6 +160,85 @@ class VkResponseParser {
         }
 //        RealmWorker.instance.savePhotos(photos)
         return photos
+    }
+
+    
+    func parseNews(result: Result<Any>) -> [VkFeed] {
+        let nextFromNotification = Notification.Name("nextFromNotification")
+        var feeds = [VkFeed]()
+        var feedGroups = [VkGroup]()
+        switch result {
+        case .success(let value):
+            let json = JSON(value)
+            print ("parseNews: \(json)")
+            if let nextFrom = json["response"]["next_from"].string {
+                NotificationCenter.default.post(name: nextFromNotification, object: nil, userInfo: ["nextFrom": nextFrom])
+            }
+            if let groups = json["response"]["groups"].array {
+                for group in groups {
+                    let feedGroup = VkGroup()
+                    feedGroup.gid = group["id"].intValue
+                    feedGroup.name = group["name"].stringValue
+                    feedGroup.photo = group["photo_200"].stringValue
+                    feedGroups.append(feedGroup)
+                }
+            }
+            
+            if let items = json["response"]["items"].array {
+                for item in items {
+                    let feed = VkFeed()
+                    feed.feedId = item["post_id"].intValue
+                    feed.feedDate = item["date"].intValue
+                    feed.feedText = item["text"].stringValue
+                    
+                    feed.countLikes = item["likes"]["count"].int ?? 0
+                    feed.countViews = item["views"]["count"].int ?? 0
+                    feed.countReposts = item["reposts"]["count"].int ?? 0
+                    feed.countComments = item["comments"]["count"].int ?? 0
+                    feed.isLiked = item["likes"]["user_likes"].intValue > 0
+                    
+                    var groupId = item["source_id"].intValue
+                    if groupId < 0 {
+                        groupId = -groupId
+                        for group in feedGroups {
+                            if group.gid == groupId {
+                                feed.groupId = group.gid
+                                feed.groupName = group.name
+                                feed.groupUrl = group.photo
+                                break
+                            }
+                        }
+                    }
+                    if let attachments = item["attachments"].array {
+                        for attachment in attachments {
+                            if attachment["type"].stringValue == "photo" {
+                                if let sizes = attachment["photo"]["sizes"].array {
+                                    for size in sizes {
+                                        if size["type"].stringValue == "x" {
+                                            feed.haveImage = true
+                                            feed.imageUrl = size["url"].stringValue
+                                            feed.imageWidth = size["width"].intValue
+                                            feed.imageHeight = size["height"].intValue
+                                            break
+                                        }
+                                    }
+                                    
+                                }
+                            }
+                            break
+                        }
+                    }
+                    feeds.append(feed)
+                }
+            }
+
+            break
+            
+        case .failure(let error):
+            print ("parsePhotos - error: \(error.localizedDescription)")
+            break
+        }
+        return feeds
     }
     
 }

@@ -25,12 +25,12 @@
 		8442ABA9219132B7003DDA6A /* AlamofireService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8442ABA8219132B7003DDA6A /* AlamofireService.swift */; };
 		8442ABAB2192EC0E003DDA6A /* VkResponseParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8442ABAA2192EC0D003DDA6A /* VkResponseParser.swift */; };
 		8442ABB021957D2D003DDA6A /* RealmWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8442ABAF21957D2D003DDA6A /* RealmWorker.swift */; };
-		8442ABB221998A45003DDA6A /* CrossRoadController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8442ABB121998A45003DDA6A /* CrossRoadController.swift */; };
 		844ACE352186BFC500565895 /* VkFriend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844ACE342186BFC500565895 /* VkFriend.swift */; };
 		844ACE372186D98900565895 /* VkGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844ACE362186D98900565895 /* VkGroup.swift */; };
 		84C120962161C5AD0044CBEB /* MyGroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C120952161C5AD0044CBEB /* MyGroupsViewController.swift */; };
 		84C120982161C5BE0044CBEB /* AllGroupsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C120972161C5BE0044CBEB /* AllGroupsController.swift */; };
 		84C1209B2161C6ED0044CBEB /* MyGroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C1209A2161C6ED0044CBEB /* MyGroupCell.swift */; };
+		84EC564A21A2A2DB00C8542C /* VkFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EC564921A2A2DA00C8542C /* VkFeed.swift */; };
 		AA5766C42160A5AD0029F786 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA5766C32160A5AD0029F786 /* AppDelegate.swift */; };
 		AA5766C92160A5AD0029F786 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA5766C72160A5AD0029F786 /* Login.storyboard */; };
 		AA5766CB2160A5AF0029F786 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA5766CA2160A5AF0029F786 /* Assets.xcassets */; };
@@ -70,12 +70,12 @@
 		8442ABA8219132B7003DDA6A /* AlamofireService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlamofireService.swift; sourceTree = "<group>"; };
 		8442ABAA2192EC0D003DDA6A /* VkResponseParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VkResponseParser.swift; sourceTree = "<group>"; };
 		8442ABAF21957D2D003DDA6A /* RealmWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmWorker.swift; sourceTree = "<group>"; };
-		8442ABB121998A45003DDA6A /* CrossRoadController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrossRoadController.swift; sourceTree = "<group>"; };
 		844ACE342186BFC500565895 /* VkFriend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VkFriend.swift; sourceTree = "<group>"; };
 		844ACE362186D98900565895 /* VkGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VkGroup.swift; sourceTree = "<group>"; };
 		84C120952161C5AD0044CBEB /* MyGroupsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyGroupsViewController.swift; sourceTree = "<group>"; };
 		84C120972161C5BE0044CBEB /* AllGroupsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllGroupsController.swift; sourceTree = "<group>"; };
 		84C1209A2161C6ED0044CBEB /* MyGroupCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyGroupCell.swift; sourceTree = "<group>"; };
+		84EC564921A2A2DA00C8542C /* VkFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VkFeed.swift; sourceTree = "<group>"; };
 		AA5766C02160A5AD0029F786 /* homeWork_1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = homeWork_1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA5766C32160A5AD0029F786 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AA5766C82160A5AD0029F786 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Login.storyboard; sourceTree = "<group>"; };
@@ -128,6 +128,7 @@
 				844ACE342186BFC500565895 /* VkFriend.swift */,
 				844ACE362186D98900565895 /* VkGroup.swift */,
 				8442AB9621870B13003DDA6A /* VkPhoto.swift */,
+				84EC564921A2A2DA00C8542C /* VkFeed.swift */,
 			);
 			path = vk;
 			sourceTree = "<group>";
@@ -266,7 +267,6 @@
 		AA5766DA2160A9DE0029F786 /* login */ = {
 			isa = PBXGroup;
 			children = (
-				8442ABB121998A45003DDA6A /* CrossRoadController.swift */,
 				AA5766D82160A72F0029F786 /* LoginViewController.swift */,
 				8424E563217EFD2200188E61 /* LoginVkViewController.swift */,
 				84105FB2217F173D00EEF673 /* VKApiViewController.swift */,
@@ -500,6 +500,7 @@
 				8424E55E21774C8F00188E61 /* CustomUnwindSegue.swift in Sources */,
 				8424E5512176E7D900188E61 /* CustomSegue.swift in Sources */,
 				AA5766F02160D82B0029F786 /* FriendList.swift in Sources */,
+				84EC564A21A2A2DB00C8542C /* VkFeed.swift in Sources */,
 				8424E55C2177401700188E61 /* CustomNavigationController.swift in Sources */,
 				AA5766FA2160EFE50029F786 /* NewsTableViewCell.swift in Sources */,
 				8442ABB021957D2D003DDA6A /* RealmWorker.swift in Sources */,
@@ -510,7 +511,6 @@
 				84105FB3217F173D00EEF673 /* VKApiViewController.swift in Sources */,
 				844ACE372186D98900565895 /* VkGroup.swift in Sources */,
 				AA5766F72160E9080029F786 /* CustomLike.swift in Sources */,
-				8442ABB221998A45003DDA6A /* CrossRoadController.swift in Sources */,
 				AA5766EA2160AE950029F786 /* FriendTableViewCell.swift in Sources */,
 				8424E54921743AA200188E61 /* ImagesViewController.swift in Sources */,
 				AA5766C42160A5AD0029F786 /* AppDelegate.swift in Sources */,

@@ -187,9 +187,7 @@ extension FriendsViewController: FriendsViewControllerDelegate {
     
 }
 
-extension FriendsViewController: VkApiViewControllerDelegate {
-    
-    func returnString(text: String) {}
+extension FriendsViewController: VkApiFriendsDelegate {
     
     func returnFriends(_ friends: [VkFriend]) {
         self.friends = friends
@@ -198,13 +196,6 @@ extension FriendsViewController: VkApiViewControllerDelegate {
         setGroupedFriend()
         tableView.reloadData()
     }
-    
-    func returnGroups(_ groups: [VkGroup]) {}
-    
-    func returnPhotos(_ photos: [VkPhoto]) {}
-    
-    
-    
     
 }
 

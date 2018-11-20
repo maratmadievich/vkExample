@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 protocol NewsTableViewCellDelegate {
     func changeLike(row: Int)
@@ -14,7 +15,14 @@ protocol NewsTableViewCellDelegate {
 
 class NewsTableViewCell: UITableViewCell {
     
-    @IBOutlet weak var labelNews: UILabel!
+    @IBOutlet weak var imageViewGroup: UIImageView!
+    @IBOutlet weak var labelFeedGroupHeader: UILabel!
+    @IBOutlet weak var labelDate: UILabel!
+    
+    @IBOutlet weak var labelText: UILabel!
+    
+    
+    
     @IBOutlet weak var buttonLike: CustomLike!
     
     @IBOutlet weak var imageComment: UIImageView!
@@ -22,59 +30,79 @@ class NewsTableViewCell: UITableViewCell {
     @IBOutlet weak var imageNew: UIImageView!
     @IBOutlet weak var labelCountViews: UILabel!
     
+    @IBOutlet weak var imageViewLike: UIImageView!
+    @IBOutlet weak var labelLike: UILabel!
     
+    @IBOutlet weak var imageViewComment: UIImageView!
+    @IBOutlet weak var labelComment: UILabel!
+    
+    @IBOutlet weak var imageViewShare: UIImageView!
+    @IBOutlet weak var labelShare: UILabel!
+    
+    @IBOutlet weak var imageViewViews: UIImageView!
+    @IBOutlet weak var labelViews: UILabel!
     
     
     @IBOutlet weak var imageHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var imageAspectConstraint: NSLayoutConstraint!
     var delegate: NewsTableViewCellDelegate?
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        imageViewLike.tintColor = UIColor.lightGray
+        imageViewShare.tintColor = UIColor.lightGray
+        imageViewComment.tintColor = UIColor.lightGray
+        imageViewViews.tintColor = UIColor.lightGray
     }
     
     
     override func prepareForReuse() {
-        labelNews.text = ""
-//        imageNew.image = UIImage(named: "newImage")
-        
-        imageAspectConstraint.priority = UILayoutPriority(rawValue: 1)
-        imageHeightConstraint.priority = UILayoutPriority(rawValue: 1)
-        setTaps()
+        labelText.text = ""
+        labelFeedGroupHeader.text = ""
+        imageHeightConstraint.constant = 0
+        self.layoutIfNeeded()
+//        setTaps()
     }
     
+    
+    func load(feed: VkFeed) {
+        labelFeedGroupHeader.text = feed.groupName
+        labelDate.text = getFeedDate(Double(feed.feedDate))
+        labelText.text = feed.feedText
+        
+        imageViewGroup.sd_setImage(with: URL(string: feed.groupUrl), placeholderImage: UIImage(named: "noPhoto"))
+        
+        if feed.haveImage {
+            imageHeightConstraint.constant = self.frame.width * CGFloat(feed.imageHeight) / CGFloat(feed.imageWidth)
+            
+            imageNew.sd_setImage(with: URL(string: feed.imageUrl), placeholderImage: UIImage(named: "noPhoto"))
+        } else {
+            imageHeightConstraint.constant = 0
+        }
+        self.layoutIfNeeded()
+        
+        labelLike.text = getStringFrom(count: feed.countLikes)
+        labelViews.text = getStringFrom(count: feed.countViews)
+        labelShare.text = getStringFrom(count: feed.countReposts)
+        labelComment.text = getStringFrom(count: feed.countComments)
+        
+        
+        
+//        buttonLike.setupView(isLiked: feed.isLiked, countLikes: feed.countLikes)
+//        imageComment.tintColor = UIColor.lightGray
+//        labelCountViews.text = getStringFrom(count: feed.countViews)
+        
+    }
     
     func loadData(new: New, needPhoto: Bool) {
-        labelNews.text = new.text
+//        labelNews.text = new.text
         buttonLike.setupView(isLiked: new.isLiked, countLikes: new.likeCount)
        
-        if (needPhoto) {
-            imageAspectConstraint.priority = UILayoutPriority(rawValue: 999)
-            imageHeightConstraint.priority = UILayoutPriority(rawValue: 1)
-        } else {
-            imageAspectConstraint.priority = UILayoutPriority(rawValue: 1)
-            imageHeightConstraint.priority = UILayoutPriority(rawValue: 999)
-        }
-        imageComment.tintColor = UIColor.lightGray
-        setViews()
+        
         setTaps()
     }
     
     
-    private func setViews() {
-        var text = ""
-        let viewCount = Int.random(in: 0..<2000000)
-        print ("Mu random is : \(viewCount)")
-        if viewCount > 1000000 {
-            text = String(format: "%.2f М ", Float(viewCount)/1000000)
-        } else if viewCount > 1000 {
-            text = String(format: "%.2f К ", Float(viewCount)/1000)
-        } else {
-           text = "\(viewCount)"
-        }
-        labelCountViews.text = text
-    }
+    
     
     private func setTaps() {
         let imageTap = UITapGestureRecognizer(target: self, action: #selector(self.imageTapped(_:)))
@@ -127,8 +155,46 @@ class NewsTableViewCell: UITableViewCell {
                             self.imageNew.bounds = CGRect(x: 0, y: originY, width: imageWidth, height: imageWidth)
             })
         })
+    }
+    
+    
+    private func getStringFrom(count: Int) -> String {
+        if count > 1000000 {
+            return String(format: "%.2f М ", Float(count)/1000000)
+        } else if count > 1000 {
+            return String(format: "%.2f К ", Float(count)/1000)
+        } else if count > 0 {
+            return "\(count)"
+        } else {
+            return ""
+        }
+    }
+    
+    
+    private func getFeedDate(_ publicDate: Double) -> String {
         
+        let currentDate = Date().timeIntervalSince1970
         
+        let diffInSeconds = currentDate - publicDate
+        let diffInMinutes = diffInSeconds/60
+        let diffInHours = diffInMinutes/60
+        let diffInDays = diffInMinutes/24
+        
+        if (diffInDays < 1
+            && diffInHours < 1
+            && diffInMinutes < 1
+            && diffInSeconds < 60) {
+            return "\(Int(diffInSeconds)) секунд назад"
+        } else if (diffInDays < 1
+                && diffInHours < 1
+                && diffInMinutes < 60) {
+            return "\(Int(diffInMinutes)) минут назад"
+        } else if (diffInDays < 1
+            && diffInHours < 24) {
+            return "\(Int(diffInHours)) часов назад"
+        } else {
+            return "\(Int(diffInDays)) дней назад"
+        }
     }
     
 

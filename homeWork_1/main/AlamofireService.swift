@@ -10,13 +10,30 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 
-protocol VkApiViewControllerDelegate {
+protocol VkApiFriendsDelegate {
     
-    func returnString(text: String)
     func returnFriends(_ friends: [VkFriend])
+}
+
+protocol VkApiGroupsDelegate {
+    
     func returnGroups(_ groups: [VkGroup])
+    func returnLeave(_ gid: Int)
+    func returnLeave(_ error: String)
+    func returnJoin(_ gid: Int)
+    func returnJoin(_ error: String)
+}
+
+protocol VkApiPhotosDelegate {
+    
     func returnPhotos(_ photos: [VkPhoto])
 }
+
+protocol VkApiFeedsDelegate {
+    
+    func returnFeeds(_ feeds: [VkFeed])
+}
+
 
 class AlamofireService {
     
@@ -25,7 +42,7 @@ class AlamofireService {
 
     
     // //Друзья
-    func getFriends(delegate: VkApiViewControllerDelegate) {
+    func getFriends(delegate: VkApiFriendsDelegate) {
         let method = "friends.get"
         let fullRow = "\(GlobalConstants.vkApi)\(method)"
         let params: Parameters = [
@@ -45,7 +62,7 @@ class AlamofireService {
     
     
     // //Группы
-    func getGroups(delegate: VkApiViewControllerDelegate) {
+    func getGroups(delegate: VkApiGroupsDelegate) {
         let method = "groups.get"
         let fullRow = "\(GlobalConstants.vkApi)\(method)"//&v5.87
         let params: Parameters = [
@@ -60,19 +77,58 @@ class AlamofireService {
             .responseJSON { response in
                 delegate.returnGroups(
                     VkResponseParser.instance.parseGroups(
-                        result: response.result))
+                        result: response.result, isSearched: false))
+        }
+    }
+    
+    
+    func leaveGroup(gid: Int, delegate: VkApiGroupsDelegate) {
+        let method = "groups.leave"
+        let fullRow = "\(GlobalConstants.vkApi)\(method)"//&v5.87
+        let params: Parameters = [
+            "access_token": Session.instance.token,
+            "group_id": "\(gid)",
+            "v": "3.0"
+        ]
+        
+        Alamofire.request(fullRow, method: .get, parameters: params)
+            .responseJSON { response in
+                if VkResponseParser.instance.parseJoinLeaveGroup(result: response.result) {
+                    delegate.returnLeave(gid)
+                } else {
+                    delegate.returnLeave("В ходе запроса произошла ошибка")
+                }
+        }
+    }
+    
+    
+    func joinGroup(gid: Int, delegate: VkApiGroupsDelegate) {
+        let method = "groups.join"
+        let fullRow = "\(GlobalConstants.vkApi)\(method)"//&v5.87
+        let params: Parameters = [
+            "access_token": Session.instance.token,
+            "group_id": "\(gid)",
+            "v": "3.0"
+        ]
+        
+        Alamofire.request(fullRow, method: .get, parameters: params)
+            .responseJSON { response in
+                if VkResponseParser.instance.parseJoinLeaveGroup(result: response.result) {
+                    delegate.returnJoin(gid)
+                } else {
+                    delegate.returnJoin("В ходе запроса произошла ошибка")
+                }
         }
     }
     
     
     // //Группы Поиск
-    func searchGroups(delegate: VkApiViewControllerDelegate) {
+    func searchGroups(search: String, delegate: VkApiGroupsDelegate) {
         let method = "groups.search"
-        let searchString = "GeekBrains"
         let fullRow = "\(GlobalConstants.vkApi)\(method)"//&v5.87
         let params: Parameters = [
             "access_token": Session.instance.token,
-            "q": searchString,
+            "q": search,
             "extended": "1",
             "v": "3.0"
         ]
@@ -80,15 +136,14 @@ class AlamofireService {
             .responseJSON { response in
                 delegate.returnGroups(
                     VkResponseParser.instance.parseGroups(
-                        result: response.result))
+                        result: response.result, isSearched: true))
         }
     }
     
     
-    func getPhotos(delegate: VkApiViewControllerDelegate) {
-        let session = Session.instance
+    func getPhotos(delegate: VkApiPhotosDelegate) {
         let method = "photos.getAll"
-        let fullRow = "\(GlobalConstants.vkApi)\(method)?access_token=\(session.token)&v=3.0&extended=1&count=100"//&v5.87
+        let fullRow = "\(GlobalConstants.vkApi)\(method)"//&v5.87
         
         let params: Parameters = [
             "access_token": Session.instance.token,
@@ -105,10 +160,9 @@ class AlamofireService {
         }
     }
     
-    func getPhotosBy(_ id: Int, delegate: VkApiViewControllerDelegate) {
-        let session = Session.instance
+    func getPhotosBy(_ id: Int, delegate: VkApiPhotosDelegate) {
         let method = "photos.getAll"
-        let fullRow = "\(GlobalConstants.vkApi)\(method)?access_token=\(session.token)&v=3.0&extended=1&count=100"//&v5.87
+        let fullRow = "\(GlobalConstants.vkApi)\(method)"//&v5.87
         
         let params: Parameters = [
             "access_token": Session.instance.token,
@@ -127,6 +181,24 @@ class AlamofireService {
         }
     }
     
+    
+    func getNews(startFrom: String, delegate: VkApiFeedsDelegate) {
+        let method = "newsfeed.get"
+        let fullRow = "\(GlobalConstants.vkApi)\(method)"
+        let params: Parameters = [
+            "access_token": Session.instance.token,
+            "filters": "post",
+            "v": "5.87",
+            "count":"20",
+            "start_from":"\(startFrom)"
+//            "end_time":"\(1)"
+        ]
+        
+        Alamofire.request(fullRow, method: .get, parameters: params)
+            .responseJSON { response in
+                delegate.returnFeeds(VkResponseParser.instance.parseNews(result: response.result))
+        }
+    }
     
 }
 

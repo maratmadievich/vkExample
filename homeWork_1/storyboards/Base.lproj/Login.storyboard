@@ -1,65 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="egO-nq-EwJ">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="09C-iV-wlx">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Cross Road Controller-->
-        <scene sceneID="QWw-SG-WBj">
-            <objects>
-                <viewController id="egO-nq-EwJ" customClass="CrossRoadController" customModule="homeWork_1" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="CrM-35-dbg">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="urO-qE-8qT">
-                                <rect key="frame" x="0.0" y="278.5" width="375" height="130"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="922-UL-e68">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="60" id="7l5-fw-V19"/>
-                                        </constraints>
-                                        <state key="normal" title="Домашнее задание ч.1"/>
-                                        <connections>
-                                            <action selector="buttonHomeWork1Clicked:" destination="egO-nq-EwJ" eventType="touchUpInside" id="jJl-bc-b9c"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ifg-NU-ENg">
-                                        <rect key="frame" x="0.0" y="70" width="375" height="60"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="60" id="h9S-nc-29U"/>
-                                        </constraints>
-                                        <state key="normal" title="Домашнее задание ч.2"/>
-                                        <connections>
-                                            <action selector="buttonHomeWork2Clicked:" destination="egO-nq-EwJ" eventType="touchUpInside" id="feJ-0u-WhL"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                            </stackView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="urO-qE-8qT" firstAttribute="leading" secondItem="CrM-35-dbg" secondAttribute="leading" id="Ak5-I7-KLy"/>
-                            <constraint firstItem="yZr-sW-VHN" firstAttribute="trailing" secondItem="urO-qE-8qT" secondAttribute="trailing" id="a4j-4i-obr"/>
-                            <constraint firstItem="urO-qE-8qT" firstAttribute="centerY" secondItem="yZr-sW-VHN" secondAttribute="centerY" id="qTx-eb-7Te"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="yZr-sW-VHN"/>
-                    </view>
-                    <connections>
-                        <segue destination="09C-iV-wlx" kind="show" identifier="showVkAuth" id="euH-zu-scF"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="PPE-UB-Yii" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-861.60000000000002" y="491.60419790104953"/>
-        </scene>
         <!--Login View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
@@ -192,6 +142,19 @@
                                     <wkPreferences key="preferences"/>
                                 </wkWebViewConfiguration>
                             </wkWebView>
+                            <view hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jEC-c0-b24" customClass="CustomSquareIndicator" customModule="homeWork_1" customModuleProvider="target">
+                                <rect key="frame" x="137.5" y="303.5" width="100" height="80"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="80" id="ffV-aJ-oGw"/>
+                                    <constraint firstAttribute="width" constant="100" id="min-1j-YUD"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -199,64 +162,21 @@
                             <constraint firstItem="aKV-Vi-oJw" firstAttribute="leading" secondItem="4Jz-Yc-Fnr" secondAttribute="leading" id="FGe-UW-Vmj"/>
                             <constraint firstItem="4Jz-Yc-Fnr" firstAttribute="trailing" secondItem="aKV-Vi-oJw" secondAttribute="trailing" id="G2a-ad-TNr"/>
                             <constraint firstItem="4Jz-Yc-Fnr" firstAttribute="bottom" secondItem="aKV-Vi-oJw" secondAttribute="bottom" id="IBF-SU-TG3"/>
+                            <constraint firstItem="jEC-c0-b24" firstAttribute="centerY" secondItem="4Jz-Yc-Fnr" secondAttribute="centerY" id="jzX-43-2cY"/>
+                            <constraint firstItem="jEC-c0-b24" firstAttribute="centerX" secondItem="4Jz-Yc-Fnr" secondAttribute="centerX" id="xrH-iH-jxO"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="4Jz-Yc-Fnr"/>
                     </view>
                     <connections>
+                        <outlet property="customIndicatorView" destination="jEC-c0-b24" id="ZwO-UC-OJl"/>
                         <outlet property="webView" destination="aKV-Vi-oJw" id="fc3-8e-BEi"/>
-                        <segue destination="Yay-S1-sG7" kind="show" identifier="showHomeWork2" id="1S8-2y-ZQ3"/>
                         <segue destination="BYZ-38-t0r" kind="show" identifier="showHomeWork1" id="oBB-UH-ckQ"/>
+                        <segue destination="eSe-AE-oPW" kind="show" identifier="showMain" id="4tB-7w-3yq"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o86-6C-Nwq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="39" y="492"/>
-        </scene>
-        <!--Api View Controller-->
-        <scene sceneID="jRF-iN-E1q">
-            <objects>
-                <viewController id="Yay-S1-sG7" customClass="VKApiViewController" customModule="homeWork_1" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="OXb-Bq-cFb">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="XCt-Ck-i2y">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="587"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kGv-aB-rtW">
-                                <rect key="frame" x="0.0" y="607" width="375" height="60"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="60" id="FEe-yA-Bh3"/>
-                                </constraints>
-                                <state key="normal" title="Вывести"/>
-                                <connections>
-                                    <action selector="buttonShowClicked:" destination="Yay-S1-sG7" eventType="touchUpInside" id="ugo-Jl-Sh4"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="kGv-aB-rtW" firstAttribute="top" secondItem="XCt-Ck-i2y" secondAttribute="bottom" id="4Rp-NK-EAR"/>
-                            <constraint firstItem="XCt-Ck-i2y" firstAttribute="top" secondItem="L5X-z9-bg1" secondAttribute="top" id="Dw7-oI-OpU"/>
-                            <constraint firstItem="kGv-aB-rtW" firstAttribute="leading" secondItem="L5X-z9-bg1" secondAttribute="leading" id="Kjj-cG-UP1"/>
-                            <constraint firstItem="XCt-Ck-i2y" firstAttribute="leading" secondItem="L5X-z9-bg1" secondAttribute="leading" id="MQN-jK-WeL"/>
-                            <constraint firstItem="L5X-z9-bg1" firstAttribute="trailing" secondItem="XCt-Ck-i2y" secondAttribute="trailing" id="nAg-vn-1wa"/>
-                            <constraint firstItem="L5X-z9-bg1" firstAttribute="trailing" secondItem="kGv-aB-rtW" secondAttribute="trailing" id="rzT-4r-dTu"/>
-                            <constraint firstItem="L5X-z9-bg1" firstAttribute="bottom" secondItem="kGv-aB-rtW" secondAttribute="bottom" id="tbR-qu-xjp"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="L5X-z9-bg1"/>
-                    </view>
-                    <connections>
-                        <outlet property="buttonShow" destination="kGv-aB-rtW" id="ULr-so-fMX"/>
-                        <outlet property="textView" destination="XCt-Ck-i2y" id="x2z-vm-y2r"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="AlW-KU-wZ7" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1063" y="904"/>
+            <point key="canvasLocation" x="223" y="117"/>
         </scene>
         <!--main-->
         <scene sceneID="3m4-ts-T90">
@@ -264,7 +184,10 @@
                 <viewControllerPlaceholder storyboardName="Main" referencedIdentifier="main" id="eSe-AE-oPW" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0cQ-Km-avb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1973" y="118"/>
+            <point key="canvasLocation" x="1878" y="117"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="a0E-Ry-D3L"/>
+    </inferredMetricsTieBreakers>
 </document>

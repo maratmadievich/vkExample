@@ -29,7 +29,7 @@ import UIKit
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        stackView.frame = bounds
+//        stackView.frame = bounds
     }
     
     
