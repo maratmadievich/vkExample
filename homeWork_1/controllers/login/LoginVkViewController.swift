@@ -19,11 +19,14 @@ class LoginVkViewController: UIViewController {
         super.viewDidLoad()
         loadVK()
         setCustoms()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.showIndicator()
+        }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        showIndicator()
-    }
+//    override func viewWillAppear(_ animated: Bool) {
+//
+//    }
     
     
     private func setCustoms() {

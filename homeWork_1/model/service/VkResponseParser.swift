@@ -50,9 +50,9 @@ class VkResponseParser {
         }
         
         if friends.count > 0 {
-            RealmWorker.instance.saveFriends(friends)
+            RealmWorker.instance.saveItems(items: friends)//saveFriends(friends)
         } else {
-            friends = RealmWorker.instance.getMyFriends()
+            friends = RealmWorker.instance.getMyFriends()//getItems(VkFriend.self)
         }
         
         return friends
@@ -93,9 +93,9 @@ class VkResponseParser {
         }
         if !isSearched {
             if groups.count > 0 {
-                RealmWorker.instance.saveGroups(groups)
+                RealmWorker.instance.saveItems(items: groups)//saveGroups(groups)//
             } else {
-                groups = RealmWorker.instance.getMyGroups()
+                groups = RealmWorker.instance.getMyGroups()//getItems(VkGroup.self)
             }
         }
         return groups
@@ -191,6 +191,7 @@ class VkResponseParser {
                     feed.feedDate = item["date"].intValue
                     feed.feedText = item["text"].stringValue
                     
+                    feed.sourceId = item["source_id"].int ?? -1
                     feed.countLikes = item["likes"]["count"].int ?? 0
                     feed.countViews = item["views"]["count"].int ?? 0
                     feed.countReposts = item["reposts"]["count"].int ?? 0
@@ -215,14 +216,13 @@ class VkResponseParser {
                                 if let sizes = attachment["photo"]["sizes"].array {
                                     for size in sizes {
                                         if size["type"].stringValue == "x" {
-                                            feed.haveImage = true
-                                            feed.imageUrl = size["url"].stringValue
-                                            feed.imageWidth = size["width"].intValue
-                                            feed.imageHeight = size["height"].intValue
-                                            break
+                                            let attachment = VkAttachment()
+                                            attachment.imageUrl = size["url"].stringValue
+                                            attachment.width = size["width"].intValue
+                                            attachment.height = size["height"].intValue
+                                            feed.attachments.append(attachment)
                                         }
                                     }
-                                    
                                 }
                             }
                             break
@@ -241,4 +241,57 @@ class VkResponseParser {
         return feeds
     }
     
+    
+    func parseComments(result: Result<Any>) -> [VkComment] {
+
+        var comments = [VkComment]()
+        var commentProfiles = [VkCommentProfile]()
+        switch result {
+        case .success(let value):
+            let json = JSON(value)
+            print ("parseComments: \(json)")
+            
+            if let jsonProfiles = json["response"]["profiles"].array {
+                for jsonProfile in jsonProfiles {
+                    let commentProfile = VkCommentProfile()
+                    commentProfile.id = jsonProfile["id"].int ?? -1
+                    commentProfile.firstname = jsonProfile["first_name"].string ?? ""
+                    commentProfile.lastname = jsonProfile["last_name"].string ?? ""
+                    commentProfile.sex = jsonProfile["sex"].int ?? -1
+                    commentProfile.screenname = jsonProfile["screen_name"].string ?? ""
+                    commentProfile.imageUrl50 = jsonProfile["photo_50"].string ?? ""
+                    commentProfile.imageUrl100 = jsonProfile["photo_100"].string ?? ""
+                    commentProfile.online = (jsonProfile["online"].int ?? 0) > 0
+                    commentProfiles.append(commentProfile)
+                }
+            }
+            
+            if let jsonComments = json["response"]["items"].array {
+                for jsonComment in jsonComments {
+                    let comment = VkComment()
+                    comment.id = jsonComment["id"].int ?? -1
+                    comment.date = jsonComment["date"].int ?? -1
+                    comment.text = jsonComment["text"].string ?? ""
+                    comment.likesCount = jsonComment["likes"]["count"].int ?? 0
+                    
+                    if let fromId = jsonComment["from_id"].int {
+                        for commentProfile in commentProfiles {
+                            if fromId == commentProfile.id {
+                                comment.sender = commentProfile
+                                break
+                            }
+                        }
+                    }
+                    comments.append(comment)
+                }
+            }
+            
+            break
+            
+        case .failure(let error):
+            print ("parsePhotos - error: \(error.localizedDescription)")
+            break
+        }
+        return comments
+    }
 }

@@ -15,6 +15,28 @@ class RealmWorker {
     static let instance = RealmWorker()
     private init(){}
     
+    static var configuration = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
+    
+    
+    func saveItems<Element: Object>(items: [Element], needMigrate: Bool = false, needUpdate: Bool = true) -> Realm? {
+        
+        do {
+            let config = Realm.Configuration(deleteRealmIfMigrationNeeded: needMigrate)
+            let realm = try Realm(configuration: config)
+            try realm.write {
+                realm.add(items, update: needUpdate)
+            }
+            return realm
+        } catch {
+            print(error.localizedDescription)
+        }
+        return nil
+    }
+    
+    func getItems<T: Object>(_ type: T.Type, in realm: Realm? = try? Realm(configuration: RealmWorker.configuration)) -> Results<T>? {
+        return realm?.objects(type)
+    }
+    
     
     func saveFriends(_ friends: [VkFriend]) {
         if friends.count > 0 {

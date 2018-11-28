@@ -70,6 +70,16 @@ class NewsViewController: UIViewController {
     @objc private func refreshNews(_ sender: Any) {
         prepareGetFeeds(needClearNews: true)
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showFeedInfo" {
+            let upcoming = segue.destination as! NewsInfoViewController
+            upcoming.feed = feeds[sender as! Int]
+        }
+        let backItem = UIBarButtonItem()
+        backItem.title = ""
+        navigationItem.backBarButtonItem = backItem
+    }
 
 }
 
@@ -81,12 +91,15 @@ extension NewsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "NewsTableViewCell", for: indexPath) as! NewsTableViewCell
-//        cell.loadData(new: news[indexPath.row], needPhoto: indexPath.row % 2 > 0)
-//        cell.buttonLike.tag = indexPath.row
-//        cell.delegate = self
         cell.load(feed: feeds[indexPath.row])
         cell.delegate = self
         return cell
+    }
+    
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        performSegue(withIdentifier: "showFeedInfo", sender: indexPath.row)
     }
     
     

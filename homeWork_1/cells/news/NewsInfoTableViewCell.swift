@@ -1,20 +1,15 @@
 //
-//  NewsTableViewCell.swift
+//  NewsInfoTableViewCell.swift
 //  homeWork_1
 //
-//  Created by Марат Нургалиев on 30.09.2018.
+//  Created by Admin on 11/28/18.
 //  Copyright © 2018 Марат Нургалиев. All rights reserved.
 //
 
 import UIKit
-import SDWebImage
 
-protocol NewsTableViewCellDelegate {
-    func changeLike(row: Int)
-}
+class NewsInfoTableViewCell: UITableViewCell {
 
-class NewsTableViewCell: UITableViewCell {
-    
     @IBOutlet weak var imageViewGroup: UIImageView!
     @IBOutlet weak var labelFeedGroupHeader: UILabel!
     @IBOutlet weak var labelDate: UILabel!
@@ -60,7 +55,7 @@ class NewsTableViewCell: UITableViewCell {
         labelFeedGroupHeader.text = ""
         imageHeightConstraint.constant = 0
         self.layoutIfNeeded()
-//        setTaps()
+        //        setTaps()
     }
     
     
@@ -84,20 +79,10 @@ class NewsTableViewCell: UITableViewCell {
         labelViews.text = feed.getStringFrom(count: feed.countViews)
         labelShare.text = feed.getStringFrom(count: feed.countReposts)
         labelComment.text = feed.getStringFrom(count: feed.countComments)
-        
-        
-        
-//        buttonLike.setupView(isLiked: feed.isLiked, countLikes: feed.countLikes)
-//        imageComment.tintColor = UIColor.lightGray
-//        labelCountViews.text = getStringFrom(count: feed.countViews)
-        
     }
     
     func loadData(new: New, needPhoto: Bool) {
-//        labelNews.text = new.text
         buttonLike.setupView(isLiked: new.isLiked, countLikes: new.likeCount)
-       
-        
         setTaps()
     }
     
@@ -159,9 +144,4 @@ class NewsTableViewCell: UITableViewCell {
     
     
     
-    
-    
-    
-    
-
 }

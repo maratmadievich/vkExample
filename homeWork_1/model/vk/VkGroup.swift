@@ -29,4 +29,18 @@ class VkGroup: Object {
     override static func indexedProperties() -> [String] {
         return ["name", "is_member"]
     }
+    
+    
+    func getType() -> String {
+        switch type {
+        case "event":
+            return "Мероприятие"
+        case "group":
+            return "Группа"
+        case "page":
+            return "Публичная страница"
+        default:
+            return ""
+        }
+    }
 }

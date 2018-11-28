@@ -25,13 +25,6 @@ class FriendTableViewCell: UITableViewCell {
         if friend.photo.count > 0 {
             imageAva.sd_setImage(with: URL(string: friend.photo), placeholderImage: UIImage(named: "noPhoto"))
         }
-//        if friend.
-//        if let ava = friend.imageAva {
-//            imageAva.image = ava
-//        } else {
-//            imageAva.image = UIImage.init(named: "noPhoto")
-//        }
-        
     }
 
 }

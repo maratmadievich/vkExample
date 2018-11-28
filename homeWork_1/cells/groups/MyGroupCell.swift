@@ -15,10 +15,8 @@ class MyGroupCell: UITableViewCell {
     
     @IBOutlet weak var labelName: UILabel!
     @IBOutlet weak var labelType: UILabel!
+    @IBOutlet weak var labelMember: UILabel!
     
-    @IBOutlet weak var btnGroup: UIButton!
-    
-    var delegate: GroupsProtocol? = nil
     var group: VkGroup!
     
     override func awakeFromNib() {
@@ -29,22 +27,12 @@ class MyGroupCell: UITableViewCell {
     func load(_ group: VkGroup) {
         self.group = group
         labelName.text = group.name
-        labelType.text = group.type
-        btnGroup.tag = group.gid
+        labelType.text = group.getType()
+        labelMember.text = group.is_member > 0 ? "Вы вступили" : ""
         
         if group.photo.count > 0 {
-            imageAva.sd_setImage(with: URL(string: group.photo), placeholderImage: UIImage(named: "noPhoto"))
+            imageAva.sd_setImage(with: URL(string: group.photoBig), placeholderImage: UIImage(named: "noPhoto"))
         }
-        if group.is_member > 0 {
-            btnGroup.setTitle("Покинуть", for: .normal)
-        } else {
-            btnGroup.setTitle("Вступить", for: .normal)
-        }
-        
-    }
-    
-    @IBAction func btnGroupClicked(_ sender: Any) {
-        delegate?.groupSelected(gid: group.gid, name: group.name)
     }
 
 }

@@ -34,6 +34,11 @@ protocol VkApiFeedsDelegate {
     func returnFeeds(_ feeds: [VkFeed])
 }
 
+protocol VkApiCommentsDelegate {
+    
+    func returnComments(_ comments: [VkComment])
+}
+
 
 class AlamofireService {
     
@@ -130,6 +135,7 @@ class AlamofireService {
             "access_token": Session.instance.token,
             "q": search,
             "extended": "1",
+            "sort": "2",
             "v": "3.0"
         ]
         Alamofire.request(fullRow, method: .get, parameters: params)
@@ -197,6 +203,30 @@ class AlamofireService {
         Alamofire.request(fullRow, method: .get, parameters: params)
             .responseJSON { response in
                 delegate.returnFeeds(VkResponseParser.instance.parseNews(result: response.result))
+        }
+    }
+    
+    
+    func getComments(ownerId: Int, postId: Int, delegate: VkApiCommentsDelegate) {
+        //delegate: VkApiFeedsDelegate) {
+        let method = "wall.getComments"
+        let fullRow = "\(GlobalConstants.vkApi)\(method)"
+        let params: Parameters = [
+            "access_token": Session.instance.token,
+            "filters": "post",
+            "v": "5.87",
+            "count":"50",
+            "sort":"desc",
+            "need_likes":"1",
+            "extended":"1",
+            "owner_id":"\(ownerId)",
+            "post_id":"\(postId)"
+        ]
+        
+        Alamofire.request(fullRow, method: .get, parameters: params)
+            .responseJSON { response in
+                print(response.result)
+                delegate.returnComments(VkResponseParser.instance.parseComments(result: response.result))
         }
     }
     

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 protocol FriendsViewControllerDelegate {
     
@@ -30,19 +31,43 @@ class FriendsViewController: UIViewController {
     private var groupedFriends = [FriendList]()
     private var filteredGroupedFriends = [FriendList]()
     
+    
+    //неюзаемая штука для показа возможностей
+    private var results: Results<VkFriend>?
+    private var notificationTokenGroups: NotificationToken?
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setTableViewSettings()
-        AlamofireService.instance.getFriends(delegate: self)
+        getFriends()
         setCustomView()
         setSearchBarSettings()
-        
     }
     
     
     override func viewWillAppear(_ animated: Bool) {
         self.tabBarController?.tabBar.isHidden = false
+        setObserver()
+    }
+    
+    
+    private func setObserver() {
+        results = RealmWorker.instance.getItems(VkFriend.self)
+        notificationTokenGroups = self.results?.observe { changes in
+            print("friendObserver is work")
+            switch changes {
+            case .initial(let collection):
+                print(collection)
+            case .update(let collection, let deletions, let insertions, let modifications):
+                print(collection)
+                print(deletions)
+                print(insertions)
+                print(modifications)
+            case .error(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
     
     
@@ -84,6 +109,14 @@ class FriendsViewController: UIViewController {
     }
     
 
+}
+
+extension FriendsViewController {
+    
+    //MARK: - Network funcs
+    private func getFriends() {
+        AlamofireService.instance.getFriends(delegate: self)
+    }
 }
 
 extension FriendsViewController {

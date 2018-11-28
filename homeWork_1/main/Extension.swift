@@ -8,15 +8,6 @@
 
 import UIKit
 
-
-
-/*
- 2.1
- Добавить в проект синглтон для хранения данных о текущей сессии – Session
- Добавить в него свойства:
- token: String – для хранения токена в VK,
- userId: Int – для хранения идентификатора пользователя ВК.
- */
 class Session {
     
     static let instance = Session()
@@ -35,40 +26,7 @@ struct GlobalConstants {
     static let defaults = UserDefaults.standard
     
     static let vkApi = "https://api.vk.com/method/"
-    
-    static func getGroupType(value: Int) -> String {
-        let number = value % 4
-        switch number {
-        case 0:
-            return "Cпортивная организация"
-        case 1:
-            return "Открытая группа"
-        case 2:
-            return "Интернет-СМИ"
-        default:
-            return "Кино"
-        }
-    }
-    
-    
-    static func getGroupName(value: Int) -> String {
-        if value < 10 {
-            return "Детская группа №\(value)"
-        } else if value < 20 {
-            return "Мужская группа №\(value)"
-        } else if value < 30 {
-            return "Женская группа №\(value)"
-        }
-        return "Группа №\(value)"
-        
-    }
-}
 
-
-class Group {
-    var name = String()
-    var type = String()
-    var value = Int()
 }
 
 

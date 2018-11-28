@@ -30,12 +30,15 @@ class CustomSearchBar: UIView {
         self.backgroundColor = UIColor.vkColor.main
         textField.delegate = self
         textField.frame = CGRect(x: 10, y: (self.frame.height - 40) / 2, width: width - 20, height: 40)
-        buttonCancel.frame = CGRect(x: width, y: (self.frame.height - 56) / 2, width: 0, height: 56)
+        buttonCancel.frame = CGRect(x: width, y: 8, width: 0, height: 40)
+        //(self.frame.height - 56) / 2, 56
         imageView.frame = CGRect(x: (width / 2) - 15, y: (self.frame.height / 2) - 15, width: 30, height: 30)
         
         buttonCancel.setTitle("Отмена", for: .normal)
-        buttonCancel.setTitleColor(UIColor.red, for: .normal)
-        buttonCancel.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        buttonCancel.setTitleColor(UIColor.white, for: .normal)
+//        buttonCancel.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        buttonCancel.backgroundColor = UIColor.red
+        buttonCancel.cornerRadius = 5
         
         imageView.image = UIImage(named: "search")
         imageView.contentMode = .scaleAspectFit
@@ -95,8 +98,9 @@ extension CustomSearchBar: UITextFieldDelegate {
         })
         
         UIView.animate(withDuration: 0.3, animations: {
-            self.textField.frame = CGRect(x: 40, y: (self.frame.height - 40) / 2, width: self.frame.width - 140, height: 40)
-            self.buttonCancel.frame = CGRect(x: self.frame.width - 100, y: (self.frame.height - 56) / 2, width: 80, height: 56)
+            self.textField.frame = CGRect(x: 40, y: (self.frame.height - 40) / 2, width: self.frame.width - 98, height: 40)
+            self.buttonCancel.frame = CGRect(x: self.frame.width - 88, y: 8, width: 80, height: 40)
+            //(self.frame.height - 56) / 2, 56
         })
     }
     
@@ -114,7 +118,8 @@ extension CustomSearchBar: UITextFieldDelegate {
         UIView.animate(withDuration: 0.3, animations: {
             self.textField.text = ""
             self.textField.frame = CGRect(x: 10, y: (self.frame.height - 40) / 2, width: self.frame.width - 20, height: 40)
-            self.buttonCancel.frame = CGRect(x: self.frame.width, y: (self.frame.height - 56) / 2, width: 0, height: 56)
+            self.buttonCancel.frame = CGRect(x: self.frame.width, y: 8, width: 0, height: 40)
+            //(self.frame.height - 56) / 2, 56
         })
     }
     
