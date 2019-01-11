@@ -38,6 +38,19 @@ class RealmWorker {
     }
     
     
+    func removeItem<T: Object>(_ item: T, in realm: Realm? = try? Realm(configuration: RealmWorker.configuration)) {
+        if let realm = realm {
+            do {
+                try realm.write {
+                    realm.delete(item)
+                }
+            }catch {
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    
     func saveFriends(_ friends: [VkFriend]) {
         if friends.count > 0 {
             do {

@@ -43,4 +43,38 @@ class VkGroup: Object {
             return ""
         }
     }
+    
+    func getSGroup() ->SGroup {
+        return SGroup(gid: self.gid, is_admin: self.is_admin, is_closed: self.is_closed, is_member: self.is_member, name: self.name,
+                            type: self.type, photo: self.photo, photoBig: self.photoBig, screenName: self.screenName, photoMedium: self.photoMedium)
+    }
+}
+
+
+struct SGroup {
+    var gid: Int
+    var is_admin: Int
+    var is_closed: Int
+    var is_member: Int
+    var name: String
+    var type: String
+    var photo: String
+    var photoBig: String
+    var screenName: String
+    var photoMedium: String
+    
+    var toAnyObject: Any {
+        return [
+            "gid": gid,
+            "is_admin": is_admin,
+            "is_closed": is_closed,
+            "is_member": is_member,
+            "name": name,
+            "type": type,
+            "photo": photo,
+            "photoBig": photoBig,
+            "screenName": screenName,
+            "photoMedium": photoMedium
+        ]
+    }
 }

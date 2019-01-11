@@ -14,11 +14,14 @@ class GroupsViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
     
-    private var groups = [VkGroup]()
+//    private var groups = [VkGroup]()
+//    private var filteredGroups = [VkGroup]()
     
     //неюзаемая штука для показа возможностей
-    private var results: Results<VkGroup>?
+    private var groups: Results<VkGroup>?
+    private var filteredGroups: Results<VkGroup>?
     private var notificationTokenGroups: NotificationToken?
+    private var notificationTokenSearchGroups: NotificationToken?
     
     var searchActive = false
     
@@ -32,7 +35,6 @@ class GroupsViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.tabBarController?.tabBar.isHidden = false
         getMyGroups()
         setObserver()
     }
@@ -51,17 +53,33 @@ class GroupsViewController: UIViewController {
     
     
     private func setObserver() {
-        results = RealmWorker.instance.getItems(VkGroup.self)//RealmDatabase.get(VkGroup.self)//
-        notificationTokenGroups = self.results?.observe { changes in
+        groups = RealmWorker.instance.getItems(VkGroup.self)?.sorted(byKeyPath: "name")
+        notificationTokenGroups = self.groups?.observe { changes in
             print("groupObserver is work")
             switch changes {
+               
             case .initial(let collection):
-                print(collection)
+//                print(collection)
+                break
             case .update(let collection, let deletions, let insertions, let modifications):
-                print(collection)
-                print(deletions)
-                print(insertions)
-                print(modifications)
+                if !self.searchActive {
+//                    self.tableView.beginUpdates()
+//                    if deletions.count > 0 {
+//                        self.tableView.deleteRows(at: deletions.map { IndexPath(row: $0, section: 0) }, with: .automatic)
+//                    }
+//                    if modifications.count > 0 {
+//                        self.tableView.reloadRows(at: modifications.map { IndexPath(row: $0, section: 0) }, with: .automatic)
+//                    }
+//                    if insertions.count > 0 {
+//                        self.tableView.insertRows(at: insertions.map { IndexPath(row: $0, section: 0) }, with: .automatic)
+//                    }
+//                    self.tableView.endUpdates()
+//                    self.tableView.reloadData()
+                }
+//                print(collection)
+//                print(deletions)
+//                print(insertions)
+//                print(modifications)
             case .error(let error):
                 print(error.localizedDescription)
             }
@@ -81,9 +99,7 @@ extension GroupsViewController: UISearchBarDelegate {
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         if searchActive {
-            getMyGroups()
             searchActive = false
-            groups.removeAll()
             tableView.reloadData()
             self.view.endEditing(true)
         }
@@ -97,7 +113,6 @@ extension GroupsViewController: UISearchBarDelegate {
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        groups.removeAll()
         tableView.reloadData()
         if searchText == "" {
             searchActive = false
@@ -112,26 +127,32 @@ extension GroupsViewController: UISearchBarDelegate {
 extension GroupsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return groups.count
+        return searchActive ? filteredGroups?.count ?? 0 : groups?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MyGroupCell", for: indexPath) as! MyGroupCell
-        let group = groups[indexPath.row]
-        cell.load(group)
+        let group = searchActive ? filteredGroups?[indexPath.row] : groups?[indexPath.row]
+        if let group = group {
+            cell.load(group)
+        }
         return cell
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt: IndexPath) -> [UITableViewRowAction]? {
         let row = editActionsForRowAt.row
-        let isMember = groups[row].is_member > 0
-        let leaveJoin = UITableViewRowAction(style: .normal, title: isMember ? "Покинуть":"Вступить") { action, index in
-            let gid = self.groups[row].gid
-            let name = self.groups[row].name
-            self.groupSelected(gid: gid, name: name, isMember: isMember)
+        let group = searchActive ? filteredGroups?[row] : groups?[row]
+        if let group = group {
+            let isMember = group.is_member > 0
+            let leaveJoin = UITableViewRowAction(style: .normal, title: isMember ? "Покинуть":"Вступить") { action, index in
+                let gid = group.gid
+                let name = group.name
+                self.groupSelected(gid: gid, name: name, isMember: isMember)
+            }
+            leaveJoin.backgroundColor = isMember ? .red : UIColor.vkColor.main
+            return [leaveJoin]
         }
-        leaveJoin.backgroundColor = isMember ? .red : UIColor.vkColor.main
-        return [leaveJoin]
+        return [UITableViewRowAction()]
     }
     
     func groupSelected(gid: Int, name: String, isMember: Bool) {
@@ -154,7 +175,34 @@ extension GroupsViewController {
     }
     
     private func getGroups(by search: String) {
-        AlamofireService.instance.searchGroups(search: search, delegate: self)
+        filteredGroups = RealmWorker.instance.getItems(VkGroup.self)?.filter("name contains[c] '\(search)'").sorted(byKeyPath: "name")
+        tableView.reloadData()
+
+//        notificationTokenSearchGroups = self.filteredGroups?.observe { changes in
+//            print("groupObserver is work")
+//            switch changes {
+//            case .initial(_):
+//                break
+//            case .update(let collection, let deletions, let insertions, let modifications):
+//                if self.searchActive {
+////                    self.tableView.beginUpdates()
+////                    if deletions.count > 0 {
+////                    self.tableView.deleteRows(at: deletions.map { IndexPath(row: $0, section: 0) }, with: .automatic)
+////                    }
+////                    if modifications.count > 0 {
+////                        self.tableView.reloadRows(at: modifications.map { IndexPath(row: $0, section: 0) }, with: .automatic)
+////                    }
+////                    if insertions.count > 0 {
+////                        self.tableView.insertRows(at: insertions.map { IndexPath(row: $0, section: 0) }, with: .automatic)
+////                    }
+////                    self.tableView.endUpdates()
+//                    self.tableView.reloadData()
+//                }
+//            case .error(let error):
+//                print(error.localizedDescription)
+//            }
+//        }
+//        tableView.reloadData()
     }
     
     private func leaveGroup(by gid: Int) {
@@ -168,57 +216,33 @@ extension GroupsViewController {
 
 extension GroupsViewController: VkApiGroupsDelegate {
     
-    func returnJoin(_ gid: Int) {
-        for (index, group) in groups.enumerated() {
-            if group.gid == gid {
-                updateGroup(group: group, is_member: 1, index: index)
-            }
-        }
-    }
-    
+    func returnJoin(_ gid: Int) {}
     func returnJoin(_ error: String) {}
+    func returnLeave(_ error: String) {}
     
     func returnLeave(_ gid: Int) {
-        for (index, group) in groups.enumerated() {
-            if group.gid == gid {
-                searchActive ?
-                    updateGroup(group: group, is_member: 0, index: index) : deleteGroup(index: index)
+        if let groups = groups {
+            for  group in groups {
+                if group.gid == gid {
+                    FirebaseService.instance.removeGroup(group: group)
+                    RealmWorker.instance.removeItem(group)
+                    tableView.reloadData()
+                    break
+                }
             }
         }
-    }
-    
-    private func updateGroup(group: VkGroup, is_member: Int, index: Int) {
-        do {
-            let realm = try Realm()
-            realm.beginWrite()
-            group.is_member = is_member
-            realm.add(group, update: true)
-            try realm.commitWrite()
-            groups.remove(at: index)
-            groups.insert(group, at: index)
-            let indexPath = IndexPath(item: index, section: 0)
-            tableView.reloadRows(at: [indexPath], with: is_member > 0 ?.right : .left)
-        } catch {
-            print("Realm saveFriends error: \(error)")
-        }
+//        tableView.reloadData()
+
     }
     
     
-    private func deleteGroup(index: Int) {
+    private func deleteGroup(gid: Int, index: Int) {
         let indexPath = IndexPath(item: index, section: 0)
         tableView.deleteRows(at: [indexPath], with: .top)
     }
     
-    func returnLeave(_ error: String) {
-        print("При попытке выйти из группы произошла ошибка: \(error)")
-    }
     
-    func returnGroups(_ groups: [VkGroup]) {
-        self.groups.removeAll()
-        self.groups = groups
-        self.groups.sort { $0.name < $1.name}
-        tableView.reloadData()
-    }
+    func returnGroups(_ groups: [VkGroup]) {}
     
 }
 

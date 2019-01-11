@@ -122,6 +122,16 @@ extension NewsViewController: NewsTableViewCellDelegate {
 extension NewsViewController: VkApiFeedsDelegate {
     
     func returnFeeds(_ feeds: [VkFeed]) {
+//        DispatchQueue.main.async {
+//            self.refreshControl.endRefreshing()
+//            self.isLoad = false
+//            if self.needClearNews {
+//                self.feeds.removeAll()
+//                self.tableView.reloadData()
+//            }
+//            self.feeds.append(contentsOf: feeds)
+//            self.tableView.reloadData()
+//        }
         self.refreshControl.endRefreshing()
         isLoad = false
         if needClearNews {
@@ -130,7 +140,8 @@ extension NewsViewController: VkApiFeedsDelegate {
         }
         self.feeds.append(contentsOf: feeds)
         tableView.reloadData()
-//        self.addNewCells(array: feeds)
+        //        self.addNewCells(array: feeds)
+
     }
     
     

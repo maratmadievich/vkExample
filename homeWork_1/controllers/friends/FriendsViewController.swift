@@ -27,13 +27,12 @@ class FriendsViewController: UIViewController {
     private var selectedSection = -1
     private var selectedRow = -1
     
-    private var friends = [VkFriend]()
     private var groupedFriends = [FriendList]()
     private var filteredGroupedFriends = [FriendList]()
     
     
     //неюзаемая штука для показа возможностей
-    private var results: Results<VkFriend>?
+    private var friends: Results<VkFriend>?
     private var notificationTokenGroups: NotificationToken?
     
 
@@ -53,21 +52,7 @@ class FriendsViewController: UIViewController {
     
     
     private func setObserver() {
-        results = RealmWorker.instance.getItems(VkFriend.self)
-        notificationTokenGroups = self.results?.observe { changes in
-            print("friendObserver is work")
-            switch changes {
-            case .initial(let collection):
-                print(collection)
-            case .update(let collection, let deletions, let insertions, let modifications):
-                print(collection)
-                print(deletions)
-                print(insertions)
-                print(modifications)
-            case .error(let error):
-                print(error.localizedDescription)
-            }
-        }
+        
     }
     
     
@@ -82,18 +67,21 @@ class FriendsViewController: UIViewController {
     private func setGroupedFriend() {
         GlobalConstants.titles.removeAll()
         var groupedFriend = FriendList()
-        for friend in friends {
-            if groupedFriend.title != friend.last_name.prefix(1) {
-                GlobalConstants.titles.append(String(friend.last_name.prefix(1)))
-                if (groupedFriend.title.count != 0) {
-                    groupedFriends.append(groupedFriend)
-                    groupedFriend = FriendList()
+        if let friends = friends {
+            for friend in friends {
+                //last_name->full_name
+                if groupedFriend.title != friend.full_name.prefix(1) {
+                    GlobalConstants.titles.append(String(friend.full_name.prefix(1)))
+                    if (groupedFriend.title.count != 0) {
+                        groupedFriends.append(groupedFriend)
+                        groupedFriend = FriendList()
+                    }
+                    groupedFriend.title = String(friend.full_name.prefix(1))
                 }
-                groupedFriend.title = String(friend.last_name.prefix(1))
+                groupedFriend.friends.append(friend)
             }
-            groupedFriend.friends.append(friend)
+            groupedFriends.append(groupedFriend)
         }
-        groupedFriends.append(groupedFriend)
     }
     
     
@@ -115,8 +103,32 @@ extension FriendsViewController {
     
     //MARK: - Network funcs
     private func getFriends() {
+    
+//        let sortProperties = [SortDescriptor(keyPath: "first_name", ascending: true), SortDescriptor(keyPath: "last_name", ascending: true)]
+        friends = RealmWorker.instance.getItems(VkFriend.self)?.sorted(byKeyPath: "first_name").sorted(byKeyPath: "last_name")
+        //sorted(by: { (first, second) -> Bool in
+//        return (first.first_name < second.first_name && first.last_name < second.last_name)
+//    })
+        notificationTokenGroups = friends?.observe { changes in
+            print("friendObserver is work")
+            switch changes {
+            case .initial( _)://let collection
+                self.migrateFriends()
+            case .update(_, _, _, _):
+                //(let collection, let deletions, let insertions, let modifications):
+                    self.migrateFriends()
+            case .error(let error):
+                print(error.localizedDescription)
+            }
+        }
         AlamofireService.instance.getFriends(delegate: self)
     }
+    
+    private func migrateFriends() {
+        setGroupedFriend()
+        tableView.reloadData()
+    }
+    
 }
 
 extension FriendsViewController {
@@ -223,11 +235,11 @@ extension FriendsViewController: FriendsViewControllerDelegate {
 extension FriendsViewController: VkApiFriendsDelegate {
     
     func returnFriends(_ friends: [VkFriend]) {
-        self.friends = friends
-        self.friends.sort { ($0.last_name, $0.first_name) <
-            ($1.last_name, $1.first_name)}
-        setGroupedFriend()
-        tableView.reloadData()
+//        self.friends = friends
+//        self.friends.sort { ($0.last_name, $0.first_name) <
+//            ($1.last_name, $1.first_name)}
+//        setGroupedFriend()
+//        tableView.reloadData()
     }
     
 }

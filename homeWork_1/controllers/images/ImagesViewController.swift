@@ -218,7 +218,7 @@ extension ImagesViewController {
                 if ((recognizer.location(in: self.view).y - yStart) > (self.view.frame.height / 3)) {
                     needAnimate = false
                     self.navigationController?.popViewController(animated: true)
-                    recognizer.state = .ended
+//                    recognizer.state = .ended
                     
                 } else if (needAnimate) {
                     xB = recognizer.location(in: self.view).x

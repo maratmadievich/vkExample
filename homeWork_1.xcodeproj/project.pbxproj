@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		5DC3809695F037A6B111CF13 /* Pods_homeWork_1.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB03EE607AE3B19FD932EA7A /* Pods_homeWork_1.framework */; };
 		84105FB3217F173D00EEF673 /* VKApiViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84105FB2217F173D00EEF673 /* VKApiViewController.swift */; };
+		8415662D21B7916500AF9803 /* SearchGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8415662C21B7916500AF9803 /* SearchGroupViewController.swift */; };
+		8415662F21B7918C00AF9803 /* MainGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8415662E21B7918C00AF9803 /* MainGroupViewController.swift */; };
 		8424E54921743AA200188E61 /* ImagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8424E54821743AA200188E61 /* ImagesViewController.swift */; };
 		8424E54B21743AAE00188E61 /* Images.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8424E54A21743AAE00188E61 /* Images.storyboard */; };
 		8424E54D217485B400188E61 /* CustomSquareIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8424E54C217485B300188E61 /* CustomSquareIndicator.swift */; };
@@ -27,6 +29,7 @@
 		8442ABB021957D2D003DDA6A /* RealmWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8442ABAF21957D2D003DDA6A /* RealmWorker.swift */; };
 		844ACE352186BFC500565895 /* VkFriend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844ACE342186BFC500565895 /* VkFriend.swift */; };
 		844ACE372186D98900565895 /* VkGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844ACE362186D98900565895 /* VkGroup.swift */; };
+		8483336821B1534000C69640 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8483336721B1534000C69640 /* GoogleService-Info.plist */; };
 		84C120962161C5AD0044CBEB /* GroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C120952161C5AD0044CBEB /* GroupsViewController.swift */; };
 		84C1209B2161C6ED0044CBEB /* MyGroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C1209A2161C6ED0044CBEB /* MyGroupCell.swift */; };
 		84D1DEBC21AE624A006FC20E /* NewsInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D1DEBB21AE624A006FC20E /* NewsInfoViewController.swift */; };
@@ -35,6 +38,7 @@
 		84D1DEC221AE8CFD006FC20E /* VkComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D1DEC121AE8CFD006FC20E /* VkComment.swift */; };
 		84D1DEC521AE926B006FC20E /* CommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D1DEC421AE926B006FC20E /* CommentTableViewCell.swift */; };
 		84EC564A21A2A2DB00C8542C /* VkFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EC564921A2A2DA00C8542C /* VkFeed.swift */; };
+		AA3D1EB121B25109000ED1C1 /* FirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3D1EB021B25109000ED1C1 /* FirebaseService.swift */; };
 		AA5766C42160A5AD0029F786 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA5766C32160A5AD0029F786 /* AppDelegate.swift */; };
 		AA5766C92160A5AD0029F786 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA5766C72160A5AD0029F786 /* Login.storyboard */; };
 		AA5766CB2160A5AF0029F786 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA5766CA2160A5AF0029F786 /* Assets.xcassets */; };
@@ -58,6 +62,8 @@
 
 /* Begin PBXFileReference section */
 		84105FB2217F173D00EEF673 /* VKApiViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKApiViewController.swift; sourceTree = "<group>"; };
+		8415662C21B7916500AF9803 /* SearchGroupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchGroupViewController.swift; sourceTree = "<group>"; };
+		8415662E21B7918C00AF9803 /* MainGroupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainGroupViewController.swift; sourceTree = "<group>"; };
 		8424E54821743AA200188E61 /* ImagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesViewController.swift; sourceTree = "<group>"; };
 		8424E54A21743AAE00188E61 /* Images.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Images.storyboard; sourceTree = "<group>"; };
 		8424E54C217485B300188E61 /* CustomSquareIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSquareIndicator.swift; sourceTree = "<group>"; };
@@ -76,6 +82,7 @@
 		8442ABAF21957D2D003DDA6A /* RealmWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmWorker.swift; sourceTree = "<group>"; };
 		844ACE342186BFC500565895 /* VkFriend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VkFriend.swift; sourceTree = "<group>"; };
 		844ACE362186D98900565895 /* VkGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VkGroup.swift; sourceTree = "<group>"; };
+		8483336721B1534000C69640 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		84C120952161C5AD0044CBEB /* GroupsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsViewController.swift; sourceTree = "<group>"; };
 		84C1209A2161C6ED0044CBEB /* MyGroupCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyGroupCell.swift; sourceTree = "<group>"; };
 		84D1DEBB21AE624A006FC20E /* NewsInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsInfoViewController.swift; sourceTree = "<group>"; };
@@ -84,6 +91,7 @@
 		84D1DEC121AE8CFD006FC20E /* VkComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VkComment.swift; sourceTree = "<group>"; };
 		84D1DEC421AE926B006FC20E /* CommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewCell.swift; sourceTree = "<group>"; };
 		84EC564921A2A2DA00C8542C /* VkFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VkFeed.swift; sourceTree = "<group>"; };
+		AA3D1EB021B25109000ED1C1 /* FirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseService.swift; sourceTree = "<group>"; };
 		AA5766C02160A5AD0029F786 /* homeWork_1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = homeWork_1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA5766C32160A5AD0029F786 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AA5766C82160A5AD0029F786 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Login.storyboard; sourceTree = "<group>"; };
@@ -211,6 +219,7 @@
 				8442ABA8219132B7003DDA6A /* AlamofireService.swift */,
 				8442ABAA2192EC0D003DDA6A /* VkResponseParser.swift */,
 				8442ABAF21957D2D003DDA6A /* RealmWorker.swift */,
+				AA3D1EB021B25109000ED1C1 /* FirebaseService.swift */,
 			);
 			path = service;
 			sourceTree = "<group>";
@@ -244,11 +253,13 @@
 		AA5766C22160A5AD0029F786 /* homeWork_1 */ = {
 			isa = PBXGroup;
 			children = (
+				8483336721B1534000C69640 /* GoogleService-Info.plist */,
 				AA5766E72160AE6C0029F786 /* cells */,
 				AA5766D72160A7060029F786 /* controllers */,
 				AA5766F32160DE980029F786 /* custom */,
 				AA5766D52160A6EC0029F786 /* main */,
 				AA5766E42160AD630029F786 /* model */,
+				84D1DEB821AD5F16006FC20E /* service */,
 				AA5766D62160A6F90029F786 /* storyboards */,
 				AA5766CF2160A5AF0029F786 /* Info.plist */,
 			);
@@ -302,7 +313,9 @@
 		AA5766DB2160A9E50029F786 /* groups */ = {
 			isa = PBXGroup;
 			children = (
+				8415662E21B7918C00AF9803 /* MainGroupViewController.swift */,
 				84C120952161C5AD0044CBEB /* GroupsViewController.swift */,
+				8415662C21B7916500AF9803 /* SearchGroupViewController.swift */,
 			);
 			path = groups;
 			sourceTree = "<group>";
@@ -319,7 +332,6 @@
 		AA5766E42160AD630029F786 /* model */ = {
 			isa = PBXGroup;
 			children = (
-				84D1DEB821AD5F16006FC20E /* service */,
 				841C867D2186B8100016CEC8 /* vk */,
 				AA5766E52160AD8C0029F786 /* Friend.swift */,
 				AA5766EF2160D82B0029F786 /* FriendList.swift */,
@@ -452,6 +464,7 @@
 				AA5766CB2160A5AF0029F786 /* Assets.xcassets in Resources */,
 				AA5766C92160A5AD0029F786 /* Login.storyboard in Resources */,
 				AA5766DE2160AA6C0029F786 /* Main.storyboard in Resources */,
+				8483336821B1534000C69640 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -466,20 +479,26 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-homeWork_1/Pods-homeWork_1-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
 				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -515,9 +534,12 @@
 				AA5766EE2160CB9C0029F786 /* FriendCollectionViewCell.swift in Sources */,
 				842A0408216DB83F00FAFF92 /* CustomSearchBar.swift in Sources */,
 				8442ABAB2192EC0E003DDA6A /* VkResponseParser.swift in Sources */,
+				AA3D1EB121B25109000ED1C1 /* FirebaseService.swift in Sources */,
 				842A03E0216C860000FAFF92 /* CustomIndicator.swift in Sources */,
+				8415662D21B7916500AF9803 /* SearchGroupViewController.swift in Sources */,
 				84D1DEC021AE8AB9006FC20E /* VkCommentProfile.swift in Sources */,
 				844ACE352186BFC500565895 /* VkFriend.swift in Sources */,
+				8415662F21B7918C00AF9803 /* MainGroupViewController.swift in Sources */,
 				8442AB9721870B13003DDA6A /* VkPhoto.swift in Sources */,
 				84C1209B2161C6ED0044CBEB /* MyGroupCell.swift in Sources */,
 				AA5766D92160A72F0029F786 /* LoginViewController.swift in Sources */,

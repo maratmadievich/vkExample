@@ -42,6 +42,7 @@ class NewsTableViewCell: UITableViewCell {
     @IBOutlet weak var imageViewViews: UIImageView!
     @IBOutlet weak var labelViews: UILabel!
     
+    @IBOutlet weak var viewTextHeightConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var imageHeightConstraint: NSLayoutConstraint!
     var delegate: NewsTableViewCellDelegate?
@@ -59,22 +60,38 @@ class NewsTableViewCell: UITableViewCell {
         labelText.text = ""
         labelFeedGroupHeader.text = ""
         imageHeightConstraint.constant = 0
+        imageNew.image = nil
         self.layoutIfNeeded()
 //        setTaps()
     }
     
     
     func load(feed: VkFeed) {
-        labelFeedGroupHeader.text = feed.groupName
+        labelFeedGroupHeader.text = feed.sourceName
         labelDate.text = feed.getFeedDate()
+        if feed.feedText.count == 0 && viewTextHeightConstraint != nil {
+            viewTextHeightConstraint.constant = 0
+            self.layoutIfNeeded()
+        }
         labelText.text = feed.feedText
         
-        imageViewGroup.sd_setImage(with: URL(string: feed.groupUrl), placeholderImage: UIImage(named: "noPhoto"))
+        imageViewGroup.sd_setImage(with: URL(string: feed.sourceUrl), placeholderImage: UIImage(named: "noPhoto"))
         
         if feed.attachments.count > 0 {
             imageHeightConstraint.constant = self.frame.width * CGFloat(feed.attachments[0].height) / CGFloat(feed.attachments[0].width)
             
-            imageNew.sd_setImage(with: URL(string: feed.attachments[0].imageUrl), placeholderImage: UIImage(named: "noPhoto"))
+//            imageNew.sd_setImage(with: URL(string: feed.attachments[0].imageUrl), placeholderImage: UIImage(named: "noPhoto"))
+            
+            // попытка сделать blur фотки,
+            // а потом заанимировать на переход к нормальной фотке
+            SDWebImageManager.shared().loadImage(with: URL(string: feed.attachments[0].imageUrl), options: .highPriority, progress: nil, completed: {
+                (image: UIImage?, data: Data?, error: Error?, cacheType: SDImageCacheType, finished: Bool, url: URL?) in
+                if let image = image {
+                    self.generateBlureImage(image)
+                } else {
+                    self.imageNew.image = UIImage(named: "noPhoto")
+                }
+            })
         } else {
             imageHeightConstraint.constant = 0
         }
@@ -85,19 +102,41 @@ class NewsTableViewCell: UITableViewCell {
         labelShare.text = feed.getStringFrom(count: feed.countReposts)
         labelComment.text = feed.getStringFrom(count: feed.countComments)
         
-        
-        
 //        buttonLike.setupView(isLiked: feed.isLiked, countLikes: feed.countLikes)
 //        imageComment.tintColor = UIColor.lightGray
 //        labelCountViews.text = getStringFrom(count: feed.countViews)
         
     }
     
+    
+    private func generateBlureImage(_ image: UIImage) {
+        DispatchQueue.global(qos: .userInteractive).async {
+            let inputCIImage = CIImage(image: image)!
+            let blurFilter = CIFilter(name: "CIGaussianBlur", withInputParameters: [kCIInputImageKey: inputCIImage])!
+            let outputImage = blurFilter.outputImage!
+            let context = CIContext()
+            
+            let cgiImage = context.createCGImage(outputImage, from: outputImage.extent)
+            let bluredImage = UIImage(cgImage: cgiImage!)
+            self.animateImage(blur: bluredImage, origin: image)
+        }
+    }
+    
+    
+    private func animateImage(blur: UIImage, origin: UIImage) {
+        DispatchQueue.main.async {
+            self.imageNew.image = blur
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            UIView.transition(with: self.imageNew, duration: 0.2, options: .transitionCrossDissolve, animations: { self.imageNew.image = origin }, completion: nil)
+        }
+    }
+    
+    
     func loadData(new: New, needPhoto: Bool) {
 //        labelNews.text = new.text
         buttonLike.setupView(isLiked: new.isLiked, countLikes: new.likeCount)
-       
-        
+
         setTaps()
     }
     

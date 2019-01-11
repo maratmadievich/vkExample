@@ -20,6 +20,22 @@ class VkResponseParser {
     func parseFriends(result: Result<Any>) -> [VkFriend] {
         var friends = [VkFriend]()
         
+        var firstnameArr = [String]()
+        firstnameArr.append("Александр")
+        firstnameArr.append("Alex")
+        firstnameArr.append("Игорь")
+        firstnameArr.append("Чармандер")
+        firstnameArr.append("Пикачу")
+        firstnameArr.append("Сквиртл")
+        firstnameArr.append("Псайдак")
+        
+        var lastnameArr = [String]()
+        lastnameArr.append("Пушкин")
+        lastnameArr.append("Чехов")
+        lastnameArr.append("")
+        lastnameArr.append("Некрасов")
+        lastnameArr.append("Достоевский")
+        
         switch result {
         case .success(let value):
             let json = JSON(value)
@@ -32,8 +48,9 @@ class VkResponseParser {
                         friend.user_id = response["user_id"].intValue
                         friend.photo = response["photo_100"].stringValue
                         friend.nickname = response["nickname"].stringValue
-                        friend.last_name = response["last_name"].stringValue
-                        friend.first_name = response["first_name"].stringValue
+                        friend.last_name = response["last_name"].string ?? ""
+                        friend.first_name = response["first_name"].string ?? ""
+                        friend.generateFullName()
                         friends.append(friend)
                     } else {
                         print("is not Response")
@@ -50,7 +67,7 @@ class VkResponseParser {
         }
         
         if friends.count > 0 {
-            RealmWorker.instance.saveItems(items: friends)//saveFriends(friends)
+            RealmWorker.instance.saveItems(items: friends, needMigrate: true)//saveFriends(friends)
         } else {
             friends = RealmWorker.instance.getMyFriends()//getItems(VkFriend.self)
         }
@@ -98,7 +115,8 @@ class VkResponseParser {
                 groups = RealmWorker.instance.getMyGroups()//getItems(VkGroup.self)
             }
         }
-        return groups
+        return groups.sorted(by: { $0.is_member > $1.is_member && $0.name < $1.name })
+
     }
     
     func parseJoinLeaveGroup(result: Result<Any>) -> Bool {
@@ -167,6 +185,7 @@ class VkResponseParser {
         let nextFromNotification = Notification.Name("nextFromNotification")
         var feeds = [VkFeed]()
         var feedGroups = [VkGroup]()
+        var feedProfiles = [VkFriend]()
         switch result {
         case .success(let value):
             let json = JSON(value)
@@ -184,6 +203,17 @@ class VkResponseParser {
                 }
             }
             
+            if let profiles = json["response"]["profiles"].array {
+                for profile in profiles {
+                    let feedProfile = VkFriend()
+                    feedProfile.uid = profile["id"].int ?? -1
+                    feedProfile.first_name = profile["first_name"].string ?? ""
+                    feedProfile.last_name = profile["last_name"].string ?? ""
+                    feedProfile.photo = profile["photo_100"].stringValue
+                    feedProfiles.append(feedProfile)
+                }
+            }
+            
             if let items = json["response"]["items"].array {
                 for item in items {
                     let feed = VkFeed()
@@ -198,14 +228,21 @@ class VkResponseParser {
                     feed.countComments = item["comments"]["count"].int ?? 0
                     feed.isLiked = item["likes"]["user_likes"].intValue > 0
                     
-                    var groupId = item["source_id"].intValue
-                    if groupId < 0 {
-                        groupId = -groupId
+                    var sourceId = item["source_id"].intValue
+                    if sourceId < 0 {
+                        sourceId = -sourceId
                         for group in feedGroups {
-                            if group.gid == groupId {
-                                feed.groupId = group.gid
-                                feed.groupName = group.name
-                                feed.groupUrl = group.photo
+                            if group.gid == sourceId {
+                                feed.sourceName = group.name
+                                feed.sourceUrl = group.photo
+                                break
+                            }
+                        }
+                    } else {
+                        for profile in feedProfiles {
+                            if profile.uid == sourceId {
+                                feed.sourceName = "\(profile.first_name) \(profile.last_name)"
+                                feed.sourceUrl = profile.photo
                                 break
                             }
                         }

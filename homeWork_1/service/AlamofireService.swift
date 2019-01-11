@@ -44,7 +44,7 @@ class AlamofireService {
     
     static let instance = AlamofireService()
     private init(){}
-
+    
     
     // //Друзья
     func getFriends(delegate: VkApiFriendsDelegate) {
@@ -52,15 +52,18 @@ class AlamofireService {
         let fullRow = "\(GlobalConstants.vkApi)\(method)"
         let params: Parameters = [
             "access_token": Session.instance.token,
-            "fields": "id,nickname,photo_100",
+            "fields": "id,nickname,photo_100,status",
             "v": "3.0",
-        ]
+            ]
         
         Alamofire.request(fullRow, method: .get, parameters: params)
             .responseJSON { response in
-                delegate.returnFriends(
-                    VkResponseParser.instance.parseFriends(
-                        result: response.result))
+                DispatchQueue.global(qos: .userInteractive).async {
+                    delegate.returnFriends(
+                        VkResponseParser.instance.parseFriends(
+                            result: response.result))
+                }
+                
                 
         }
     }
@@ -75,14 +78,16 @@ class AlamofireService {
             "fields": "id,name",
             "extended": "1",
             "v": "3.0",
-            "count":"50"
+            "count":"100"
         ]
         
         Alamofire.request(fullRow, method: .get, parameters: params)
             .responseJSON { response in
-                delegate.returnGroups(
-                    VkResponseParser.instance.parseGroups(
-                        result: response.result, isSearched: false))
+                DispatchQueue.global(qos: .userInteractive).async {
+                    delegate.returnGroups(
+                        VkResponseParser.instance.parseGroups(
+                            result: response.result, isSearched: false))
+                }
         }
     }
     
@@ -98,10 +103,12 @@ class AlamofireService {
         
         Alamofire.request(fullRow, method: .get, parameters: params)
             .responseJSON { response in
-                if VkResponseParser.instance.parseJoinLeaveGroup(result: response.result) {
-                    delegate.returnLeave(gid)
-                } else {
-                    delegate.returnLeave("В ходе запроса произошла ошибка")
+                DispatchQueue.global(qos: .userInteractive).async {
+                    if VkResponseParser.instance.parseJoinLeaveGroup(result: response.result) {
+                        delegate.returnLeave(gid)
+                    } else {
+                        delegate.returnLeave("В ходе запроса произошла ошибка")
+                    }
                 }
         }
     }
@@ -118,10 +125,13 @@ class AlamofireService {
         
         Alamofire.request(fullRow, method: .get, parameters: params)
             .responseJSON { response in
-                if VkResponseParser.instance.parseJoinLeaveGroup(result: response.result) {
-                    delegate.returnJoin(gid)
-                } else {
-                    delegate.returnJoin("В ходе запроса произошла ошибка")
+                
+                DispatchQueue.global(qos: .userInteractive).async {
+                    if VkResponseParser.instance.parseJoinLeaveGroup(result: response.result) {
+                        delegate.returnJoin(gid)
+                    } else {
+                        delegate.returnJoin("В ходе запроса произошла ошибка")
+                    }
                 }
         }
     }
@@ -140,9 +150,11 @@ class AlamofireService {
         ]
         Alamofire.request(fullRow, method: .get, parameters: params)
             .responseJSON { response in
-                delegate.returnGroups(
-                    VkResponseParser.instance.parseGroups(
-                        result: response.result, isSearched: true))
+                DispatchQueue.global(qos: .userInteractive).async {
+                    delegate.returnGroups(
+                        VkResponseParser.instance.parseGroups(
+                            result: response.result, isSearched: true))
+                }
         }
     }
     
@@ -160,9 +172,11 @@ class AlamofireService {
         
         Alamofire.request(fullRow, method: .get, parameters: params)
             .responseJSON { response in
-                delegate.returnPhotos(
-                    VkResponseParser.instance.parsePhotos(
-                        result: response.result))
+                DispatchQueue.global(qos: .userInteractive).async {
+                    delegate.returnPhotos(
+                        VkResponseParser.instance.parsePhotos(
+                            result: response.result))
+                }
         }
     }
     
@@ -181,9 +195,11 @@ class AlamofireService {
         
         Alamofire.request(fullRow, method: .get, parameters: params)
             .responseJSON { response in
-                delegate.returnPhotos(
-                    VkResponseParser.instance.parsePhotos(
-                        result: response.result))
+                DispatchQueue.global(qos: .userInteractive).async {
+                    delegate.returnPhotos(
+                        VkResponseParser.instance.parsePhotos(
+                            result: response.result))
+                }
         }
     }
     
@@ -197,12 +213,17 @@ class AlamofireService {
             "v": "5.87",
             "count":"20",
             "start_from":"\(startFrom)"
-//            "end_time":"\(1)"
+            //            "end_time":"\(1)"
         ]
         
         Alamofire.request(fullRow, method: .get, parameters: params)
             .responseJSON { response in
-                delegate.returnFeeds(VkResponseParser.instance.parseNews(result: response.result))
+                DispatchQueue.global(qos: .userInteractive).async {
+                    let feeds = VkResponseParser.instance.parseNews(result: response.result)
+                    DispatchQueue.main.async {
+                        delegate.returnFeeds(feeds)
+                    }
+                }
         }
     }
     
@@ -226,7 +247,10 @@ class AlamofireService {
         Alamofire.request(fullRow, method: .get, parameters: params)
             .responseJSON { response in
                 print(response.result)
-                delegate.returnComments(VkResponseParser.instance.parseComments(result: response.result))
+                DispatchQueue.global(qos: .userInteractive).async {
+                    delegate.returnComments(VkResponseParser.instance
+                        .parseComments(result: response.result))
+                }
         }
     }
     

@@ -60,11 +60,11 @@ class NewsInfoTableViewCell: UITableViewCell {
     
     
     func load(feed: VkFeed) {
-        labelFeedGroupHeader.text = feed.groupName
+        labelFeedGroupHeader.text = feed.sourceName
         labelDate.text = feed.getFeedDate()
         labelText.text = feed.feedText
         
-        imageViewGroup.sd_setImage(with: URL(string: feed.groupUrl), placeholderImage: UIImage(named: "noPhoto"))
+        imageViewGroup.sd_setImage(with: URL(string: feed.sourceUrl), placeholderImage: UIImage(named: "noPhoto"))
         
         if feed.attachments.count > 0 {
             imageHeightConstraint.constant = self.frame.width * CGFloat(feed.attachments[0].height) / CGFloat(feed.attachments[0].width)

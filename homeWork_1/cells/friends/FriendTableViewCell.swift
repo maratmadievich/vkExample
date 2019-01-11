@@ -21,7 +21,7 @@ class FriendTableViewCell: UITableViewCell {
     }
     
     func loadData(friend: VkFriend) {
-        labelName.text = friend.last_name + " " + friend.first_name
+        labelName.text = friend.full_name//friend.last_name + " " + friend.first_name
         if friend.photo.count > 0 {
             imageAva.sd_setImage(with: URL(string: friend.photo), placeholderImage: UIImage(named: "noPhoto"))
         }

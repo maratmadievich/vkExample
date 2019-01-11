@@ -10,15 +10,15 @@ import UIKit
 
 class VkFeed {
     
-    var groupId = -1
-    var groupName = ""
-    var groupUrl = ""
+    var sourceId = -1
+    var sourceUrl = ""
+    var sourceName = ""
     
     
     var feedId = -1
     var feedText = ""
     var feedDate = -1
-    var sourceId = -1
+    
     
     var attachments = [VkAttachment]()
     
