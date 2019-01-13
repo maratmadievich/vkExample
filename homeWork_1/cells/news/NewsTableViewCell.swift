@@ -47,6 +47,8 @@ class NewsTableViewCell: UITableViewCell {
     @IBOutlet weak var imageHeightConstraint: NSLayoutConstraint!
     var delegate: NewsTableViewCellDelegate?
     
+    var operation: SDWebImageOperation!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         imageViewLike.tintColor = UIColor.lightGray
@@ -61,6 +63,9 @@ class NewsTableViewCell: UITableViewCell {
         labelFeedGroupHeader.text = ""
         imageHeightConstraint.constant = 0
         imageNew.image = nil
+        if operation != nil {
+            operation.cancel()
+        }
         self.layoutIfNeeded()
 //        setTaps()
     }
@@ -84,7 +89,8 @@ class NewsTableViewCell: UITableViewCell {
             
             // попытка сделать blur фотки,
             // а потом заанимировать на переход к нормальной фотке
-            SDWebImageManager.shared().loadImage(with: URL(string: feed.attachments[0].imageUrl), options: .highPriority, progress: nil, completed: {
+            
+            operation = SDWebImageManager.shared().loadImage(with: URL(string: feed.attachments[0].imageUrl), options: .highPriority, progress: nil, completed: {
                 (image: UIImage?, data: Data?, error: Error?, cacheType: SDImageCacheType, finished: Bool, url: URL?) in
                 if let image = image {
                     self.generateBlureImage(image)
@@ -124,11 +130,13 @@ class NewsTableViewCell: UITableViewCell {
     
     
     private func animateImage(blur: UIImage, origin: UIImage) {
-        DispatchQueue.main.async {
-            self.imageNew.image = blur
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            UIView.transition(with: self.imageNew, duration: 0.2, options: .transitionCrossDissolve, animations: { self.imageNew.image = origin }, completion: nil)
+        if operation != nil {
+            DispatchQueue.main.async {
+                self.imageNew.image = blur
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                UIView.transition(with: self.imageNew, duration: 0.2, options: .transitionCrossDissolve, animations: { self.imageNew.image = origin }, completion: nil)
+            }
         }
     }
     
