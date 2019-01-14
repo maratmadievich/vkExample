@@ -178,6 +178,34 @@
             </objects>
             <point key="canvasLocation" x="223" y="117"/>
         </scene>
+        <!--Test View Controller-->
+        <scene sceneID="0x6-vv-a9u">
+            <objects>
+                <viewController id="jcu-fq-bj6" customClass="TestViewController" customModule="homeWork_1" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Q0m-2c-7vX">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Len-dZ-guQ">
+                                <rect key="frame" x="166" y="223" width="42" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="BlC-CT-Fzb"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="sbv-Xa-xZb"/>
+                    <connections>
+                        <outlet property="labelHeader" destination="Len-dZ-guQ" id="Sko-1s-8K1"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="p6v-bj-hM6" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1062" y="824"/>
+        </scene>
         <!--main-->
         <scene sceneID="3m4-ts-T90">
             <objects>
@@ -186,8 +214,26 @@
             </objects>
             <point key="canvasLocation" x="1878" y="117"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="hTu-Ap-7HT">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Y1D-5i-axV" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="jMV-uq-xNz">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="jcu-fq-bj6" kind="relationship" relationship="rootViewController" id="rE1-5Z-bNi"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="IGo-5y-YwF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="200.80000000000001" y="823.53823088455783"/>
+        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="a0E-Ry-D3L"/>
+        <segue reference="4tB-7w-3yq"/>
     </inferredMetricsTieBreakers>
 </document>
