@@ -15,21 +15,25 @@ protocol NewsTableViewCellDelegate {
 
 class NewsTableViewCell: UITableViewCell {
     
+    @IBOutlet weak var viewIconContainer: UIView!
     @IBOutlet weak var imageViewGroup: UIImageView!
     @IBOutlet weak var labelFeedGroupHeader: UILabel!
     @IBOutlet weak var labelDate: UILabel!
     
+    @IBOutlet weak var imageNew: UIImageView!
+    @IBOutlet weak var viewText: UIView!
     @IBOutlet weak var labelText: UILabel!
     
+    @IBOutlet weak var viewButtons: UIView!
+    @IBOutlet weak var viewSeparator: UIView!
+    @IBOutlet weak var bottomSeparator: UIView!
     
+    @IBOutlet weak var stackLikes: UIStackView!
+    @IBOutlet weak var stackComments: UIStackView!
+    @IBOutlet weak var stackReposts: UIStackView!
+    @IBOutlet weak var stackViews: UIStackView!
     
-    @IBOutlet weak var buttonLike: CustomLike!
-    
-    @IBOutlet weak var imageComment: UIImageView!
-    
-    @IBOutlet weak var imageNew: UIImageView!
-    @IBOutlet weak var labelCountViews: UILabel!
-    
+  
     @IBOutlet weak var imageViewLike: UIImageView!
     @IBOutlet weak var labelLike: UILabel!
     
@@ -42,12 +46,11 @@ class NewsTableViewCell: UITableViewCell {
     @IBOutlet weak var imageViewViews: UIImageView!
     @IBOutlet weak var labelViews: UILabel!
     
-    @IBOutlet weak var viewTextHeightConstraint: NSLayoutConstraint!
     
-    @IBOutlet weak var imageHeightConstraint: NSLayoutConstraint!
     var delegate: NewsTableViewCellDelegate?
     
     var operation: SDWebImageOperation!
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -61,57 +64,108 @@ class NewsTableViewCell: UITableViewCell {
     override func prepareForReuse() {
         labelText.text = ""
         labelFeedGroupHeader.text = ""
-        imageHeightConstraint.constant = 0
         imageNew.image = nil
         if operation != nil {
             operation.cancel()
         }
-        self.layoutIfNeeded()
-//        setTaps()
+    }
+    
+    override func layoutSubviews() {
+         super.layoutSubviews()
+        viewIconContainer.pin
+            .top(10).left(15).size(60)
+        imageViewGroup.pin.all()
+        labelFeedGroupHeader.pin
+            .after(of: viewIconContainer).sizeToFit(.width)
+            .top(15).right(0).height(25).marginHorizontal(15).sizeToFit(.width)
+        labelDate.pin
+            .below(of: labelFeedGroupHeader, aligned: .left)
+            .width(of: labelFeedGroupHeader).sizeToFit(.width).marginTop(10)
+        
+        //image with text
+        imageNew.pin
+            .below(of: viewIconContainer)
+            .left(0).right(0)
+        viewText.pin
+            .below(of: imageNew)
+            .left(0).right(0).pinEdges()
+        labelText.pin.marginTop(8).marginBottom(8)
+            .marginLeft(16).marginRight(16)
+        
+        //buttons
+        viewButtons.pin
+            .below(of: viewText)
+            .left(0).right(0).height(40).pinEdges()
+        //        stackLikes.pin
+        //            .vCenter().left(10)
+        //            .width(21%).height(30)
+        //        stackComments.pin
+        //            .after(of: stackLikes)
+        //            .vCenter().marginLeft(5)
+        //            .width(21%).height(30)
+        //        stackReposts.pin
+        //            .after(of: stackComments)
+        //            .vCenter().marginLeft(5)
+        //            .width(21%).height(30)
+        //        stackViews.pin
+        //            .vCenter().right(5)
+        //            .width(30%).height(30)
+        //separator
+        viewSeparator.pin
+            .below(of: viewButtons)
+            .left(0).right(0).bottom(0).height(10).pinEdges()
+        bottomSeparator.pin
+            .top(0).left(0).right(0).height(0.5)
+       
     }
     
     
-    func load(feed: VkFeed) {
-        labelFeedGroupHeader.text = feed.sourceName
+    func configure(feed: VkFeed) {
+        setNeedsLayout()
+        
         labelDate.text = feed.getFeedDate()
-        if feed.feedText.count == 0 && viewTextHeightConstraint != nil {
-            viewTextHeightConstraint.constant = 0
-            self.layoutIfNeeded()
+        labelFeedGroupHeader.text = feed.sourceName
+        
+        if feed.feedText.count == 0 {
+            viewText.pin.height(0)
+        } else {
+            viewText.pin.height(100)
         }
         labelText.text = feed.feedText
-        
-        imageViewGroup.sd_setImage(with: URL(string: feed.sourceUrl), placeholderImage: UIImage(named: "noPhoto"))
-        
-        if feed.attachments.count > 0 {
-            imageHeightConstraint.constant = self.frame.width * CGFloat(feed.attachments[0].height) / CGFloat(feed.attachments[0].width)
-            
-//            imageNew.sd_setImage(with: URL(string: feed.attachments[0].imageUrl), placeholderImage: UIImage(named: "noPhoto"))
-            
-            // попытка сделать blur фотки,
-            // а потом заанимировать на переход к нормальной фотке
-            
-            operation = SDWebImageManager.shared().loadImage(with: URL(string: feed.attachments[0].imageUrl), options: .highPriority, progress: nil, completed: {
-                (image: UIImage?, data: Data?, error: Error?, cacheType: SDImageCacheType, finished: Bool, url: URL?) in
-                if let image = image {
-                    self.generateBlureImage(image)
-                } else {
-                    self.imageNew.image = UIImage(named: "noPhoto")
-                }
-            })
-        } else {
-            imageHeightConstraint.constant = 0
-        }
-        self.layoutIfNeeded()
         
         labelLike.text = feed.getStringFrom(count: feed.countLikes)
         labelViews.text = feed.getStringFrom(count: feed.countViews)
         labelShare.text = feed.getStringFrom(count: feed.countReposts)
         labelComment.text = feed.getStringFrom(count: feed.countComments)
         
-//        buttonLike.setupView(isLiked: feed.isLiked, countLikes: feed.countLikes)
-//        imageComment.tintColor = UIColor.lightGray
-//        labelCountViews.text = getStringFrom(count: feed.countViews)
+        imageViewGroup.sd_setImage(with: URL(string: feed.sourceUrl), placeholderImage: UIImage(named: "noPhoto"))
         
+        if feed.attachments.count > 0 {
+            let height = self.frame.width * CGFloat(feed.attachments[0].height) / CGFloat(feed.attachments[0].width)
+            imageNew.pin.height(height)
+            
+            imageNew.sd_setImage(with: URL(string: feed.attachments[0].imageUrl), placeholderImage: UIImage(named: "noPhoto"))
+        } else {
+            imageNew.pin.height(0)
+        }
+        
+
+    }
+    
+    
+    
+    private func prepareBlur() {
+        // попытка сделать blur фотки,
+        // а потом заанимировать на переход к нормальной фотке
+        
+        //            operation = SDWebImageManager.shared().loadImage(with: URL(string: feed.attachments[0].imageUrl), options: .highPriority, progress: nil, completed: {
+        //                (image: UIImage?, data: Data?, error: Error?, cacheType: SDImageCacheType, finished: Bool, url: URL?) in
+        //                if let image = image {
+        //                    self.generateBlureImage(image)
+        //                } else {
+        //                    self.imageNew.image = UIImage(named: "noPhoto")
+        //                }
+        //            })
     }
     
     
@@ -140,75 +194,61 @@ class NewsTableViewCell: UITableViewCell {
         }
     }
     
-    
-    func loadData(new: New, needPhoto: Bool) {
-//        labelNews.text = new.text
-        buttonLike.setupView(isLiked: new.isLiked, countLikes: new.likeCount)
 
-        setTaps()
-    }
+}
+
+
+//MARK: - unused
+extension NewsTableViewCell {
     
-    
-    
-    
-    private func setTaps() {
-        let imageTap = UITapGestureRecognizer(target: self, action: #selector(self.imageTapped(_:)))
-        imageNew.addGestureRecognizer(imageTap)
-        
-        let tap = UITapGestureRecognizer(target: self, action: #selector(self.likeTapped(_:)))
-        buttonLike.addGestureRecognizer(tap)
-        
-        let commentTap = UITapGestureRecognizer(target: self, action: #selector(self.commentTapped(_:)))
-        imageComment.addGestureRecognizer(commentTap)
-    }
-    
-    
-    @objc func likeTapped(_ sender: UITapGestureRecognizer) {
-        UIView.transition(with: buttonLike,
-                          duration: 0.25,
-                          options: buttonLike.isLiked ? .transitionFlipFromRight : .transitionFlipFromLeft,
-                          animations: {
-                            self.buttonLike.changeLike()
-        })
-        if let delegate = delegate {
-            delegate.changeLike(row: buttonLike.tag)
-        }
-    }
-    
-    @objc func commentTapped(_ sender: UITapGestureRecognizer) {
-        
-        UIView.transition(with: imageComment,
-                          duration: 0.25,
-                          options: .transitionFlipFromLeft,
-                          animations: {
-                            self.imageComment.image = UIImage(named:"comment")
-        })
-    }
-    
-    @objc func imageTapped(_ sender: UITapGestureRecognizer) {
-        let imageWidth = imageNew.frame.width
-        let scale = imageWidth * 0.6
-        let originY = imageNew.frame.origin.y
-        
-        UIView.animate(withDuration: 0.2, animations: {
-            self.imageNew.bounds = CGRect(x: scale / 2 , y: originY + scale / 2, width: scale, height: scale)
-        }, completion: { _ in
-            UIView.animate(withDuration: 0.5,
-                           delay: 0,
-                           usingSpringWithDamping: 0.5,
-                           initialSpringVelocity: 0.7,
-                           options: [],
-                           animations: {
-                            self.imageNew.bounds = CGRect(x: 0, y: originY, width: imageWidth, height: imageWidth)
-            })
-        })
-    }
-    
-    
-    
-    
-    
-    
-    
+    //    private func setTaps() {
+    //        let imageTap = UITapGestureRecognizer(target: self, action: #selector(self.imageTapped(_:)))
+    //        imageNew.addGestureRecognizer(imageTap)
+    //
+    //        let tap = UITapGestureRecognizer(target: self, action: #selector(self.likeTapped(_:)))
+    //        buttonLike.addGestureRecognizer(tap)
+    //
+    //        let commentTap = UITapGestureRecognizer(target: self, action: #selector(self.commentTapped(_:)))
+    //        imageComment.addGestureRecognizer(commentTap)
+    //    }
+    //
+    //
+    //    @objc func likeTapped(_ sender: UITapGestureRecognizer) {
+    //        UIView.transition(with: buttonLike, duration: 0.25, options: buttonLike.isLiked ? .transitionFlipFromRight : .transitionFlipFromLeft, animations: {
+    //            self.buttonLike.changeLike()
+    //        })
+    //        if let delegate = delegate {
+    //            delegate.changeLike(row: buttonLike.tag)
+    //        }
+    //    }
+    //
+    //    @objc func commentTapped(_ sender: UITapGestureRecognizer) {
+    //
+    //        UIView.transition(with: imageComment,
+    //                          duration: 0.25,
+    //                          options: .transitionFlipFromLeft,
+    //                          animations: {
+    //                            self.imageComment.image = UIImage(named:"comment")
+    //        })
+    //    }
+    //
+    //    @objc func imageTapped(_ sender: UITapGestureRecognizer) {
+    //        let imageWidth = imageNew.frame.width
+    //        let scale = imageWidth * 0.6
+    //        let originY = imageNew.frame.origin.y
+    //
+    //        UIView.animate(withDuration: 0.2, animations: {
+    //            self.imageNew.bounds = CGRect(x: scale / 2 , y: originY + scale / 2, width: scale, height: scale)
+    //        }, completion: { _ in
+    //            UIView.animate(withDuration: 0.5,
+    //                           delay: 0,
+    //                           usingSpringWithDamping: 0.5,
+    //                           initialSpringVelocity: 0.7,
+    //                           options: [],
+    //                           animations: {
+    //                            self.imageNew.bounds = CGRect(x: 0, y: originY, width: imageWidth, height: imageWidth)
+    //            })
+    //        })
+    //    }
 
 }

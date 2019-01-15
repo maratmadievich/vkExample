@@ -31,6 +31,7 @@
 		844ACE352186BFC500565895 /* VkFriend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844ACE342186BFC500565895 /* VkFriend.swift */; };
 		844ACE372186D98900565895 /* VkGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844ACE362186D98900565895 /* VkGroup.swift */; };
 		8483336821B1534000C69640 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8483336721B1534000C69640 /* GoogleService-Info.plist */; };
+		84A74D8321EDC12900AE5A76 /* NewsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A74D8221EDC12900AE5A76 /* NewsTableViewCell.swift */; };
 		84C120962161C5AD0044CBEB /* GroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C120952161C5AD0044CBEB /* GroupsViewController.swift */; };
 		84C1209B2161C6ED0044CBEB /* MyGroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C1209A2161C6ED0044CBEB /* MyGroupCell.swift */; };
 		84D1DEBC21AE624A006FC20E /* NewsInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D1DEBB21AE624A006FC20E /* NewsInfoViewController.swift */; };
@@ -56,7 +57,7 @@
 		AA5766F22160DBA70029F786 /* FriendHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA5766F12160DBA70029F786 /* FriendHeaderTableViewCell.swift */; };
 		AA5766F52160DEC40029F786 /* CustomControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA5766F42160DEC40029F786 /* CustomControl.swift */; };
 		AA5766F72160E9080029F786 /* CustomLike.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA5766F62160E9080029F786 /* CustomLike.swift */; };
-		AA5766FA2160EFE50029F786 /* NewsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA5766F92160EFE50029F786 /* NewsTableViewCell.swift */; };
+		AA5766FA2160EFE50029F786 /* NewsTableViewCellOld.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA5766F92160EFE50029F786 /* NewsTableViewCellOld.swift */; };
 		AA5766FD2160F0C10029F786 /* NewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA5766FC2160F0C10029F786 /* NewsViewController.swift */; };
 		AA5766FF2160F2CD0029F786 /* New.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA5766FE2160F2CD0029F786 /* New.swift */; };
 /* End PBXBuildFile section */
@@ -85,6 +86,7 @@
 		844ACE342186BFC500565895 /* VkFriend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VkFriend.swift; sourceTree = "<group>"; };
 		844ACE362186D98900565895 /* VkGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VkGroup.swift; sourceTree = "<group>"; };
 		8483336721B1534000C69640 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		84A74D8221EDC12900AE5A76 /* NewsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsTableViewCell.swift; sourceTree = "<group>"; };
 		84C120952161C5AD0044CBEB /* GroupsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsViewController.swift; sourceTree = "<group>"; };
 		84C1209A2161C6ED0044CBEB /* MyGroupCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyGroupCell.swift; sourceTree = "<group>"; };
 		84D1DEBB21AE624A006FC20E /* NewsInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsInfoViewController.swift; sourceTree = "<group>"; };
@@ -112,7 +114,7 @@
 		AA5766F12160DBA70029F786 /* FriendHeaderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendHeaderTableViewCell.swift; sourceTree = "<group>"; };
 		AA5766F42160DEC40029F786 /* CustomControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomControl.swift; sourceTree = "<group>"; };
 		AA5766F62160E9080029F786 /* CustomLike.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLike.swift; sourceTree = "<group>"; };
-		AA5766F92160EFE50029F786 /* NewsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsTableViewCell.swift; sourceTree = "<group>"; };
+		AA5766F92160EFE50029F786 /* NewsTableViewCellOld.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsTableViewCellOld.swift; sourceTree = "<group>"; };
 		AA5766FC2160F0C10029F786 /* NewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsViewController.swift; sourceTree = "<group>"; };
 		AA5766FE2160F2CD0029F786 /* New.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = New.swift; sourceTree = "<group>"; };
 		B1F60E259C4E88A48D0AC259 /* Pods-homeWork_1.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-homeWork_1.debug.xcconfig"; path = "Pods/Target Support Files/Pods-homeWork_1/Pods-homeWork_1.debug.xcconfig"; sourceTree = "<group>"; };
@@ -386,7 +388,8 @@
 		AA5766F82160EFCE0029F786 /* news */ = {
 			isa = PBXGroup;
 			children = (
-				AA5766F92160EFE50029F786 /* NewsTableViewCell.swift */,
+				84A74D8221EDC12900AE5A76 /* NewsTableViewCell.swift */,
+				AA5766F92160EFE50029F786 /* NewsTableViewCellOld.swift */,
 				84D1DEBD21AE745D006FC20E /* NewsInfoTableViewCell.swift */,
 			);
 			path = news;
@@ -567,6 +570,7 @@
 				842A03E0216C860000FAFF92 /* CustomIndicator.swift in Sources */,
 				8415662D21B7916500AF9803 /* SearchGroupViewController.swift in Sources */,
 				84D1DEC021AE8AB9006FC20E /* VkCommentProfile.swift in Sources */,
+				84A74D8321EDC12900AE5A76 /* NewsTableViewCell.swift in Sources */,
 				844ACE352186BFC500565895 /* VkFriend.swift in Sources */,
 				8415662F21B7918C00AF9803 /* MainGroupViewController.swift in Sources */,
 				8442AB9721870B13003DDA6A /* VkPhoto.swift in Sources */,
@@ -581,7 +585,7 @@
 				AA5766F02160D82B0029F786 /* FriendList.swift in Sources */,
 				84EC564A21A2A2DB00C8542C /* VkFeed.swift in Sources */,
 				8424E55C2177401700188E61 /* CustomNavigationController.swift in Sources */,
-				AA5766FA2160EFE50029F786 /* NewsTableViewCell.swift in Sources */,
+				AA5766FA2160EFE50029F786 /* NewsTableViewCellOld.swift in Sources */,
 				8442ABB021957D2D003DDA6A /* RealmWorker.swift in Sources */,
 				AA5766EC2160B5A10029F786 /* FriendInfoViewController.swift in Sources */,
 				840110E021EC364C0044AEB7 /* TestViewController.swift in Sources */,
