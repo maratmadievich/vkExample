@@ -29,9 +29,10 @@ class GroupsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.title = "Группы"
+//        self.navigationItem.title = "Группы"
         setTableViewSettings()
         setSearchBarSettings()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -39,10 +40,14 @@ class GroupsViewController: UIViewController {
         setObserver()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        removeObserver()
+    }
+    
     
     private func setTableViewSettings() {
-        tableView.delegate = self
-        tableView.dataSource = self
+//        tableView.delegate = self
+//        tableView.dataSource = self
         self.tableView.tableFooterView = UIView(frame: CGRect.zero)
     }
     
@@ -60,6 +65,7 @@ class GroupsViewController: UIViewController {
                
             case .initial(let collection):
 //                print(collection)
+                self.tableView.reloadData()
                 break
             case .update(let collection, let deletions, let insertions, let modifications):
                 if !self.searchActive {
@@ -84,6 +90,11 @@ class GroupsViewController: UIViewController {
                 print(error.localizedDescription)
             }
         }
+    }
+    
+    
+    private func removeObserver() {
+        notificationTokenGroups = nil
     }
     
     

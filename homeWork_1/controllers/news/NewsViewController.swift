@@ -13,6 +13,10 @@ class NewsViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     private let refreshControl = UIRefreshControl()
     
+//    private let exampleCell = NewsTableViewCell()
+    private var textHeight: CGFloat = 0
+    private var imageHeight: CGFloat = 0
+    
     
     private var feeds = [VkFeed]()
     
@@ -84,6 +88,8 @@ class NewsViewController: UIViewController {
 }
 
 extension NewsViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return feeds.count
@@ -108,6 +114,16 @@ extension NewsViewController: UITableViewDelegate, UITableViewDataSource {
             
             prepareGetFeeds(needClearNews: false)
         }
+    }
+    
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        textHeight = feeds[indexPath.row].feedText.count > 0 ? 70 : 0
+        imageHeight = feeds[indexPath.row].attachments.count > 0 ? self.view.frame.width * CGFloat(feeds[indexPath.row].attachments[0].height) / CGFloat(feeds[indexPath.row].attachments[0].width) : 0
+        let height = CGFloat(10 + 10 + 60 + imageHeight + textHeight + 40 + 10)
+        
+        return height
     }
 
 }

@@ -21,10 +21,8 @@ class NewsTableViewCell: UITableViewCell {
     @IBOutlet weak var labelDate: UILabel!
     
     @IBOutlet weak var imageNew: UIImageView!
-    @IBOutlet weak var viewText: UIView!
     @IBOutlet weak var labelText: UILabel!
     
-    @IBOutlet weak var viewButtons: UIView!
     @IBOutlet weak var viewSeparator: UIView!
     @IBOutlet weak var bottomSeparator: UIView!
     
@@ -54,6 +52,7 @@ class NewsTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
         imageViewLike.tintColor = UIColor.lightGray
         imageViewShare.tintColor = UIColor.lightGray
         imageViewComment.tintColor = UIColor.lightGray
@@ -64,75 +63,63 @@ class NewsTableViewCell: UITableViewCell {
     override func prepareForReuse() {
         labelText.text = ""
         labelFeedGroupHeader.text = ""
+        
         imageNew.image = nil
+        
         if operation != nil {
             operation.cancel()
         }
     }
     
     override func layoutSubviews() {
-         super.layoutSubviews()
-        viewIconContainer.pin
-            .top(10).left(15).size(60)
+        super.layoutSubviews()
+        viewIconContainer.pin.top(10).left(15).size(60)
         imageViewGroup.pin.all()
-        labelFeedGroupHeader.pin
-            .after(of: viewIconContainer).sizeToFit(.width)
+        
+        labelFeedGroupHeader.pin.after(of: viewIconContainer)
             .top(15).right(0).height(25).marginHorizontal(15).sizeToFit(.width)
-        labelDate.pin
-            .below(of: labelFeedGroupHeader, aligned: .left)
+        labelDate.pin.below(of: labelFeedGroupHeader, aligned: .left)
             .width(of: labelFeedGroupHeader).sizeToFit(.width).marginTop(10)
         
         //image with text
-        imageNew.pin
-            .below(of: viewIconContainer)
-            .left(0).right(0)
-        viewText.pin
-            .below(of: imageNew)
-            .left(0).right(0).pinEdges()
-        labelText.pin.marginTop(8).marginBottom(8)
-            .marginLeft(16).marginRight(16)
+        imageNew.pin.below(of: viewIconContainer)
+            .left(0).right(0).marginTop(10)
+        labelText.pin.below(of: imageNew)
+            .left(16).right(16)
+            .marginTop(8).marginBottom(8)
         
         //buttons
-        viewButtons.pin
-            .below(of: viewText)
-            .left(0).right(0).height(40).pinEdges()
-        //        stackLikes.pin
-        //            .vCenter().left(10)
-        //            .width(21%).height(30)
-        //        stackComments.pin
-        //            .after(of: stackLikes)
-        //            .vCenter().marginLeft(5)
-        //            .width(21%).height(30)
-        //        stackReposts.pin
-        //            .after(of: stackComments)
-        //            .vCenter().marginLeft(5)
-        //            .width(21%).height(30)
-        //        stackViews.pin
-        //            .vCenter().right(5)
-        //            .width(30%).height(30)
+        let widthButton = self.frame.size.width * 21 / 100
+        let widthViews = self.frame.size.width * 30 / 100
+        stackLikes.pin.below(of: labelText)
+            .left(10).width(widthButton).height(30)
+        stackComments.pin.after(of: stackLikes, aligned: .top)
+            .marginLeft(5).width(widthButton).height(30)
+        stackReposts.pin.after(of: stackComments, aligned: .top)
+            .marginLeft(5).width(widthButton).height(30)
+        stackViews.pin.after(of: stackReposts, aligned: .top)
+            .right(5).width(widthViews).height(30)
+        
         //separator
-        viewSeparator.pin
-            .below(of: viewButtons)
+        viewSeparator.pin.below(of: stackLikes)
             .left(0).right(0).bottom(0).height(10).pinEdges()
         bottomSeparator.pin
             .top(0).left(0).right(0).height(0.5)
-       
     }
     
     
     func configure(feed: VkFeed) {
-        setNeedsLayout()
         
         labelDate.text = feed.getFeedDate()
         labelFeedGroupHeader.text = feed.sourceName
         
         if feed.feedText.count == 0 {
-            viewText.pin.height(0)
+            labelText.pin.height(0)
         } else {
-            viewText.pin.height(100)
+            labelText.pin.height(70)
         }
-        labelText.text = feed.feedText
         
+        labelText.text = feed.feedText
         labelLike.text = feed.getStringFrom(count: feed.countLikes)
         labelViews.text = feed.getStringFrom(count: feed.countViews)
         labelShare.text = feed.getStringFrom(count: feed.countReposts)
@@ -141,58 +128,23 @@ class NewsTableViewCell: UITableViewCell {
         imageViewGroup.sd_setImage(with: URL(string: feed.sourceUrl), placeholderImage: UIImage(named: "noPhoto"))
         
         if feed.attachments.count > 0 {
+            
             let height = self.frame.width * CGFloat(feed.attachments[0].height) / CGFloat(feed.attachments[0].width)
+            
             imageNew.pin.height(height)
             
             imageNew.sd_setImage(with: URL(string: feed.attachments[0].imageUrl), placeholderImage: UIImage(named: "noPhoto"))
+            
         } else {
             imageNew.pin.height(0)
         }
         
+        setNeedsLayout()
+        layoutIfNeeded()
+    }
+    
+    
 
-    }
-    
-    
-    
-    private func prepareBlur() {
-        // попытка сделать blur фотки,
-        // а потом заанимировать на переход к нормальной фотке
-        
-        //            operation = SDWebImageManager.shared().loadImage(with: URL(string: feed.attachments[0].imageUrl), options: .highPriority, progress: nil, completed: {
-        //                (image: UIImage?, data: Data?, error: Error?, cacheType: SDImageCacheType, finished: Bool, url: URL?) in
-        //                if let image = image {
-        //                    self.generateBlureImage(image)
-        //                } else {
-        //                    self.imageNew.image = UIImage(named: "noPhoto")
-        //                }
-        //            })
-    }
-    
-    
-    private func generateBlureImage(_ image: UIImage) {
-        DispatchQueue.global(qos: .userInteractive).async {
-            let inputCIImage = CIImage(image: image)!
-            let blurFilter = CIFilter(name: "CIGaussianBlur", withInputParameters: [kCIInputImageKey: inputCIImage])!
-            let outputImage = blurFilter.outputImage!
-            let context = CIContext()
-            
-            let cgiImage = context.createCGImage(outputImage, from: outputImage.extent)
-            let bluredImage = UIImage(cgImage: cgiImage!)
-            self.animateImage(blur: bluredImage, origin: image)
-        }
-    }
-    
-    
-    private func animateImage(blur: UIImage, origin: UIImage) {
-        if operation != nil {
-            DispatchQueue.main.async {
-                self.imageNew.image = blur
-            }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                UIView.transition(with: self.imageNew, duration: 0.2, options: .transitionCrossDissolve, animations: { self.imageNew.image = origin }, completion: nil)
-            }
-        }
-    }
     
 
 }
@@ -250,5 +202,46 @@ extension NewsTableViewCell {
     //            })
     //        })
     //    }
+    
+    
+    private func prepareBlur() {
+        // попытка сделать blur фотки,
+        // а потом заанимировать на переход к нормальной фотке
+        
+        //            operation = SDWebImageManager.shared().loadImage(with: URL(string: feed.attachments[0].imageUrl), options: .highPriority, progress: nil, completed: {
+        //                (image: UIImage?, data: Data?, error: Error?, cacheType: SDImageCacheType, finished: Bool, url: URL?) in
+        //                if let image = image {
+        //                    self.generateBlureImage(image)
+        //                } else {
+        //                    self.imageNew.image = UIImage(named: "noPhoto")
+        //                }
+        //            })
+    }
+    
+    
+    private func generateBlureImage(_ image: UIImage) {
+        DispatchQueue.global(qos: .userInteractive).async {
+            let inputCIImage = CIImage(image: image)!
+            let blurFilter = CIFilter(name: "CIGaussianBlur", withInputParameters: [kCIInputImageKey: inputCIImage])!
+            let outputImage = blurFilter.outputImage!
+            let context = CIContext()
+            
+            let cgiImage = context.createCGImage(outputImage, from: outputImage.extent)
+            let bluredImage = UIImage(cgImage: cgiImage!)
+            self.animateImage(blur: bluredImage, origin: image)
+        }
+    }
+    
+    
+    private func animateImage(blur: UIImage, origin: UIImage) {
+        if operation != nil {
+            DispatchQueue.main.async {
+                self.imageNew.image = blur
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                UIView.transition(with: self.imageNew, duration: 0.2, options: .transitionCrossDissolve, animations: { self.imageNew.image = origin }, completion: nil)
+            }
+        }
+    }
 
 }

@@ -22,7 +22,7 @@ class SearchGroupViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.title = "Группы"
+//        self.navigationItem.title = "Группы"
         setTableViewSettings()
         setSearchBarSettings()
     }
@@ -33,8 +33,6 @@ class SearchGroupViewController: UIViewController {
     
     
     private func setTableViewSettings() {
-        tableView.delegate = self
-        tableView.dataSource = self
         self.tableView.tableFooterView = UIView(frame: CGRect.zero)
     }
     

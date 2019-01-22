@@ -26,6 +26,7 @@ class MyGroupCell: UITableViewCell {
     
     func load(_ group: VkGroup) {
         self.group = group
+        
         labelName.text = group.name
         labelType.text = group.getType()
         labelMember.text = group.is_member > 0 ? "Вы вступили" : ""
