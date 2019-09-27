@@ -107,11 +107,6 @@ class NewsTableViewCellOld: UITableViewCell {
         labelViews.text = feed.getStringFrom(count: feed.countViews)
         labelShare.text = feed.getStringFrom(count: feed.countReposts)
         labelComment.text = feed.getStringFrom(count: feed.countComments)
-        
-//        buttonLike.setupView(isLiked: feed.isLiked, countLikes: feed.countLikes)
-//        imageComment.tintColor = UIColor.lightGray
-//        labelCountViews.text = getStringFrom(count: feed.countViews)
-        
     }
     
     
