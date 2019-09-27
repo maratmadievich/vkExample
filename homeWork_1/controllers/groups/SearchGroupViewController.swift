@@ -13,7 +13,8 @@ class SearchGroupViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
-    
+	
+	private let networkAdapter = NetworkAdapter()
     private var groups = [VkGroup]()
     
     var searchActive = false
@@ -121,15 +122,15 @@ extension SearchGroupViewController: UITableViewDelegate, UITableViewDataSource 
 extension SearchGroupViewController {
     
     private func getGroups(by search: String) {
-        AlamofireService.instance.searchGroups(search: search, delegate: self)
+        networkAdapter.searchGroups(search: search, delegate: self)
     }
     
     private func leaveGroup(by gid: Int) {
-        AlamofireService.instance.leaveGroup(gid: gid, delegate: self)
+        networkAdapter.leaveGroup(gid: gid, delegate: self)
     }
     
     private func joinGroup(by gid: Int) {
-        AlamofireService.instance.joinGroup(gid: gid, delegate: self)
+        networkAdapter.joinGroup(gid: gid, delegate: self)
     }
 }
 

@@ -13,10 +13,10 @@ class GroupsViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
-    
+	
+	private let networkAdapter = NetworkAdapter()
 //    private var groups = [VkGroup]()
 //    private var filteredGroups = [VkGroup]()
-    
     //неюзаемая штука для показа возможностей
     private var groups: Results<VkGroup>?
     private var filteredGroups: Results<VkGroup>?
@@ -182,7 +182,7 @@ extension GroupsViewController: UITableViewDelegate, UITableViewDataSource {
 extension GroupsViewController {
     
     private func getMyGroups() {
-        AlamofireService.instance.getGroups(delegate: self)
+        networkAdapter.getGroups(delegate: self)
     }
     
     private func getGroups(by search: String) {
@@ -217,11 +217,11 @@ extension GroupsViewController {
     }
     
     private func leaveGroup(by gid: Int) {
-        AlamofireService.instance.leaveGroup(gid: gid, delegate: self)
+        networkAdapter.leaveGroup(gid: gid, delegate: self)
     }
     
     private func joinGroup(by gid: Int) {
-        AlamofireService.instance.joinGroup(gid: gid, delegate: self)
+        networkAdapter.joinGroup(gid: gid, delegate: self)
     }
 }
 

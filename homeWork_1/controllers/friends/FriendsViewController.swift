@@ -21,7 +21,7 @@ class FriendsViewController: UIViewController {
     
     @IBOutlet weak var searchBar: CustomSearchBar!
     
-    
+	private let networkAdapter = NetworkAdapter()
     var searchActive = false
     
     private var selectedSection = -1
@@ -121,7 +121,7 @@ extension FriendsViewController {
                 print(error.localizedDescription)
             }
         }
-        AlamofireService.instance.getFriends(delegate: self)
+        networkAdapter.getFriends(delegate: self)
     }
     
     private func migrateFriends() {

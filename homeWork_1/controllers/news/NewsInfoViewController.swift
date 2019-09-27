@@ -12,6 +12,7 @@ class NewsInfoViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
 
+	private let networkAdapter = NetworkAdapter()
     var feed = VkFeed()
     var comments = [VkComment]()
     
@@ -32,7 +33,7 @@ class NewsInfoViewController: UIViewController {
     }
     
     private func prepareGetComments() {
-        AlamofireService.instance.getComments(ownerId: feed.sourceId, postId: feed.feedId, delegate: self)
+        networkAdapter.getComments(ownerId: feed.sourceId, postId: feed.feedId, delegate: self)
     }
     
 
