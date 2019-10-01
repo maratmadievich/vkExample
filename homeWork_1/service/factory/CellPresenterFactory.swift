@@ -7,3 +7,27 @@
 //
 
 import Foundation
+
+class CellPresenterFactory {
+	
+	internal func makeGroupCellPresenter(group: VkGroup) -> GroupCellPresenterProtocol {
+		return GroupCellPresenter(group: group)
+	}
+	
+	internal func makeFriendCellPresenter(friend: VkFriend) -> FriendCellPresenterProtocol {
+		return FriendCellPresenter(friend: friend)
+	}
+	
+	internal func makeFriendHeaderPresenter(friendList: FriendList) -> FriendHeaderCellPresenterProtocol {
+		return FriendHeaderCellPresenter(friendList: friendList)
+	}
+	
+	internal func makeCommentCellPresenter(commnent: VkComment) -> CommentCellPresenterProtocol {
+		return CommentCellPresenter(comment: commnent)
+	}
+	
+	internal func makeFeedCellPresenter(feed: VkFeed) -> FeedCellPresenterProtocol {
+		return FeedCellPresenter(feed: feed)
+	}
+	
+}

@@ -63,6 +63,12 @@
 		AA86093D233DE86C00372517 /* UIColorEx.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA86093C233DE86C00372517 /* UIColorEx.swift */; };
 		AA86093F233DE87900372517 /* UIFontEx.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA86093E233DE87900372517 /* UIFontEx.swift */; };
 		AA860942233DF59700372517 /* NetworkAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA860941233DF59700372517 /* NetworkAdapter.swift */; };
+		AA8609692342497E00372517 /* CommentTableViewCellPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8609682342497E00372517 /* CommentTableViewCellPresenter.swift */; };
+		AA86096B23424D0F00372517 /* FriendCellPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA86096A23424D0F00372517 /* FriendCellPresenter.swift */; };
+		AA86096D2342505B00372517 /* FriendHeaderCellPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA86096C2342505B00372517 /* FriendHeaderCellPresenter.swift */; };
+		AA86096F234251E500372517 /* GroupCellPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA86096E234251E500372517 /* GroupCellPresenter.swift */; };
+		AA8609722342533000372517 /* CellPresenterFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8609712342533000372517 /* CellPresenterFactory.swift */; };
+		AA86097423432D9C00372517 /* FeedCellPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA86097323432D9C00372517 /* FeedCellPresenter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -123,6 +129,12 @@
 		AA86093C233DE86C00372517 /* UIColorEx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorEx.swift; sourceTree = "<group>"; };
 		AA86093E233DE87900372517 /* UIFontEx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFontEx.swift; sourceTree = "<group>"; };
 		AA860941233DF59700372517 /* NetworkAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkAdapter.swift; sourceTree = "<group>"; };
+		AA8609682342497E00372517 /* CommentTableViewCellPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewCellPresenter.swift; sourceTree = "<group>"; };
+		AA86096A23424D0F00372517 /* FriendCellPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendCellPresenter.swift; sourceTree = "<group>"; };
+		AA86096C2342505B00372517 /* FriendHeaderCellPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendHeaderCellPresenter.swift; sourceTree = "<group>"; };
+		AA86096E234251E500372517 /* GroupCellPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCellPresenter.swift; sourceTree = "<group>"; };
+		AA8609712342533000372517 /* CellPresenterFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellPresenterFactory.swift; sourceTree = "<group>"; };
+		AA86097323432D9C00372517 /* FeedCellPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCellPresenter.swift; sourceTree = "<group>"; };
 		B1F60E259C4E88A48D0AC259 /* Pods-homeWork_1.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-homeWork_1.debug.xcconfig"; path = "Pods/Target Support Files/Pods-homeWork_1/Pods-homeWork_1.debug.xcconfig"; sourceTree = "<group>"; };
 		CE1F4887F01F3E518C13D6ED /* Pods-homeWork_1.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-homeWork_1.release.xcconfig"; path = "Pods/Target Support Files/Pods-homeWork_1/Pods-homeWork_1.release.xcconfig"; sourceTree = "<group>"; };
 		FB03EE607AE3B19FD932EA7A /* Pods_homeWork_1.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_homeWork_1.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -227,6 +239,7 @@
 			isa = PBXGroup;
 			children = (
 				84C1209A2161C6ED0044CBEB /* MyGroupCell.swift */,
+				AA86096E234251E500372517 /* GroupCellPresenter.swift */,
 			);
 			path = groups;
 			sourceTree = "<group>";
@@ -234,6 +247,7 @@
 		84D1DEB821AD5F16006FC20E /* service */ = {
 			isa = PBXGroup;
 			children = (
+				AA8609702342531700372517 /* factory */,
 				AA860940233DF58300372517 /* Network */,
 				8442ABA8219132B7003DDA6A /* AlamofireService.swift */,
 				8442ABAA2192EC0D003DDA6A /* VkResponseParser.swift */,
@@ -247,6 +261,7 @@
 			isa = PBXGroup;
 			children = (
 				84D1DEC421AE926B006FC20E /* CommentTableViewCell.swift */,
+				AA8609682342497E00372517 /* CommentTableViewCellPresenter.swift */,
 			);
 			path = comment;
 			sourceTree = "<group>";
@@ -378,6 +393,8 @@
 				AA5766E92160AE950029F786 /* FriendTableViewCell.swift */,
 				AA5766ED2160CB9C0029F786 /* FriendCollectionViewCell.swift */,
 				AA5766F12160DBA70029F786 /* FriendHeaderTableViewCell.swift */,
+				AA86096A23424D0F00372517 /* FriendCellPresenter.swift */,
+				AA86096C2342505B00372517 /* FriendHeaderCellPresenter.swift */,
 			);
 			path = friends;
 			sourceTree = "<group>";
@@ -399,6 +416,7 @@
 				84A74D8221EDC12900AE5A76 /* NewsTableViewCell.swift */,
 				AA5766F92160EFE50029F786 /* NewsTableViewCellOld.swift */,
 				84D1DEBD21AE745D006FC20E /* NewsInfoTableViewCell.swift */,
+				AA86097323432D9C00372517 /* FeedCellPresenter.swift */,
 			);
 			path = news;
 			sourceTree = "<group>";
@@ -427,6 +445,14 @@
 				AA860941233DF59700372517 /* NetworkAdapter.swift */,
 			);
 			path = Network;
+			sourceTree = "<group>";
+		};
+		AA8609702342531700372517 /* factory */ = {
+			isa = PBXGroup;
+			children = (
+				AA8609712342533000372517 /* CellPresenterFactory.swift */,
+			);
+			path = factory;
 			sourceTree = "<group>";
 		};
 		DB9A454896C63B692F475996 /* Pods */ = {
@@ -552,6 +578,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA86096F234251E500372517 /* GroupCellPresenter.swift in Sources */,
 				AA5766F22160DBA70029F786 /* FriendHeaderTableViewCell.swift in Sources */,
 				AA5766EE2160CB9C0029F786 /* FriendCollectionViewCell.swift in Sources */,
 				842A0408216DB83F00FAFF92 /* CustomSearchBar.swift in Sources */,
@@ -559,6 +586,7 @@
 				AA3D1EB121B25109000ED1C1 /* FirebaseService.swift in Sources */,
 				842A03E0216C860000FAFF92 /* CustomIndicator.swift in Sources */,
 				8415662D21B7916500AF9803 /* SearchGroupViewController.swift in Sources */,
+				AA86096D2342505B00372517 /* FriendHeaderCellPresenter.swift in Sources */,
 				84D1DEC021AE8AB9006FC20E /* VkCommentProfile.swift in Sources */,
 				84A74D8321EDC12900AE5A76 /* NewsTableViewCell.swift in Sources */,
 				844ACE352186BFC500565895 /* VkFriend.swift in Sources */,
@@ -591,12 +619,16 @@
 				AA5766EA2160AE950029F786 /* FriendTableViewCell.swift in Sources */,
 				8424E54921743AA200188E61 /* ImagesViewController.swift in Sources */,
 				AA5766C42160A5AD0029F786 /* AppDelegate.swift in Sources */,
+				AA8609722342533000372517 /* CellPresenterFactory.swift in Sources */,
 				AA86093D233DE86C00372517 /* UIColorEx.swift in Sources */,
 				84D1DEBC21AE624A006FC20E /* NewsInfoViewController.swift in Sources */,
 				8442ABA9219132B7003DDA6A /* AlamofireService.swift in Sources */,
+				AA86097423432D9C00372517 /* FeedCellPresenter.swift in Sources */,
 				84C120962161C5AD0044CBEB /* GroupsViewController.swift in Sources */,
+				AA86096B23424D0F00372517 /* FriendCellPresenter.swift in Sources */,
 				AA5766FD2160F0C10029F786 /* NewsViewController.swift in Sources */,
 				AA86093F233DE87900372517 /* UIFontEx.swift in Sources */,
+				AA8609692342497E00372517 /* CommentTableViewCellPresenter.swift in Sources */,
 				AA5766E32160AD140029F786 /* Extension.swift in Sources */,
 				8424E55521773EDC00188E61 /* CustomPopAnimator.swift in Sources */,
 				84D1DEC221AE8CFD006FC20E /* VkComment.swift in Sources */,

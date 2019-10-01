@@ -22,6 +22,8 @@ class GroupsViewController: UIViewController {
     private var filteredGroups: Results<VkGroup>?
     private var notificationTokenGroups: NotificationToken?
     private var notificationTokenSearchGroups: NotificationToken?
+	
+	private let cellPresenterFactory = CellPresenterFactory()
     
     var searchActive = false
     
@@ -143,9 +145,10 @@ extension GroupsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MyGroupCell", for: indexPath) as! MyGroupCell
-        let group = searchActive ? filteredGroups?[indexPath.row] : groups?[indexPath.row]
-        if let group = group {
-            cell.load(group)
+		
+		if let group = getGroup(by: indexPath.row) {
+			let cellPresenter = cellPresenterFactory.makeGroupCellPresenter(group: group)
+            cell.configure(with: cellPresenter)
         }
         return cell
     }
@@ -175,6 +178,13 @@ extension GroupsViewController: UITableViewDelegate, UITableViewDataSource {
         alert.addAction(UIAlertAction(title: "Отмена", style: .cancel, handler: nil))
         self.present(alert, animated: true)
     }
+	
+	private func getGroup(by row: Int) -> VkGroup? {
+		let group = searchActive
+			? filteredGroups?[row]
+			: groups?[row]
+		return group
+	}
     
 }
 

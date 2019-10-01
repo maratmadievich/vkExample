@@ -15,6 +15,8 @@ class SearchGroupViewController: UIViewController {
     @IBOutlet weak var searchBar: UISearchBar!
 	
 	private let networkAdapter = NetworkAdapter()
+	private let cellPresenterFactory = CellPresenterFactory()
+	
     private var groups = [VkGroup]()
     
     var searchActive = false
@@ -90,7 +92,8 @@ extension SearchGroupViewController: UITableViewDelegate, UITableViewDataSource 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MyGroupCell", for: indexPath) as! MyGroupCell
         let group = groups[indexPath.row]
-        cell.load(group)
+		let cellPresenter = cellPresenterFactory.makeGroupCellPresenter(group: group)
+        cell.configure(with: cellPresenter)
         return cell
     }
     

@@ -14,6 +14,8 @@ class NewsViewController: UIViewController {
     private let refreshControl = UIRefreshControl()
     
 	private let networkAdapter = NetworkAdapter()
+	private let cellPresenterFactory = CellPresenterFactory()
+	
     private var textHeight: CGFloat = 0
     private var imageHeight: CGFloat = 0
     
@@ -97,7 +99,8 @@ extension NewsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "NewsTableViewCell", for: indexPath) as! NewsTableViewCell
-        cell.configure(feed: feeds[indexPath.row])
+		let cellPresenter = cellPresenterFactory.makeFeedCellPresenter(feed: feeds[indexPath.row])
+        cell.configure(with: cellPresenter)
         cell.delegate = self
         return cell
     }
