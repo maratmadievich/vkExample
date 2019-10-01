@@ -73,80 +73,116 @@ class NewsTableViewCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        viewIconContainer.pin.top(10).left(15).size(60)
-        imageViewGroup.pin.all()
-        
-        labelFeedGroupHeader.pin.after(of: viewIconContainer)
-            .top(15).right(0).height(25).marginHorizontal(15).sizeToFit(.width)
-        labelDate.pin.below(of: labelFeedGroupHeader, aligned: .left)
-            .width(of: labelFeedGroupHeader).sizeToFit(.width).marginTop(10)
-        
-        //image with text
-        imageNew.pin.below(of: viewIconContainer)
-            .left(0).right(0).marginTop(10)
-        labelText.pin.below(of: imageNew)
-            .left(16).right(16)
-            .marginTop(8).marginBottom(8)
-        
-        //buttons
-        let widthButton = self.frame.size.width * 21 / 100
-        let widthViews = self.frame.size.width * 30 / 100
-        stackLikes.pin.below(of: labelText)
-            .left(10).width(widthButton).height(30)
-        stackComments.pin.after(of: stackLikes, aligned: .top)
-            .marginLeft(5).width(widthButton).height(30)
-        stackReposts.pin.after(of: stackComments, aligned: .top)
-            .marginLeft(5).width(widthButton).height(30)
-        stackViews.pin.after(of: stackReposts, aligned: .top)
-            .right(5).width(widthViews).height(30)
-        
-        //separator
-        viewSeparator.pin.below(of: stackLikes)
-            .left(0).right(0).bottom(0).height(10).pinEdges()
-        bottomSeparator.pin
-            .top(0).left(0).right(0).height(0.5)
+        configureLayout()
     }
-    
-    
-    func configure(feed: VkFeed) {
-        
-        labelDate.text = feed.getFeedDate()
-        labelFeedGroupHeader.text = feed.sourceName
-        
-        if feed.feedText.count == 0 {
-            labelText.pin.height(0)
-        } else {
-            labelText.pin.height(70)
-        }
-        
-        labelText.text = feed.feedText
-        labelLike.text = feed.getStringFrom(count: feed.countLikes)
-        labelViews.text = feed.getStringFrom(count: feed.countViews)
-        labelShare.text = feed.getStringFrom(count: feed.countReposts)
-        labelComment.text = feed.getStringFrom(count: feed.countComments)
-        
-        imageViewGroup.sd_setImage(with: URL(string: feed.sourceUrl), placeholderImage: UIImage(named: "noPhoto"))
-        
-        if feed.attachments.count > 0 {
-            
-            let height = self.frame.width * CGFloat(feed.attachments[0].height) / CGFloat(feed.attachments[0].width)
-            
-            imageNew.pin.height(height)
-            
-            imageNew.sd_setImage(with: URL(string: feed.attachments[0].imageUrl), placeholderImage: UIImage(named: "noPhoto"))
-            
-        } else {
-            imageNew.pin.height(0)
-        }
-        
-        setNeedsLayout()
-        layoutIfNeeded()
-    }
-    
-    
+	
+	func configure(with presenter: FeedCellPresenterProtocol) {
+		labelDate.text = presenter.getDateTitle()
+		labelFeedGroupHeader.text = presenter.getFeedGroupTitle()
+		
+		if presenter.haveText() {
+			labelText.pin.height(70)
+			labelText.text = presenter.getFeedTitle()
+		} else {
+			labelText.pin.height(0)
+		}
+		
+		labelLike.text = presenter.getLikeCountTitle()
+		labelViews.text = presenter.getViewsCountTitle()
+		labelShare.text = presenter.getSharesCountTitle()
+		labelComment.text = presenter.getCommentsCountTitle()
+		imageViewGroup.sd_setImage(with: presenter.getSourceImageUrl(), placeholderImage: presenter.getImagePlaceholder())
+		
+		if presenter.haveImage() {
+			let height = presenter.getImageHeight(width: self.frame.width)
+			imageNew.pin.height(height)
+			imageNew.sd_setImage(with: presenter.getImageUrl(), placeholderImage: presenter.getImagePlaceholder())
+		} else {
+			imageNew.pin.height(0)
+		}
+		
+		setNeedsLayout()
+		layoutIfNeeded()
+	}
+	
+	/*
+	
+	func configure(feed: VkFeed) {
+	
+	labelDate.text = feed.getFeedDate()
+	labelFeedGroupHeader.text = feed.sourceName
+	
+	if feed.feedText.count == 0 {
+	labelText.pin.height(0)
+	} else {
+	labelText.pin.height(70)
+	}
+	
+	labelText.text = feed.feedText
+	labelLike.text = feed.getStringFrom(count: feed.countLikes)
+	labelViews.text = feed.getStringFrom(count: feed.countViews)
+	labelShare.text = feed.getStringFrom(count: feed.countReposts)
+	labelComment.text = feed.getStringFrom(count: feed.countComments)
+	
+	imageViewGroup.sd_setImage(with: URL(string: feed.sourceUrl), placeholderImage: UIImage(named: "noPhoto"))
+	
+	if feed.attachments.count > 0 {
+	
+	let height = self.frame.width * CGFloat(feed.attachments[0].height) / CGFloat(feed.attachments[0].width)
+	
+	imageNew.pin.height(height)
+	
+	imageNew.sd_setImage(with: URL(string: feed.attachments[0].imageUrl), placeholderImage: UIImage(named: "noPhoto"))
+	
+	} else {
+	imageNew.pin.height(0)
+	}
+	
+	setNeedsLayout()
+	layoutIfNeeded()
+	}
+	
+	*/
+	
+}
 
-    
-
+extension NewsTableViewCell {
+	
+	private func configureLayout() {
+		viewIconContainer.pin.top(10).left(15).size(60)
+		imageViewGroup.pin.all()
+		
+		labelFeedGroupHeader.pin.after(of: viewIconContainer)
+			.top(15).right(0).height(25).marginHorizontal(15).sizeToFit(.width)
+		labelDate.pin.below(of: labelFeedGroupHeader, aligned: .left)
+			.width(of: labelFeedGroupHeader).sizeToFit(.width).marginTop(10)
+		
+		//image with text
+		imageNew.pin.below(of: viewIconContainer)
+			.left(0).right(0).marginTop(10)
+		labelText.pin.below(of: imageNew)
+			.left(16).right(16)
+			.marginTop(8).marginBottom(8)
+		
+		//buttons
+		let widthButton = self.frame.size.width * 21 / 100
+		let widthViews = self.frame.size.width * 30 / 100
+		stackLikes.pin.below(of: labelText)
+			.left(10).width(widthButton).height(30)
+		stackComments.pin.after(of: stackLikes, aligned: .top)
+			.marginLeft(5).width(widthButton).height(30)
+		stackReposts.pin.after(of: stackComments, aligned: .top)
+			.marginLeft(5).width(widthButton).height(30)
+		stackViews.pin.after(of: stackReposts, aligned: .top)
+			.right(5).width(widthViews).height(30)
+		
+		//separator
+		viewSeparator.pin.below(of: stackLikes)
+			.left(0).right(0).bottom(0).height(10).pinEdges()
+		bottomSeparator.pin
+			.top(0).left(0).right(0).height(0.5)
+	}
+	
 }
 
 

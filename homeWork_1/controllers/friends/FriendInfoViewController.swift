@@ -11,7 +11,8 @@ import UIKit
 class FriendInfoViewController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
-    
+	
+	private let networkAdapter = NetworkAdapter()
     var friend = VkFriend()
     var photos = [VkPhoto]()
     
@@ -38,7 +39,7 @@ class FriendInfoViewController: UIViewController {
     
     private func parseFriend() {
         self.navigationItem.title = friend.last_name + " " + friend.first_name
-        AlamofireService.instance.getPhotosBy(friend.uid, delegate: self)
+		networkAdapter.getPhotos(by: friend.uid, delegate: self)
     }
     
 

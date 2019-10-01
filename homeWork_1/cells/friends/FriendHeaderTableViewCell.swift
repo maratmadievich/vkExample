@@ -15,5 +15,10 @@ class FriendHeaderTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
     }
+	
+	
+	func configure(with presenter: FriendHeaderCellPresenterProtocol) {
+		labelTitle.text = presenter.getTitle()
+	}
 
 }

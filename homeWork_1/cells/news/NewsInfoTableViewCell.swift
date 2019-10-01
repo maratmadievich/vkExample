@@ -57,30 +57,58 @@ class NewsInfoTableViewCell: UITableViewCell {
         self.layoutIfNeeded()
         //        setTaps()
     }
+	
+	func configure(with presenter: FeedCellPresenterProtocol) {
+		labelDate.text = presenter.getDateTitle()
+		labelFeedGroupHeader.text = presenter.getFeedGroupTitle()
+		
+		if presenter.haveText() {
+			labelText.pin.height(70)
+			labelText.text = presenter.getFeedTitle()
+		} else {
+			labelText.pin.height(0)
+		}
+		
+		labelLike.text = presenter.getLikeCountTitle()
+		labelViews.text = presenter.getViewsCountTitle()
+		labelShare.text = presenter.getSharesCountTitle()
+		labelComment.text = presenter.getCommentsCountTitle()
+		imageViewGroup.sd_setImage(with: presenter.getSourceImageUrl(), placeholderImage: presenter.getImagePlaceholder())
+		
+		if presenter.haveImage() {
+			let height = presenter.getImageHeight(width: self.frame.width)
+			imageNew.pin.height(height)
+			imageNew.sd_setImage(with: presenter.getImageUrl(), placeholderImage: presenter.getImagePlaceholder())
+		} else {
+			imageHeightConstraint.constant = 0
+		}
+		
+		setNeedsLayout()
+		layoutIfNeeded()
+	}
     
-    
-    func load(feed: VkFeed) {
-        labelFeedGroupHeader.text = feed.sourceName
-        labelDate.text = feed.getFeedDate()
-        labelText.text = feed.feedText
-        
-        imageViewGroup.sd_setImage(with: URL(string: feed.sourceUrl), placeholderImage: UIImage(named: "noPhoto"))
-        
-        if feed.attachments.count > 0 {
-            imageHeightConstraint.constant = self.frame.width * CGFloat(feed.attachments[0].height) / CGFloat(feed.attachments[0].width)
-            
-            imageNew.sd_setImage(with: URL(string: feed.attachments[0].imageUrl), placeholderImage: UIImage(named: "noPhoto"))
-        } else {
-            imageHeightConstraint.constant = 0
-        }
-        self.layoutIfNeeded()
-        
-        labelLike.text = feed.getStringFrom(count: feed.countLikes)
-        labelViews.text = feed.getStringFrom(count: feed.countViews)
-        labelShare.text = feed.getStringFrom(count: feed.countReposts)
-        labelComment.text = feed.getStringFrom(count: feed.countComments)
-    }
-    
+//    func load(feed: VkFeed) {
+//        labelFeedGroupHeader.text = feed.sourceName
+//        labelDate.text = feed.getFeedDate()
+//        labelText.text = feed.feedText
+//
+//        imageViewGroup.sd_setImage(with: URL(string: feed.sourceUrl), placeholderImage: UIImage(named: "noPhoto"))
+//
+//        if feed.attachments.count > 0 {
+//            imageHeightConstraint.constant = self.frame.width * CGFloat(feed.attachments[0].height) / CGFloat(feed.attachments[0].width)
+//
+//            imageNew.sd_setImage(with: URL(string: feed.attachments[0].imageUrl), placeholderImage: UIImage(named: "noPhoto"))
+//        } else {
+//            imageHeightConstraint.constant = 0
+//        }
+//        self.layoutIfNeeded()
+//
+//        labelLike.text = feed.getStringFrom(count: feed.countLikes)
+//        labelViews.text = feed.getStringFrom(count: feed.countViews)
+//        labelShare.text = feed.getStringFrom(count: feed.countReposts)
+//        labelComment.text = feed.getStringFrom(count: feed.countComments)
+//    }
+	
     func loadData(new: New, needPhoto: Bool) {
         buttonLike.setupView(isLiked: new.isLiked, countLikes: new.likeCount)
         setTaps()

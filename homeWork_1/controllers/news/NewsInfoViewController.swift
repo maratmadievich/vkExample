@@ -12,6 +12,9 @@ class NewsInfoViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
 
+	private let networkAdapter = NetworkAdapter()
+	private let cellPresenterFactory = CellPresenterFactory()
+	
     var feed = VkFeed()
     var comments = [VkComment]()
     
@@ -32,31 +35,8 @@ class NewsInfoViewController: UIViewController {
     }
     
     private func prepareGetComments() {
-        AlamofireService.instance.getComments(ownerId: feed.sourceId, postId: feed.feedId, delegate: self)
+        networkAdapter.getComments(ownerId: feed.sourceId, postId: feed.feedId, delegate: self)
     }
-    
-
-//    private func setImages() {
-//        scrollVIewHeightConstraint.constant = scrollViewImages.frame.width / 2
-//
-//        let scrollHeight = scrollViewImages.frame.width / 2
-//
-//        var contentSize: CGFloat = 0
-//        for (index, attachment) in feed.attachments.enumerated() {
-//            let imageHeight = scrollHeight
-//            let imageWidth = imageHeight * CGFloat(attachment.width) / CGFloat(attachment.height)
-//            let imageView = UIImageView.init(frame: CGRect(x: contentSize + 2, y: 0, width: imageWidth, height: imageHeight))
-//            imageView.tag = index
-//            imageView.isUserInteractionEnabled = true
-//            imageView.contentMode = UIViewContentMode.scaleAspectFill
-//            imageView.clipsToBounds = true
-//            scrollViewImages.addSubview(imageView)
-//            imageView.sd_setImage(with: URL(string: attachment.imageUrl), placeholderImage: UIImage(named: "noPhoto"))
-//            contentSize += imageWidth + 2
-//        }
-//        scrollViewImages.contentSize.width = contentSize + 2
-//
-//    }
     
 
 }
@@ -74,16 +54,23 @@ extension NewsInfoViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "NewsInfoTableViewCell", for: indexPath) as! NewsInfoTableViewCell
-            cell.load(feed: feed)
+			let cellPresenter = cellPresenterFactory.makeFeedCellPresenter(feed: feed)
+			cell.configure(with: cellPresenter)
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "CommentTableViewCell", for: indexPath) as! CommentTableViewCell
-            cell.load(comments[indexPath.row])
+			let cellPresenter = cellPresenterFactory.makeCommentCellPresenter(commnent: comments[indexPath.row])
+				cell.configure(with: cellPresenter)
             return cell
         }
-        
     }
     
+}
+
+//MARK: - Make cellPresenter
+extension NewsInfoViewController {
+	
+	
 }
 
 extension NewsInfoViewController: VkApiCommentsDelegate {

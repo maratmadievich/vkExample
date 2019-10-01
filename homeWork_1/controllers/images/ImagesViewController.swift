@@ -18,7 +18,6 @@ class ImagesViewController: UIViewController {
     
     var curImageView = UIView()
     var curImageFrame = CGRect()
-//    var images = [UIImage]()
     var photos = [VkPhoto]()
     
     

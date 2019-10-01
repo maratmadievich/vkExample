@@ -13,15 +13,17 @@ class GroupsViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
-    
+	
+	private let networkAdapter = NetworkAdapter()
 //    private var groups = [VkGroup]()
 //    private var filteredGroups = [VkGroup]()
-    
     //неюзаемая штука для показа возможностей
     private var groups: Results<VkGroup>?
     private var filteredGroups: Results<VkGroup>?
     private var notificationTokenGroups: NotificationToken?
     private var notificationTokenSearchGroups: NotificationToken?
+	
+	private let cellPresenterFactory = CellPresenterFactory()
     
     var searchActive = false
     
@@ -143,9 +145,10 @@ extension GroupsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MyGroupCell", for: indexPath) as! MyGroupCell
-        let group = searchActive ? filteredGroups?[indexPath.row] : groups?[indexPath.row]
-        if let group = group {
-            cell.load(group)
+		
+		if let group = getGroup(by: indexPath.row) {
+			let cellPresenter = cellPresenterFactory.makeGroupCellPresenter(group: group)
+            cell.configure(with: cellPresenter)
         }
         return cell
     }
@@ -175,6 +178,13 @@ extension GroupsViewController: UITableViewDelegate, UITableViewDataSource {
         alert.addAction(UIAlertAction(title: "Отмена", style: .cancel, handler: nil))
         self.present(alert, animated: true)
     }
+	
+	private func getGroup(by row: Int) -> VkGroup? {
+		let group = searchActive
+			? filteredGroups?[row]
+			: groups?[row]
+		return group
+	}
     
 }
 
@@ -182,7 +192,7 @@ extension GroupsViewController: UITableViewDelegate, UITableViewDataSource {
 extension GroupsViewController {
     
     private func getMyGroups() {
-        AlamofireService.instance.getGroups(delegate: self)
+        networkAdapter.getGroups(delegate: self)
     }
     
     private func getGroups(by search: String) {
@@ -217,11 +227,11 @@ extension GroupsViewController {
     }
     
     private func leaveGroup(by gid: Int) {
-        AlamofireService.instance.leaveGroup(gid: gid, delegate: self)
+        networkAdapter.leaveGroup(gid: gid, delegate: self)
     }
     
     private func joinGroup(by gid: Int) {
-        AlamofireService.instance.joinGroup(gid: gid, delegate: self)
+        networkAdapter.joinGroup(gid: gid, delegate: self)
     }
 }
 

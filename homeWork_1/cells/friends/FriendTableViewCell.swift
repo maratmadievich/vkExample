@@ -18,14 +18,11 @@ class FriendTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
     }
-    
-    func loadData(friend: VkFriend) {
-        labelName.text = friend.full_name
-        friend.first_name
-        
-        if friend.photo.count > 0 {
-            imageAva.sd_setImage(with: URL(string: friend.photo), placeholderImage: UIImage(named: "noPhoto"))
-        }
-    }
+	
+	func configure(with presenter: FriendCellPresenterProtocol) {
+		labelName.text = presenter.getNameTitle()
+		imageAva.sd_setImage(with: presenter.getImageUrl(), placeholderImage: presenter.getImagePlaceholder())
+		
+	}
 
 }

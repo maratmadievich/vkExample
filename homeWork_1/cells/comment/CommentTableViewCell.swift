@@ -19,12 +19,19 @@ class CommentTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
     }
+	
+	func configure(with presenter: CommentCellPresenterProtocol) {
+		labelName.text = presenter.getNameTitle()
+		labelText.text = presenter.getTextTitle()
+		
+		imageViewAva.sd_setImage(with: presenter.getImageUrl(), placeholderImage: presenter.getImagePlaceholder())
+	}
 
-    func load(_ comment: VkComment) {
-        labelName.text = comment.sender.getFullName()
-        labelText.text = comment.text
-        
-        imageViewAva.sd_setImage(with: URL(string: comment.sender.imageUrl100), placeholderImage: UIImage(named: "noPhoto"))
-    }
+//    func load(_ comment: VkComment) {
+//        labelName.text = comment.sender.getFullName()
+//        labelText.text = comment.text
+//
+//        imageViewAva.sd_setImage(with: URL(string: comment.sender.imageUrl100), placeholderImage: UIImage(named: "noPhoto"))
+//    }
 
 }

@@ -15,13 +15,18 @@ protocol FriendsViewControllerDelegate {
 }
 
 class FriendsViewController: UIViewController {
-    
+	
+    typealias Section = Int
+	typealias Row = Int
+	
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var customControll: CustomControl!
     
     @IBOutlet weak var searchBar: CustomSearchBar!
     
-    
+	private let networkAdapter = NetworkAdapter()
+	private let cellPresenterFactory = CellPresenterFactory()
+	
     var searchActive = false
     
     private var selectedSection = -1
@@ -34,6 +39,8 @@ class FriendsViewController: UIViewController {
     //неюзаемая штука для показа возможностей
     private var friends: Results<VkFriend>?
     private var notificationTokenGroups: NotificationToken?
+	
+	
     
 
     override func viewDidLoad() {
@@ -121,7 +128,7 @@ extension FriendsViewController {
                 print(error.localizedDescription)
             }
         }
-        AlamofireService.instance.getFriends(delegate: self)
+        networkAdapter.getFriends(delegate: self)
     }
     
     private func migrateFriends() {
@@ -172,8 +179,31 @@ extension FriendsViewController: CustomSearchBarDelegate {
         tableView.reloadData()
         self.view.endEditing(true)
     }
+	
+	
     
     
+}
+
+//MARK: - Make CellPresenter
+extension FriendsViewController {
+	
+	private func getFriend(by section: Section, and row: Row) -> VkFriend {
+		let friend = searchActive
+			? filteredGroupedFriends[section].friends[row]
+			: groupedFriends[section].friends[row]
+		return friend
+	}
+	
+	private func getFriendList(by section: Section) -> FriendList {
+		 let friendGroup = searchActive
+			? filteredGroupedFriends[section]
+			: groupedFriends[section]
+		return friendGroup
+	}
+	
+	
+	
 }
 
 extension FriendsViewController: UITableViewDelegate, UITableViewDataSource {
@@ -186,24 +216,30 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         customControll.isHidden = searchActive
 //        return groupedFriends.count
-        return searchActive ? filteredGroupedFriends.count : groupedFriends.count
+        return searchActive
+			? filteredGroupedFriends.count
+			: groupedFriends.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return searchActive ? filteredGroupedFriends[section].friends.count : groupedFriends[section].friends.count
+        return searchActive
+			? filteredGroupedFriends[section].friends.count
+			: groupedFriends[section].friends.count
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FriendHeaderTableViewCell") as! FriendHeaderTableViewCell
-        let friendGroup = searchActive ? filteredGroupedFriends[section] : groupedFriends[section]
-        cell.labelTitle.text = friendGroup.title
+		let friendList = getFriendList(by: section)
+		let headerPresenter = cellPresenterFactory.makeFriendHeaderPresenter(friendList: friendList)
+        cell.configure(with: headerPresenter)
         return cell
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FriendTableViewCell", for: indexPath) as! FriendTableViewCell
-        let friend = searchActive ? filteredGroupedFriends[indexPath.section].friends[indexPath.row] : groupedFriends[indexPath.section].friends[indexPath.row]
-        cell.loadData(friend: friend)
+		let friend = getFriend(by: indexPath.section, and: indexPath.row)
+		let cellPresenter = cellPresenterFactory.makeFriendCellPresenter(friend: friend)
+        cell.configure(with: cellPresenter)
         return cell
     }
     

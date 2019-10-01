@@ -13,7 +13,9 @@ class NewsViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     private let refreshControl = UIRefreshControl()
     
-//    private let exampleCell = NewsTableViewCell()
+	private let networkAdapter = NetworkAdapter()
+	private let cellPresenterFactory = CellPresenterFactory()
+	
     private var textHeight: CGFloat = 0
     private var imageHeight: CGFloat = 0
     
@@ -53,7 +55,7 @@ class NewsViewController: UIViewController {
     private func prepareGetFeeds(needClearNews: Bool) {
         isLoad = true
         self.needClearNews = needClearNews
-        AlamofireService.instance.getNews(startFrom: needClearNews ? "":startFrom, delegate: self)
+        networkAdapter.getNews(startFrom: needClearNews ? "":startFrom, delegate: self)
     }
     
     
@@ -97,7 +99,8 @@ extension NewsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "NewsTableViewCell", for: indexPath) as! NewsTableViewCell
-        cell.configure(feed: feeds[indexPath.row])
+		let cellPresenter = cellPresenterFactory.makeFeedCellPresenter(feed: feeds[indexPath.row])
+        cell.configure(with: cellPresenter)
         cell.delegate = self
         return cell
     }
