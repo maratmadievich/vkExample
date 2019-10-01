@@ -71,43 +71,43 @@ class NewsTableViewCellOld: UITableViewCell {
     }
     
     
-    func load(feed: VkFeed) {
-        labelFeedGroupHeader.text = feed.sourceName
-        labelDate.text = feed.getFeedDate()
-        if feed.feedText.count == 0 && viewTextHeightConstraint != nil {
-            viewTextHeightConstraint.constant = 0
-            self.layoutIfNeeded()
-        }
-        labelText.text = feed.feedText
-        
-        imageViewGroup.sd_setImage(with: URL(string: feed.sourceUrl), placeholderImage: UIImage(named: "noPhoto"))
-        
-        if feed.attachments.count > 0 {
-            imageHeightConstraint.constant = self.frame.width * CGFloat(feed.attachments[0].height) / CGFloat(feed.attachments[0].width)
-            
-//            imageNew.sd_setImage(with: URL(string: feed.attachments[0].imageUrl), placeholderImage: UIImage(named: "noPhoto"))
-            
-            // попытка сделать blur фотки,
-            // а потом заанимировать на переход к нормальной фотке
-            
-            operation = SDWebImageManager.shared().loadImage(with: URL(string: feed.attachments[0].imageUrl), options: .highPriority, progress: nil, completed: {
-                (image: UIImage?, data: Data?, error: Error?, cacheType: SDImageCacheType, finished: Bool, url: URL?) in
-                if let image = image {
-                    self.generateBlureImage(image)
-                } else {
-                    self.imageNew.image = UIImage(named: "noPhoto")
-                }
-            })
-        } else {
-            imageHeightConstraint.constant = 0
-        }
-        self.layoutIfNeeded()
-        
-        labelLike.text = feed.getStringFrom(count: feed.countLikes)
-        labelViews.text = feed.getStringFrom(count: feed.countViews)
-        labelShare.text = feed.getStringFrom(count: feed.countReposts)
-        labelComment.text = feed.getStringFrom(count: feed.countComments)
-    }
+//    func load(feed: VkFeed) {
+//        labelFeedGroupHeader.text = feed.sourceName
+//        labelDate.text = feed.getFeedDate()
+//        if feed.feedText.count == 0 && viewTextHeightConstraint != nil {
+//            viewTextHeightConstraint.constant = 0
+//            self.layoutIfNeeded()
+//        }
+//        labelText.text = feed.feedText
+//        
+//        imageViewGroup.sd_setImage(with: URL(string: feed.sourceUrl), placeholderImage: UIImage(named: "noPhoto"))
+//        
+//        if feed.attachments.count > 0 {
+//            imageHeightConstraint.constant = self.frame.width * CGFloat(feed.attachments[0].height) / CGFloat(feed.attachments[0].width)
+//            
+////            imageNew.sd_setImage(with: URL(string: feed.attachments[0].imageUrl), placeholderImage: UIImage(named: "noPhoto"))
+//            
+//            // попытка сделать blur фотки,
+//            // а потом заанимировать на переход к нормальной фотке
+//            
+//            operation = SDWebImageManager.shared().loadImage(with: URL(string: feed.attachments[0].imageUrl), options: .highPriority, progress: nil, completed: {
+//                (image: UIImage?, data: Data?, error: Error?, cacheType: SDImageCacheType, finished: Bool, url: URL?) in
+//                if let image = image {
+//                    self.generateBlureImage(image)
+//                } else {
+//                    self.imageNew.image = UIImage(named: "noPhoto")
+//                }
+//            })
+//        } else {
+//            imageHeightConstraint.constant = 0
+//        }
+//        self.layoutIfNeeded()
+//        
+//        labelLike.text = feed.getStringFrom(count: feed.countLikes)
+//        labelViews.text = feed.getStringFrom(count: feed.countViews)
+//        labelShare.text = feed.getStringFrom(count: feed.countReposts)
+//        labelComment.text = feed.getStringFrom(count: feed.countComments)
+//    }
     
     
     private func generateBlureImage(_ image: UIImage) {
