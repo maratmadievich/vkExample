@@ -12,7 +12,7 @@ class FriendInfoViewController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
 	
-	private let networkAdapter = NetworkAdapter()
+	private let networkAdapter = NetworkAdapterFactory().makeAdapter()
     var friend = VkFriend()
     var photos = [VkPhoto]()
     

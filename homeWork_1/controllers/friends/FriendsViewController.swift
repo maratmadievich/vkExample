@@ -24,7 +24,7 @@ class FriendsViewController: UIViewController {
     
     @IBOutlet weak var searchBar: CustomSearchBar!
     
-	private let networkAdapter = NetworkAdapter()
+    private let networkAdapter = NetworkAdapterFactory().makeAdapter()
 	private let cellPresenterFactory = CellPresenterFactory()
 	
     var searchActive = false

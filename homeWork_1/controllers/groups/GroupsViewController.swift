@@ -14,7 +14,7 @@ class GroupsViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
 	
-	private let networkAdapter = NetworkAdapter()
+	private let networkAdapter = NetworkAdapterFactory().makeAdapter()
 //    private var groups = [VkGroup]()
 //    private var filteredGroups = [VkGroup]()
     //неюзаемая штука для показа возможностей
