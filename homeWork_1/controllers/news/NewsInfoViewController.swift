@@ -12,7 +12,7 @@ class NewsInfoViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
 
-	private let networkAdapter = NetworkAdapter()
+	private let networkAdapter = NetworkAdapterFactory().makeAdapter()
 	private let cellPresenterFactory = CellPresenterFactory()
 	
     var feed = VkFeed()

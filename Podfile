@@ -13,10 +13,6 @@ target 'homeWork_1' do
 	pod 'PinLayout'
 	pod 'SwiftyJSON', '~> 4.0'
 	pod 'SDWebImage', '~> 4.0'
-	pod 'Firebase/Core'
-  	pod 'Firebase/Database'
-#  	pod 'Firebase/Auth'
-#  	pod 'Firebase/Firestore'
 
 
 

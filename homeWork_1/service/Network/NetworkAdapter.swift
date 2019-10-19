@@ -8,31 +8,7 @@
 
 import Foundation
 
-protocol VkApiFriendsDelegate {
-	func returnFriends(_ friends: [VkFriend])
-}
-
-protocol VkApiGroupsDelegate {
-	func returnGroups(_ groups: [VkGroup])
-	func returnLeave(_ gid: Int)
-	func returnLeave(_ error: String)
-	func returnJoin(_ gid: Int)
-	func returnJoin(_ error: String)
-}
-
-protocol VkApiPhotosDelegate {
-	func returnPhotos(_ photos: [VkPhoto])
-}
-
-protocol VkApiFeedsDelegate {
-	func returnFeeds(_ feeds: [VkFeed])
-}
-
-protocol VkApiCommentsDelegate {
-	func returnComments(_ comments: [VkComment])
-}
-
-class NetworkAdapter {
+class NetworkAdapter: NetworkAdapterInterface {
 	private let service = AlamofireService.shared
 	
 	public func getFriends(delegate: VkApiFriendsDelegate) {

@@ -13,7 +13,7 @@ class NewsViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     private let refreshControl = UIRefreshControl()
     
-	private let networkAdapter = NetworkAdapter()
+	private let networkAdapter = NetworkAdapterFactory().makeAdapter()
 	private let cellPresenterFactory = CellPresenterFactory()
 	
     private var textHeight: CGFloat = 0

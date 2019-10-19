@@ -14,7 +14,7 @@ class SearchGroupViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
 	
-	private let networkAdapter = NetworkAdapter()
+	private let networkAdapter = NetworkAdapterFactory().makeAdapter()
 	private let cellPresenterFactory = CellPresenterFactory()
 	
     private var groups = [VkGroup]()
